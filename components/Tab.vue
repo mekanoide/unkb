@@ -1,6 +1,5 @@
 <template>
   <a
-    href="#tab"
     :aria-controls="value"
     role="tab"
     :aria-selected="selected">
@@ -28,6 +27,7 @@ a {
   height: 3rem;
   border-bottom: 4px solid transparent;
   transition: all 200ms ease;
+  cursor: pointer;
 }
 
 a:hover {

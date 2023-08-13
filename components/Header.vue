@@ -1,6 +1,8 @@
 <template>
   <header>
-    <Logo />
+    <NuxtLink to="/">
+      <Logo />
+    </NuxtLink>
     <div class="actions">
       <Button size="small" @click="handleSignOut">Cerrar sesión</Button>
     </div>
@@ -28,5 +30,6 @@ header {
   justify-content: space-between;
   align-items: center;
   padding: var(--spaceS) var(--spaceM);
+  border-bottom: 1px dotted black;
 }
 </style>
