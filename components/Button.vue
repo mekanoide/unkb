@@ -55,4 +55,16 @@ button.large {
   height: 4rem;
   padding: 0 var(--spaceL);
 }
+button.ghost {
+  border: none;
+  padding: 0 var(--spaceS);
+  height: 1.5rem;
+  transition: var(--transition);
+}
+
+button.ghost:hover {
+  background-color: black;
+  color: yellow;
+}
+
 </style>
