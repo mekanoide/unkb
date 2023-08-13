@@ -1,10 +1,11 @@
 <template>
-  <div>Omar</div>
+  <div>Omarsocial</div>
 </template>
 
 <style scoped>
 div {
   text-transform: uppercase;
-  font-weight: 600;
+  font-weight: bold;
+  font-size: var(--fontL);
 }
 </style>
