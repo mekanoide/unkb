@@ -36,6 +36,6 @@ article {
   padding: var(--spaceS) 0;
   font-size: var(--fontL);
   display: grid;
-  gap: var(--spaceM);
+  gap: var(--spaceS);
 }
 </style>

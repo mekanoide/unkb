@@ -1,15 +1,18 @@
 <template>
-  <div v-if="isConnected">
-    <h1>Ya tienes conexión con {{ parent.handle }}<br/>aquí no hay nada que ver</h1>
-    <NuxtLink to="/">Ve a la página de Inicio</NuxtLink>
-  </div>
-  <div v-else-if="!isConnected && !connectionSent">
-    <h1>Quieres conectar con {{ parent.handle }}?</h1>
-    <Button type="submit" variant="primary" @click.stop="makeConnection">Por supuesto que sí!</Button>
-  </div>
-  <div v-else-if="!isConnected && connectionSent">
-    <h1>Conexión solicitada!</h1>
-    <p>La persona {{ parent.handle }} tiene que confirmar que quiere conectar contigo.<br />Mientras tanto, puedes <NuxtLink to="/">pasarte por la página de inicio</NuxtLink>.</p>
+  <div v-if="parentPending || connectionPending">Cargando...</div>
+  <div v-else>
+    <div v-if="isConnected">
+      <h1>Ya tienes conexión con {{ parent.handle }}<br/>aquí no hay nada que ver</h1>
+      <NuxtLink to="/">Ve a la página de Inicio</NuxtLink>
+    </div>
+    <div v-else-if="!isConnected && !connectionSent">
+      <h1>Quieres conectar con {{ parent.handle }}?</h1>
+      <Button type="submit" variant="primary" @click.stop="makeConnection">Por supuesto que sí!</Button>
+    </div>
+    <div v-else-if="!isConnected && connectionSent">
+      <h1>Conexión solicitada!</h1>
+      <p>La persona {{ parent.handle }} tiene que confirmar que quiere conectar contigo.<br />Mientras tanto, puedes <NuxtLink to="/">pasarte por la página de inicio</NuxtLink>.</p>
+    </div>
   </div>
 </template>
 
@@ -38,7 +41,7 @@ const isConnected = computed(() => {
 
 console.log('Código', route.params.id)
 
-const { data: parent } = await useAsyncData('parent', async () => {
+const { data: parent, pending: parentPending } = await useAsyncData('parent', async () => {
   const { data } = await supabase
     .from('users')
     .select('*')
@@ -48,7 +51,7 @@ const { data: parent } = await useAsyncData('parent', async () => {
   return data
 })
 
-const { data: connection } = await useAsyncData('connection', async () => {
+const { data: connection, pending: connectionPending } = await useAsyncData('connection', async () => {
   const { data } = await supabase
     .from('connections')
     .select()

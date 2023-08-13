@@ -42,6 +42,8 @@
 </template>
 
 <script setup>
+import { useMainStore } from '@/stores/main'
+
 definePageMeta({
   layout: 'clear'
 })
@@ -49,6 +51,7 @@ definePageMeta({
 const user = useSupabaseUser()
 const { auth } = useSupabaseAuthClient()
 const router = useRouter()
+const store = useMainStore()
 
 const handle = ref('')
 const email = ref('')
@@ -64,8 +67,8 @@ const handleSignIn = async () => {
   })
   if (error) {
     throw error
-  } 
-  navigateTo('/')
+  }
+  navigateTo(store.requestUrl || '/')
 }
 
 const handleSignUp = async () => {
@@ -82,12 +85,12 @@ const handleSignUp = async () => {
   if (error) {
     throw error
   }
-  navigateTo('/')
+  navigateTo(store.requestUrl || '/')
 }
 
 watchEffect(() => {
   if (user.value) {
-    navigateTo('/')
+    navigateTo(store.requestUrl || '/')
   }
 })
 </script>

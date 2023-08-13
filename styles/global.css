@@ -4,14 +4,17 @@ html {
   line-height: 1.5;
 }
 
-h1 {
+h1, h2, h3, h4 {
   font-weight: bold;
+  line-height: 1.25;
+}
+
+h1 {
   font-size: var(--fontXL);
 }
 
 h3 {
   font-size: var(--fontL);
-  font-weight: bold;
 }
 
 code {
@@ -28,15 +31,12 @@ article {
     font-style: italic;
   }
   & h1 {
-    font-weight: bold;
     font-size: 2em;
   }
   & h2 {
-    font-weight: bold;
     font-size: 1.5em;
   }
   & h3 {
-    font-weight: bold;
     font-size: 1.25em;
   }
   & :is(ul, ol) {
