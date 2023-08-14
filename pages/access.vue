@@ -1,44 +1,20 @@
 <template>
-  <NuxtLayout>
-    <div class="Access">
-        <TabMenu>
-          <Tab :selected="activeTab === 'signin'" @click="activeTab = 'signin'">Entrar</Tab>
-          <Tab :selected="activeTab === 'signup'" @click="activeTab = 'signup'">Registrarse</Tab>
-        </TabMenu>
-        <div v-if="activeTab === 'signin'">
-          <h1>Entrar</h1>
-          <form @submit.prevent="handleSignIn">
-            <TextField
-              label="Correo electrónico"
-              type="email"
-              v-model="email" />
-            <TextField
-              label="Contraseña"
-              type="password"
-              v-model="password"
-            />
-            <Button type="submit" variant="primary" :disabled="loading">Entrar</Button>
-          </form>
-        </div>
-        <div v-if="activeTab === 'signup'">
-          <h1>Registro</h1>
-          <form @submit.prevent="handleSignUp">
-            <TextField label="Nombre" v-model="handle" />
-            <TextField
-              label="Correo electrónico"
-              type="email"
-              v-model="email"
-            />
-            <TextField
-              label="Contraseña"
-              type="password"
-              v-model="password"
-            />
-            <Button type="submit" variant="primary" :disabled="loading">Entrar</Button>
-          </form>
-        </div>
-    </div>
-  </NuxtLayout>
+  <div class="Access">
+    <h1>Entrar</h1>
+    <p>Si no tienes una cuenta, tendrás que pedir que alguien te invite.</p>
+    <form @submit.prevent="handleSignIn">
+      <TextField
+        label="Correo electrónico"
+        type="email"
+        v-model="email" />
+      <TextField
+        label="Contraseña"
+        type="password"
+        v-model="password"
+      />
+      <Button type="submit" variant="primary" :disabled="loading">Entrar</Button>
+    </form>
+  </div>
 </template>
 
 <script setup>
@@ -68,29 +44,12 @@ const handleSignIn = async () => {
   if (error) {
     throw error
   }
-  navigateTo(store.requestUrl || '/')
-}
-
-const handleSignUp = async () => {
-  const { data, error } = await auth.signUp({
-    email: email.value,
-    password: password.value,
-    options: {
-      data: {
-        handle: handle.value,
-        avatar_url: ''
-      }
-    }
-  })
-  if (error) {
-    throw error
-  }
-  navigateTo(store.requestUrl || '/')
+  navigateTo('/')
 }
 
 watchEffect(() => {
   if (user.value) {
-    navigateTo(store.requestUrl || '/')
+    navigateTo('/')
   }
 })
 </script>

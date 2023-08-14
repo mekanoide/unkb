@@ -3,8 +3,8 @@
     <h3>Peticiones de conexión</h3>
     <ul>
       <li v-for="request in requests">
-        <span class="handle">@{{ request.child.handle }}</span>
-        <Button size="small" @click="acceptConnection(request.child_id)">Aceptar</Button>
+        <span class="handle">@{{ request.requester.handle }}</span>
+        <Button size="small" @click="acceptConnection(request.user_id)">Aceptar</Button>
       </li>
     </ul>
   </section>
@@ -17,10 +17,9 @@ const userId = user.value.id
 
 const { data: requests, error: errorRequests } = await useAsyncData('requests', async () => {
   const { data } = await client
-    .from('connections')
-    .select('child_id, child:users!child_id(handle)')
-    .eq('parent_id', userId)
-    .eq('confirmed', false)
+    .from('connection_requests')
+    .select('user_id, requester:users!user_id(handle)')
+    .eq('target_id', userId)
   return data
 })
 
@@ -28,10 +27,7 @@ const acceptConnection = async (id) => {
   console.log(id)
   const { data, error } = await client
     .from('connections')
-    .update({
-      confirmed: true
-    })
-    .match({child_id: id, parent_id: userId})
+    .upsert({ user1_id: userId, user2_id: id })
   if (error) {
     throw error
   }

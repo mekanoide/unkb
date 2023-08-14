@@ -12,7 +12,6 @@
 </template>
 
 <script setup>
-
 const user = useSupabaseUser()
 const client = useSupabaseClient()
 const config = useRuntimeConfig()
@@ -20,17 +19,13 @@ const config = useRuntimeConfig()
 const copied = ref(false)
 
 const { data: profile, error } = await useAsyncData('profile', async () => {
-  const { data } = await client
-    .from('users')
-    .select('*')
-    .eq('id', user.value.id)
-    .single()
-  
+  const { data } = await client.from('users').select('*').eq('id', user.value.id).single()
+
   return data
 })
 
 const invitationLink = computed(() => {
-  return `${config.public.baseUrl}/connect/${profile.value.invitation_token}`
+  return `${config.public.baseUrl}/invitation/${profile.value.invitation_token}`
 })
 
 const copyTokenToClipboard = async () => {
@@ -45,7 +40,6 @@ const copyTokenToClipboard = async () => {
     copied.value = false
   }, 3000)
 }
-
 </script>
 
 <style scoped>

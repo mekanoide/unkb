@@ -8,6 +8,7 @@
       <EmptyState v-else message="Aún no hay nada publicado" />
     </main>
     <Aside>
+      <SearchUser />
       <Invitation />
       <Requests />
     </Aside>
@@ -15,13 +16,13 @@
 </template>
 
 <script setup>
-import { useMainStore } from '@/stores/main'
-
-const store = useMainStore()
-
 definePageMeta({
   middleware: ['auth']
 })
+
+import { useMainStore } from '@/stores/main'
+
+const store = useMainStore()
 
 const client = useSupabaseClient()
 const user = useSupabaseUser()

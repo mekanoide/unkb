@@ -25,6 +25,9 @@ const handleSignOut = async () => {
 
 <style scoped>
 header {
+  position: sticky;
+  top: 0;
+  background-color: yellow;
   display: grid;
   grid-auto-flow: column;
   justify-content: space-between;

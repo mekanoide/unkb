@@ -52,7 +52,6 @@ article {
   & pre {
     padding: 0 var(--spaceM);
     border-left: 4px solid black;
-    border-right: 4px solid black;
   }
   & blockquote {
     font-family: 'Lora', serif;
