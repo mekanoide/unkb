@@ -1,5 +1,5 @@
 <template>
-  <div>Omarsocial</div>
+  <div>unkilo</div>
 </template>
 
 <style scoped>
