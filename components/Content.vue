@@ -40,10 +40,10 @@ const previewUrl = async (str) => {
     for (const match of matches) {
       const url = match.match(linkRegex)[0]
       console.log('El enlace es', url)
-      const { data: preview } = await useFetch(url, {
+      const preview = await $fetch(url, {
         headers: { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Credentials': 'true' }
       })
-      console.log(preview.value)
+      console.log(preview)
       previewData.value = preview
     }
   }
