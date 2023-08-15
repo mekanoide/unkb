@@ -2,8 +2,8 @@
   <div>
     <main>
       <CreatePost @post="createPost" />
-      <PostList v-if="postsData.length !== 0">
-        <Post v-for="post in postsData" :post="post" />
+      <PostList v-if="posts.length !== 0">
+        <Post v-for="post in posts" :post="post" />
       </PostList>
       <EmptyState v-else message="Aún no hay nada publicado" />
     </main>
@@ -21,35 +21,19 @@ definePageMeta({
 })
 
 import { useMainStore } from '@/stores/main'
+import { storeToRefs } from 'pinia'
 
 const store = useMainStore()
-
 const client = useSupabaseClient()
 const user = useSupabaseUser()
-const userId = user.value.id
 
+const userId = user.value.id
 const refreshInterval = ref()
 
-const { data: followsData, error: followsError } = await useAsyncData('follows', async () => {
-  const { data } = await client.from('follows').select().eq('user_id', userId)
-  return data
-})
+const { posts, follows, me, connections, requestUrl, followsIds } = storeToRefs(store)
 
-const followedUserIds = followsData.value.map(follow => follow.follow_id)
-followedUserIds.push(userId)
-
-const {
-  data: postsData,
-  error: postsError,
-  refresh: postsRefresh
-} = await useAsyncData('posts', async () => {
-  const { data } = await client
-    .from('posts')
-    .select('*, users(id, handle)')
-    .in('author_id', followedUserIds)
-    .order('created_at', { ascending: false })
-  return data
-})
+store.fetchFollows()
+store.fetchPosts()
 
 const createPost = async (content) => {
   const { data, error } = await client.from('posts').upsert({
@@ -60,15 +44,12 @@ const createPost = async (content) => {
   if (error) {
     console.error('Error al crear el tweet:', error.message)
   } else {
-    postsRefresh()
+    store.fetchPosts()
   }
 }
-/* 
-store.posts.value = postsData
-store.contacts.value = followsData
- */
+
 onMounted(() => {
-  refreshInterval.value = setInterval(postsRefresh, 30000)
+  refreshInterval.value = setInterval(store.fetchPosts, 30000)
 })
 
 onBeforeUnmount(() => {

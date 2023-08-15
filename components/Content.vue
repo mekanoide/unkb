@@ -1,15 +1,20 @@
 <template>
   <article v-html="mdContent"></article>
-  <div v-if="previewData">HEY {{ previewData }}</div>
 </template>
 
 <script setup>
 import MarkdownIt from 'markdown-it'
 import { useMainStore } from '@/stores/main'
 
-const md = new MarkdownIt()
+const client = useSupabaseClient()
+const md = new MarkdownIt({
+  html: true
+})
 const store = useMainStore()
-const previewData = ref(null)
+const content = ref(null)
+content.value = await parseMentions(props.content)
+content.value = await parseLinks(content.value)
+console.log('Contenido', content.value)
 
 const props = defineProps({
   content: {
@@ -19,16 +24,7 @@ const props = defineProps({
 })
 
 const mdContent = computed(() => {
-  /*   const contentWithMentions = props.content.replace(/@(\w+)/g, (match, handle) => {
-    const user = store.getConnection(handle)
-    if (user) {
-      // Generar enlace al perfil del usuario
-      return `<a href="/user/${user.id}">@${user.username}</a>`
-    }
-    return match
-  }) */
-
-  return md.render(props.content)
+  return md.render(content.value)
 })
 
 const previewUrl = async (str) => {
@@ -40,17 +36,13 @@ const previewUrl = async (str) => {
     for (const match of matches) {
       const url = match.match(linkRegex)[0]
       console.log('El enlace es', url)
-      const preview = await $fetch(url, {
-        headers: { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Credentials': 'true' }
-      })
-      console.log(preview)
-      previewData.value = preview
+      console.log(data)
+      previewData.value = getLinkPreviewData
     }
   }
 }
 
 onMounted(() => {
-  previewUrl(props.content)
 })
 </script>
 
@@ -60,5 +52,7 @@ article {
   font-size: var(--fontL);
   display: grid;
   gap: var(--spaceS);
+  overflow-wrap: anywhere;
+  white-space: balance;
 }
 </style>

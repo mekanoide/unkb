@@ -8,8 +8,7 @@ export default defineNuxtConfig({
   modules: [
     '@nuxtjs/supabase',
     '@nuxtjs/color-mode',
-    '@pinia/nuxt',
-    'nuxt-link-preview'
+    '@pinia/nuxt'
   ],
   vite: {
     define: {

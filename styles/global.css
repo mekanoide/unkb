@@ -3,6 +3,7 @@ html {
   background-color: var(--colorBackground);
   color: var(--colorText);
   line-height: 1.5;
+  text-underline-offset: 2px;
 }
 
 h1, h2, h3, h4 {
@@ -63,6 +64,9 @@ article {
     padding: 0 var(--spaceM);
     border-left: 4px solid var(--colorText);
     font-style: italic;
+  }
+  & a {
+    text-decoration: underline;
   }
 } 
 

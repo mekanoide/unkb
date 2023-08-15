@@ -1,5 +1,5 @@
 <template>
-  <Button variant="ghost" @click="toggleColorMode"><span>🌣</span></Button>
+  <Button variant="ghost" @click="toggleColorMode"><Icon>🌣</Icon></Button>
 </template>
 
 <script setup>
@@ -13,9 +13,3 @@ const toggleColorMode = () => {
   }
 }
 </script>
-
-<style scoped>
-span {
-  font-size: var(--fontL);
-}
-</style>
