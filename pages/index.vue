@@ -32,9 +32,6 @@ const refreshInterval = ref()
 
 const { posts, follows, me, connections, requestUrl, followsIds } = storeToRefs(store)
 
-store.fetchFollows()
-store.fetchPosts()
-
 const createPost = async (content) => {
   const { data, error } = await client.from('posts').upsert({
     author_id: userId,
@@ -49,7 +46,9 @@ const createPost = async (content) => {
 }
 
 onMounted(() => {
-  refreshInterval.value = setInterval(store.fetchPosts, 30000)
+  store.fetchFollows()
+  store.fetchPostsFromFollowedUsers()
+  refreshInterval.value = setInterval(store.fetchPostsFromFollowedUsers, 30000)
 })
 
 onBeforeUnmount(() => {

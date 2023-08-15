@@ -13,6 +13,8 @@
 </template>
 
 <script setup>
+import { useMainStore } from '@/stores/main'
+const store = useMainStore()
 const props = defineProps({
   post: {
     type: Object,

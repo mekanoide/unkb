@@ -35,6 +35,7 @@ header {
   align-items: center;
   padding: var(--spaceS) var(--spaceM);
   border-bottom: 1px dotted var(--colorText);
+  z-index: 10;
 }
 
 .actions {
