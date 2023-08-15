@@ -1,13 +1,15 @@
 <template>
-  <div>
-    <input v-model="searchQuery" placeholder="Buscar usuarios por nombre o correo electrónico" />
-    <Button @click="searchUsers">Buscar</Button>
+  <section>
+    <div class="searchfield">
+      <input type="search" v-model="searchQuery" placeholder="Buscar usuarios por nombre o correo electrónico" />
+      <Button @click="searchUsers">Buscar</Button>
+    </div>
 
     <div v-for="user in searchResults" :key="user.id">
       <p>{{ user.handle }}</p>
-      <button @click="sendFriendRequest(user.id)">Enviar solicitud de amistad</button>
+      <Button @click="sendFriendRequest(user.id)">Enviar solicitud de amistad</Button>
     </div>
-  </div>
+  </section>
 </template>
 
 <script setup>
@@ -34,5 +36,12 @@ const searchUsers = async () => {
 const sendFriendRequest = async (friendId) => {
 
 }
-
 </script>
+
+<style scoped>
+.searchfield {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--spaceXS);
+}
+</style>

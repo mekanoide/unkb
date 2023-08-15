@@ -7,7 +7,9 @@ export default defineNuxtConfig({
   },
   modules: [
     '@nuxtjs/supabase',
-    '@pinia/nuxt'
+    '@nuxtjs/color-mode',
+    '@pinia/nuxt',
+    'nuxt-link-preview'
   ],
   vite: {
     define: {
@@ -20,6 +22,10 @@ export default defineNuxtConfig({
     '@/styles/tokens.css',
     '@/styles/global.css'
   ],
+  colorMode: {
+    preference: 'light',
+    fallback: 'light'
+  },
   supabase: {
     url: process.env.SUPABASE_URL,
     key: process.env.SUPABASE_KEY

@@ -1,6 +1,7 @@
 html {
   font-family: 'Work Sans';
-  background-color: yellow;
+  background-color: var(--colorBackground);
+  color: var(--colorText);
   line-height: 1.5;
 }
 
@@ -19,6 +20,10 @@ h3 {
 
 code {
   font-family: 'Source Code Pro', monospace;
+}
+
+aside > section + aside > section {
+  border-top: 1px dashed var(--colorText);
 }
 
 /* Post content format */
@@ -51,12 +56,12 @@ article {
   }
   & pre {
     padding: 0 var(--spaceM);
-    border-left: 4px solid black;
+    border-left: 4px solid var(--colorText);
   }
   & blockquote {
     font-family: 'Lora', serif;
     padding: 0 var(--spaceM);
-    border-left: 4px solid black;
+    border-left: 4px solid var(--colorText);
     font-style: italic;
   }
 } 
@@ -64,12 +69,21 @@ article {
 
 /* Form elements */
 
-input:is([type=text], [type=email], [type=password], [type=number]),
+input:is([type=text], [type=email], [type=password], [type=number], [type=search]),
 textarea {
   width: 100%;
-  border: 1px solid black;
+  border: 1px solid var(--colorText);
   padding: var(--spaceS);
   border-radius: var(--corner);
+}
+
+input:is([type=text], [type=email], [type=password], [type=number], [type=search]) {
+  height: 3rem;
+}
+
+input:is([type=text], [type=email], [type=password], [type=number], [type=search]):invalid,
+textarea:invalid {
+  border-color: var(--colorNegative);
 }
 
 button {
@@ -99,4 +113,14 @@ button {
 }
 .fade-leave-active {
   transition: all 320ms ease;
+}
+
+.dark-mode {
+  --colorBackground: var(--colorDark);
+  --colorText: var(--colorLight);
+}
+
+.light-mode {
+  --colorBackground: var(--colorLight);
+  --colorText: var(--colorDark);
 }

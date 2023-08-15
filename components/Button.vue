@@ -1,5 +1,5 @@
 <template>
-  <button :type="attrs.type || 'text'" :class="[ size, variant ]">
+  <button :type="attrs.type || 'button'" :class="[ size, variant ]">
     <slot />
   </button>
 </template>
@@ -27,14 +27,15 @@ button {
   grid-auto-flow: column;
   place-content: center;
   gap: var(--spaceS);
-  border: 4px double black;
+  border: 4px double var(--colorText);
   font-weight: 600;
   border-radius: var(--cornerButton);
+  transition: var(--transition);
 }
 button.primary {
-  background-color: black;
+  background-color: var(--colorText);
   border: none;
-  color: yellow;
+  color: var(--colorBackground);
 }
 
 button.critical {
@@ -43,7 +44,7 @@ button.critical {
 
 button:not(.small, .large) {
   height: 3rem;
-  padding: 0 var(--spaceL);
+  padding: 0 var(--spaceM);
 }
 
 button.small {
@@ -57,14 +58,19 @@ button.large {
 }
 button.ghost {
   border: none;
-  padding: 0 var(--spaceS);
+}
+
+button.ghost.small {
   height: 1.5rem;
-  transition: var(--transition);
+}
+
+button.ghost:not(.small, .large) {
+  height: 2rem;
 }
 
 button.ghost:hover {
-  background-color: black;
-  color: yellow;
+  background-color: var(--colorText);
+  color: var(--colorBackground);
 }
 
 </style>

@@ -7,10 +7,10 @@
     <h1>Registro</h1>
     <p>Usa esta invitación con responsabilidad.</p>
     <form @submit.prevent="handleSignUp">
-      <TextField label="Nombre" v-model="handle" />
+      <TextField label="Nombre" v-model="handle" :error="nameError" @blur="validateName" />
       <TextField label="Correo electrónico" type="email" v-model="email" />
       <TextField label="Contraseña" type="password" v-model="password" />
-      <Button type="submit" variant="primary" size="large" :disabled="loading">Entrar</Button>
+      <Button type="submit" variant="primary" size="large">Entrar</Button>
     </form>
   </div>
 </template>
@@ -29,6 +29,24 @@ const { auth } = useSupabaseAuthClient()
 const handle = ref(null)
 const email = ref(null)
 const password = ref(null)
+
+const nameError = ref(null)
+
+const validateName = async () => {
+  const namePattern = /^[a-z0-9_]+$/
+  if (!namePattern.test(handle.value)) {
+    nameError.value =
+      'El nombre debe estar en minúsculas y contener solo caracteres alfanuméricos y guión bajo.'
+    return
+  }
+  const { data } = await supabase.from('users').select('handle').eq('handle', handle.value).single()
+
+  if (data) {
+    nameError.value = 'Lo siento, el nombre ya está pillado.'
+    return
+  }
+  nameError.value = null
+}
 
 const { data: parent, pending: parentPending } = await useAsyncData('parent', async () => {
   const { data } = await supabase
@@ -51,7 +69,6 @@ const handleSignUp = async () => {
       }
     }
   })
-  console.log('Usuario', user.value)
   if (signupError) {
     throw signupError
   }

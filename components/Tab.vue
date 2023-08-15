@@ -35,6 +35,6 @@ a:hover {
 }
 
 a[aria-selected=true] {
-  border-bottom: 4px solid black;
+  border-bottom: 4px solid var(--colorText);
 }
 </style>

@@ -2,8 +2,10 @@
   <Transition name="pop" appear>
     <li>
       <header>
-        <div><span class="author">{{ post.users.handle }}</span> <time :datetime="date">{{ date }}</time></div>
-        <Button v-if="isOwner" variant="ghost">⋯</Button>
+        <div>
+          <User :user="post.users" /> <time :datetime="date">{{ date }}</time>
+        </div>
+        <Button v-if="isOwner" variant="ghost" size="small">⋯</Button>
       </header>
       <Content :content="post.content" />
     </li>
@@ -33,7 +35,7 @@ li {
 }
 
 li + li {
-  border-top: 1px dashed black;
+  border-top: 1px dashed var(--colorText);
 }
 
 .author {

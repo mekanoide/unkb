@@ -9,6 +9,6 @@
   display: grid;
   grid-auto-flow: column;
   gap: var(--spaceM);
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid var(--colorText);
 }
 </style>

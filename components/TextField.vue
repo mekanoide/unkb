@@ -17,7 +17,10 @@
       :placeholder="$attrs.placeholder"
       :autocomplete="$attrs.autocomplete"
       :disabled="disabled"
-      @input="emit('update:modelValue', $event.target.value)">
+      :invalid="error !== null"
+      @input="emit('update:modelValue', $event.target.value)"
+      @blur="emit('blur')">
+    <small v-if="error">{{ error }}</small>
   </div>
 </template>
 
@@ -36,15 +39,23 @@ const props = defineProps({
   },
   disabled: {
     type: Boolean
+  },
+  error: {
+    type: String
   }
 })
 
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:modelValue', 'blur'])
 </script>
 
 <style scoped>
 label {
   display: block;
   margin-bottom: var(--spaceS);
+}
+
+small {
+  display: block;
+  margin-top: var(--spaceS);
 }
 </style>

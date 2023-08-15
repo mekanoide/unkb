@@ -50,7 +50,7 @@ section {
 
 button {
   padding: var(--spaceS) var(--spaceM);
-  border: 1px dashed black;
+  border: 1px dashed var(--colorText);
   border-radius: var(--corner);
   position: relative;
 }
@@ -58,8 +58,8 @@ button {
 .copied {
   position: absolute;
   inset: 0;
-  background-color: black;
-  color: yellow;
+  background-color: var(--colorText);
+  color: var(--colorBackground);
   font-weight: bold;
   display: grid;
   place-content: center;

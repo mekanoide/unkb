@@ -4,6 +4,7 @@
       <Logo />
     </NuxtLink>
     <div class="actions">
+      <ToggleColorMode />
       <Button size="small" @click="handleSignOut">Cerrar sesión</Button>
     </div>
   </header>
@@ -27,12 +28,19 @@ const handleSignOut = async () => {
 header {
   position: sticky;
   top: 0;
-  background-color: yellow;
+  background-color: var(--colorBackground);
   display: grid;
   grid-auto-flow: column;
   justify-content: space-between;
   align-items: center;
   padding: var(--spaceS) var(--spaceM);
-  border-bottom: 1px dotted black;
+  border-bottom: 1px dotted var(--colorText);
+}
+
+.actions {
+  display: grid;
+  grid-auto-flow: column;
+  gap: var(--spaceM);
+  align-items: center;
 }
 </style>

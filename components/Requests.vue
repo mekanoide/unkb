@@ -15,7 +15,9 @@ const client = useSupabaseClient()
 const user = useSupabaseUser()
 const userId = user.value.id
 
-const { data: requests, error: errorRequests } = await useAsyncData('requests', async () => {
+const refreshInterval = ref()
+
+const { data: requests, error: errorRequests, refresh } = await useAsyncData('requests', async () => {
   const { data } = await client
     .from('connection_requests')
     .select('user_id, requester:users!user_id(handle)')
@@ -33,6 +35,14 @@ const acceptConnection = async (id) => {
   }
   return data
 }
+
+onMounted(() => {
+  refreshInterval.value = setInterval(refresh, 10000)
+})
+
+onBeforeUnmount(() => {
+  clearInterval(refreshInterval.value)
+})
 </script>
 
 <style scoped>
@@ -44,6 +54,6 @@ li {
 }
 
 li + li {
-  border-top: 1px dashed black;
+  border-top: 1px dashed var(--colorText);
 }
 </style>

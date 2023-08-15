@@ -28,6 +28,8 @@ const client = useSupabaseClient()
 const user = useSupabaseUser()
 const userId = user.value.id
 
+const refreshInterval = ref()
+
 const { data: followsData, error: followsError } = await useAsyncData('follows', async () => {
   const { data } = await client.from('follows').select().eq('user_id', userId)
   return data
@@ -43,7 +45,7 @@ const {
 } = await useAsyncData('posts', async () => {
   const { data } = await client
     .from('posts')
-    .select('*, users(handle)')
+    .select('*, users(id, handle)')
     .in('author_id', followedUserIds)
     .order('created_at', { ascending: false })
   return data
@@ -66,7 +68,11 @@ store.posts.value = postsData
 store.contacts.value = followsData
  */
 onMounted(() => {
-  setInterval(postsRefresh, 30000)
+  refreshInterval.value = setInterval(postsRefresh, 30000)
+})
+
+onBeforeUnmount(() => {
+  clearInterval(refreshInterval.value)
 })
 </script>
 
