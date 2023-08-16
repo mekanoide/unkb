@@ -11,6 +11,7 @@ export const useMainStore = defineStore('main', () => {
   const follows = ref([])
   const requestUrl = ref(null)
   const userSearch = ref(null)
+  const showPopover = ref(null)
 
   const getContact = (handle) => {
     return contacts.value.find((user) => user.handle === handle)
@@ -22,21 +23,24 @@ export const useMainStore = defineStore('main', () => {
   }
 
   const fetchPostsFromFollowedUsers = async () => {
-    const { data: followsData, error: followsError } = await client.from('follows').select().eq('user_id', user.value.id)
+    const { data: followsData, error: followsError } = await client
+      .from('follows')
+      .select()
+      .eq('user_id', user.value.id)
 
     if (followsError) {
       throw followsError
     }
 
-    const followedUserIds = followsData.map(item => item.follow_id)
+    const followedUserIds = followsData.map((item) => item.follow_id)
     followedUserIds.push(user.value.id)
-
+    console.log('fetcheando!!!')
     const { data: postsData } = await client
       .from('posts')
       .select('*, users(id, handle)')
       .in('author_id', followedUserIds)
       .order('created_at', { ascending: false })
-    posts.value = postsData
+    return postsData
   }
 
   const fetchPostsFromUser = async (id) => {
@@ -45,12 +49,7 @@ export const useMainStore = defineStore('main', () => {
       .select('*, users(id, handle)')
       .eq('author_id', id)
       .order('created_at', { ascending: false })
-    posts.value = postsData
-  }
-
-  const deletePost = async (id) => {
-    const { error } = await client.from('posts').delete().eq('id', id)
-    fetchPostsFromFollowedUsers()
+    return postsData
   }
 
   return {
@@ -60,9 +59,10 @@ export const useMainStore = defineStore('main', () => {
     follows,
     contacts,
     requestUrl,
+    showPopover,
     getContact,
     fetchFollows,
     fetchPostsFromFollowedUsers,
-    deletePost
+    fetchPostsFromUser
   }
 })

@@ -11,6 +11,9 @@
 const props = defineProps({
   selected: {
     type: Boolean
+  },
+  value: {
+    type: String
   }
 })
 

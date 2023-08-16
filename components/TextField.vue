@@ -8,7 +8,8 @@
       :value="modelValue"
       :placeholder="$attrs.placeholder"
       :disabled="disabled"
-      @input="emit('update:modelValue', $event.target.value)" />
+      @input="emit('update:modelValue', $event.target.value)"
+    />
     <input
       v-else
       name="textfield"
@@ -19,8 +20,10 @@
       :disabled="disabled"
       :invalid="error !== null"
       @input="emit('update:modelValue', $event.target.value)"
-      @blur="emit('blur')">
+      @blur="emit('blur')"
+    />
     <small v-if="error">{{ error }}</small>
+    <small v-if="instructions">{{ instructions }}</small>
   </div>
 </template>
 
@@ -41,6 +44,9 @@ const props = defineProps({
     type: Boolean
   },
   error: {
+    type: String
+  },
+  instructions: {
     type: String
   }
 })

@@ -3,6 +3,10 @@
     <NuxtLink to="/">
       <Logo />
     </NuxtLink>
+    <nav>
+      <NuxtLink to="/">Chorreo</NuxtLink>
+      <NuxtLink to="/connections">Conexiones</NuxtLink>
+    </nav>
     <div class="actions">
       <ToggleColorMode />
       <Button size="small" @click="handleSignOut">Cerrar sesión</Button>
@@ -30,7 +34,7 @@ header {
   top: 0;
   background-color: var(--colorBackground);
   display: grid;
-  grid-auto-flow: column;
+  grid-template-columns: 1fr 3fr 1fr;
   justify-content: space-between;
   align-items: center;
   padding: var(--spaceS) var(--spaceM);
@@ -43,5 +47,17 @@ header {
   grid-auto-flow: column;
   gap: var(--spaceM);
   align-items: center;
+  justify-content: end;
+}
+
+nav {
+  display: grid;
+  grid-auto-flow: column;
+  gap: var(--spaceL);
+  justify-content: center;
+}
+
+.router-link-active {
+  font-weight: bold;
 }
 </style>

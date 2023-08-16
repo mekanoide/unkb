@@ -27,6 +27,10 @@ aside > section + aside > section {
   border-top: 1px dashed var(--colorText);
 }
 
+small {
+  font-size: var(--fontS);
+}
+
 /* Post content format */
 
 article {

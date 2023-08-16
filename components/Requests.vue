@@ -17,7 +17,11 @@ const userId = user.value.id
 
 const refreshInterval = ref()
 
-const { data: requests, error: errorRequests, refresh } = await useAsyncData('requests', async () => {
+const {
+  data: requests,
+  error: errorRequests,
+  refresh: errorRefresh
+} = await useAsyncData('requests', async () => {
   const { data } = await client
     .from('connection_requests')
     .select('user_id, requester:users!user_id(handle)')
@@ -37,7 +41,7 @@ const acceptConnection = async (id) => {
 }
 
 onMounted(() => {
-  refreshInterval.value = setInterval(refresh, 10000)
+  refreshInterval.value = setInterval(errorRefresh, 60000)
 })
 
 onBeforeUnmount(() => {

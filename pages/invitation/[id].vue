@@ -3,11 +3,20 @@
     <h1>Ya estás dentro, aquí no hay nada que ver</h1>
     <NuxtLink to="/">Ve a la página de Inicio</NuxtLink>
   </div>
+  <div v-else-if="error">
+    <h1>{{ error }}</h1>
+  </div>
   <div v-else class="Access">
-    <h1>Registro</h1>
-    <p>Usa esta invitación con responsabilidad.</p>
+    <h1>@{{ parent.handle }} te ha invitado a esto</h1>
+    <p>Usa el privilegio con responsabilidad.</p>
     <form @submit.prevent="handleSignUp">
-      <TextField label="Nombre" v-model="handle" :error="nameError" @blur="validateName" />
+      <TextField
+        label="Nombre"
+        instructions="El nombre debe estar en minúsculas y contener solo caracteres alfanuméricos y guión bajo."
+        :error="nameError"
+        v-model="handle"
+        @blur="validateName"
+      />
       <TextField label="Correo electrónico" type="email" v-model="email" />
       <TextField label="Contraseña" type="password" v-model="password" />
       <Button type="submit" variant="primary" size="large">Entrar</Button>
@@ -31,6 +40,7 @@ const email = ref(null)
 const password = ref(null)
 
 const nameError = ref(null)
+const error = ref(null)
 
 const validateName = async () => {
   const namePattern = /^[a-z0-9_]+$/
@@ -39,7 +49,7 @@ const validateName = async () => {
       'El nombre debe estar en minúsculas y contener solo caracteres alfanuméricos y guión bajo.'
     return
   }
-  const { data } = await supabase.from('users').select('handle').eq('handle', handle.value).single()
+  const { data } = await supabase.from('users').select('handle').eq('handle', handle.value).maybeSingle()
 
   if (data) {
     nameError.value = 'Lo siento, el nombre ya está pillado.'
@@ -70,7 +80,7 @@ const handleSignUp = async () => {
     }
   })
   if (signupError) {
-    throw signupError
+    error.value = signupError
   }
 
   const { data: connectionData, error: connectionError } = await supabase

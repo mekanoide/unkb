@@ -12,8 +12,9 @@
   --spaceL: 2.5rem;
   --spaceXL: 4rem;
 
+  --fontS: 0.75rem;
   --fontL: 1.25rem;
-  --fontXL: 2.5rem;
+  --fontXL: 3rem;
 
   --gradientFaded: repeating-linear-gradient(-45deg, transparent, transparent 2px, black 2px, black 4px);
 

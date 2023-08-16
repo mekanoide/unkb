@@ -1,9 +1,19 @@
 <template>
   <div>
     <main>
-      <CreatePost @post="createPost" />
-      <PostList v-if="posts.length !== 0">
-        <Post v-for="post in posts" :post="post" />
+      <CreatePost
+        :edit="editContent"
+        @post="createPost"
+        @edit="finishPostEdition"
+        @cancel="cancelPostEdition"
+      />
+      <PostList v-if="postsData">
+        <Post
+          v-for="post in postsData"
+          :post="post"
+          @edit="startPostEdition"
+          @delete="deletePost"
+        />
       </PostList>
       <EmptyState v-else message="Aún no hay nada publicado" />
     </main>
@@ -29,9 +39,46 @@ const user = useSupabaseUser()
 
 const userId = user.value.id
 const refreshInterval = ref()
+const editId = ref(null)
+const editContent = ref(null)
 
-const { posts, follows, me, connections, requestUrl, followsIds } = storeToRefs(store)
+/* Fetch posts from followed users */
+const {
+  data: postsData,
+  error: postsError,
+  refresh: postsRefresh
+} = await useAsyncData(
+  'posts',
+  async () => {
+    const { data: followsData, error: followsError } = await client
+      .from('follows')
+      .select()
+      .eq('user_id', user.value.id)
 
+    if (followsError) {
+      throw followsError
+    }
+
+    const followedUserIds = followsData.map((item) => item.follow_id)
+    followedUserIds.push(user.value.id)
+    console.log('fetcheando!!!')
+    const { data: postsData, error: postsError } = await client
+      .from('posts')
+      .select('*, users(id, handle)')
+      .in('author_id', followedUserIds)
+      .order('created_at', { ascending: false })
+    if (postsError) {
+      throw postsError
+    }
+    if (postsData) {
+      console.log('hey', postsData)
+      return postsData
+    }
+  },
+  { lazy: true }
+)
+
+/* Create new post */
 const createPost = async (content) => {
   const { data, error } = await client.from('posts').upsert({
     author_id: userId,
@@ -39,16 +86,57 @@ const createPost = async (content) => {
     created_at: new Date()
   })
   if (error) {
-    console.error('Error al crear el tweet:', error.message)
-  } else {
-    store.fetchPosts()
+    throw error
   }
+  postsRefresh()
+}
+
+/* Start post edition */
+const startPostEdition = async (id, content) => {
+  editId.value = id
+  editContent.value = content
+}
+
+/* Cancel post edition */
+const cancelPostEdition = () => {
+  editId.value = null
+  editContent.value = null
+}
+
+/* Finish post edition and update post */
+const finishPostEdition = async (content) => {
+  const { data, error } = await client
+    .from('posts')
+    .update({
+      content: content,
+      edited: true
+    })
+    .eq('id', editId.value)
+  if (error) {
+    throw error
+  }
+  editId.value = null
+  editContent.value = null
+  postsRefresh()
+}
+
+/* Delete post */
+
+const deletePost = async (id) => {
+  const shouldDelete = confirm('De verdad quieres eliminar esta publicación?')
+  if (!shouldDelete) {
+    return
+  }
+  const { error } = await client.from('posts').delete().eq('id', id)
+  if (error) {
+    throw error
+  }
+  postsRefresh()
 }
 
 onMounted(() => {
-  store.fetchFollows()
-  store.fetchPostsFromFollowedUsers()
-  refreshInterval.value = setInterval(store.fetchPostsFromFollowedUsers, 30000)
+  /* Refreshes posts list every 30 seconds */
+  refreshInterval.value = setInterval(postsRefresh, 30000)
 })
 
 onBeforeUnmount(() => {
