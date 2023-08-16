@@ -4,10 +4,10 @@
       <h1>@{{ userData.handle }}</h1>
       <p class="bio">{{ userData.bio }}</p>
     </header>
-    <PostList v-if="postsData">
+    <PostList v-if="postsData.length > 0">
       <Post v-for="post in postsData" :post="post" @edit="startPostEdition" @delete="deletePost" />
     </PostList>
-    <EmptyState v-else message="Aún no hay nada publicado" />
+    <EmptyState v-else message="No ha publicado nada aún" />
   </main>
   <Aside>No sé si este lateral tiene sentido aquí</Aside>
 </template>
