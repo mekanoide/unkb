@@ -1,28 +1,21 @@
 <template>
-  <div>
-    <main>
-      <CreatePost
-        :edit="editContent"
-        @post="createPost"
-        @edit="finishPostEdition"
-        @cancel="cancelPostEdition"
-      />
-      <PostList v-if="postsData">
-        <Post
-          v-for="post in postsData"
-          :post="post"
-          @edit="startPostEdition"
-          @delete="deletePost"
-        />
-      </PostList>
-      <EmptyState v-else message="Aún no hay nada publicado" />
-    </main>
-    <Aside>
-      <SearchUser />
-      <Invitation />
-      <Requests />
-    </Aside>
-  </div>
+  <main>
+    <CreatePost
+      :edit="editContent"
+      @post="createPost"
+      @edit="finishPostEdition"
+      @cancel="cancelPostEdition"
+    />
+    <PostList v-if="postsData">
+      <Post v-for="post in postsData" :post="post" @edit="startPostEdition" @delete="deletePost" />
+    </PostList>
+    <EmptyState v-else message="Aún no hay nada publicado" />
+  </main>
+  <Aside>
+    <SearchUser />
+    <Invitation />
+    <Requests />
+  </Aside>
 </template>
 
 <script setup>
@@ -150,11 +143,3 @@ onBeforeUnmount(() => {
   clearInterval(refreshInterval.value)
 })
 </script>
-
-<style scoped>
-div {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: var(--spaceL);
-}
-</style>
