@@ -12,8 +12,8 @@
     "@nuxt/devtools": "latest",
     "@nuxtjs/color-mode": "^3.3.0",
     "@nuxtjs/supabase": "^0.3.8",
-    "markdown-it": "^13.0.1",
     "@types/node": "^18.17.0",
+    "markdown-it": "^13.0.1",
     "nuxt": "^3.6.5"
   },
   "dependencies": {
