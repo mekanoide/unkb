@@ -1,5 +1,5 @@
 <template>
-  <div>chapas</div>
+  <div>TuChapa</div>
 </template>
 
 <style scoped>
