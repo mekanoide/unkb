@@ -9,14 +9,25 @@
     </nav>
     <div class="actions">
       <ToggleColorMode />
-      <Button size="small" @click="handleSignOut">Cerrar sesión</Button>
+      <Button variant="ghost" @click="store.togglePopover('userMenu')"><Icon>🯅</Icon></Button>
+      <Dropdown class="user-menu" v-if="showPopover === 'userMenu'">
+        <Menu>
+          <MenuItem :link="`/user/${me.id}`" @click="showPopover = null">Ver perfil</MenuItem>
+          <MenuItem @click="handleSignOut">Cerrar sesión</MenuItem>
+        </Menu>
+      </Dropdown>
     </div>
   </header>
 </template>
 
 <script setup>
+import { useMainStore } from '@/stores/main'
+import { storeToRefs } from 'pinia'
 const router = useRouter()
 const { auth } = useSupabaseAuthClient()
+
+const store = useMainStore()
+const { me, showPopover } = storeToRefs(store)
 
 const handleSignOut = async () => {
   const { error } = await auth.signOut()
@@ -24,6 +35,7 @@ const handleSignOut = async () => {
     console.log(error)
     return
   }
+  showPopover.value = null
   router.push('/access')
 }
 </script>
@@ -59,5 +71,10 @@ nav {
 
 .router-link-active {
   font-weight: bold;
+}
+
+.user-menu {
+  top: 4rem;
+  right: var(--spaceM);
 }
 </style>

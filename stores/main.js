@@ -52,6 +52,14 @@ export const useMainStore = defineStore('main', () => {
     return postsData
   }
 
+  const togglePopover = (id) => {
+    if (showPopover.value !== id) {
+      showPopover.value = id
+    } else {
+      showPopover.value = null
+    }
+  }
+
   return {
     requests,
     posts,
@@ -63,6 +71,7 @@ export const useMainStore = defineStore('main', () => {
     getContact,
     fetchFollows,
     fetchPostsFromFollowedUsers,
-    fetchPostsFromUser
+    fetchPostsFromUser,
+    togglePopover
   }
 })

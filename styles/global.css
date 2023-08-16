@@ -83,6 +83,12 @@ textarea {
   border: 1px solid var(--colorText);
   padding: var(--spaceS);
   border-radius: var(--corner);
+  transition: var(--transition);
+}
+
+input:is([type=text], [type=email], [type=password], [type=number], [type=search]):focus,
+textarea:focus {
+  outline: 3px solid black;
 }
 
 input:is([type=text], [type=email], [type=password], [type=number], [type=search]) {

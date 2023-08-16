@@ -18,8 +18,8 @@
 
   --gradientFaded: repeating-linear-gradient(-45deg, transparent, transparent 2px, black 2px, black 4px);
 
-  --corner: 0.75rem;
-  --cornerButton: 0.75rem;
+  --corner: 0.5rem;
+  --cornerButton: 0.5rem;
 
   --transition: all 100ms ease;
 }

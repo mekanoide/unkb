@@ -6,13 +6,15 @@
       </div>
       <div class="actions">
         <small v-if="post.edited">Editado</small>
-        <Button v-if="isOwner" variant="ghost" size="small" @click="toggleMenu">⋯</Button>
+        <Button v-if="isOwner" variant="ghost" size="small" @click="store.togglePopover(post.id)">⋯</Button>
       </div>
     </header>
     <Content :content="post.content" />
     <Dropdown class="menu" v-if="showPopover === post.id">
-      <Button variant="ghost" @click="handleEdit">Editar</Button>
-      <Button variant="ghost" @click="emit('delete', post.id)">Eliminar</Button>
+      <Menu>
+        <MenuItem @click="handleEdit">Editar</MenuItem>
+        <MenuItem @click="emit('delete', post.id)">Eliminar</MenuItem>
+      </Menu>
     </Dropdown>
   </li>
 </template>
@@ -39,13 +41,6 @@ const isOwner = computed(() => {
 
 const date = computed(() => formatDate(props.post.created_at))
 
-const toggleMenu = () => {
-  if (showPopover.value !== props.post.id) {
-    showPopover.value = props.post.id
-  } else {
-    showPopover.value = null
-  }
-}
 
 const handleEdit = () => {
   emit('edit', props.post.id, props.post.content)

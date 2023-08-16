@@ -30,6 +30,8 @@ definePageMeta({
   middleware: ['auth']
 })
 
+import { storeToRefs } from 'pinia'
+
 import { useMainStore } from '@/stores/main'
 
 const store = useMainStore()
@@ -40,39 +42,48 @@ const refreshInterval = ref()
 const editId = ref(null)
 const editContent = ref(null)
 
+const { me } = storeToRefs(store)
+
 /* Fetch posts from followed users */
 const {
   data: postsData,
   error: postsError,
   refresh: postsRefresh
-} = await useAsyncData(
-  'posts',
-  async () => {
-    const { data: followsData, error: followsError } = await client
-      .from('follows')
-      .select()
-      .eq('user_id', user.value.id)
+} = await useAsyncData('posts', async () => {
+  const { data: followsData, error: followsError } = await client
+    .from('follows')
+    .select()
+    .eq('user_id', user.value.id)
 
-    if (followsError) {
-      throw followsError
-    }
-
-    const followedUserIds = followsData.map((item) => item.follow_id)
-    followedUserIds.push(user.value.id)
-    console.log('fetcheando!!!')
-    const { data: postsData, error: postsError } = await client
-      .from('posts')
-      .select('*, users(id, handle)')
-      .in('author_id', followedUserIds)
-      .order('created_at', { ascending: false })
-    if (postsError) {
-      throw postsError
-    }
-    if (postsData) {
-      return postsData
-    }
+  if (followsError) {
+    throw followsError
   }
-)
+
+  const followedUserIds = followsData.map((item) => item.follow_id)
+  followedUserIds.push(user.value.id)
+  console.log('fetcheando!!!')
+  const { data: postsData, error: postsError } = await client
+    .from('posts')
+    .select('*, users(id, handle)')
+    .in('author_id', followedUserIds)
+    .order('created_at', { ascending: false })
+  if (postsError) {
+    throw postsError
+  }
+  if (postsData) {
+    return postsData
+  }
+})
+
+/* Fetch own user */
+const { data: ownUserData, error: ownUserError } = await useAsyncData('ownUser', async () => {
+  const { data, error } = await client.from('users').select().eq('id', user.value.id).single()
+
+  if (error) {
+    throw error
+  }
+  me.value = data
+})
 
 /* Create new post */
 const createPost = async (content) => {
