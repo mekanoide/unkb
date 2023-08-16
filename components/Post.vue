@@ -6,14 +6,17 @@
       </div>
       <div class="actions">
         <small v-if="post.edited">Editado</small>
-        <Button v-if="isOwner" variant="ghost" size="small" @click="store.togglePopover(post.id)">⋯</Button>
+        <Button variant="ghost" size="small" @click="store.togglePopover(post.id)">⋯</Button>
       </div>
     </header>
     <Content :content="post.content" />
     <Dropdown class="menu" v-if="showPopover === post.id">
-      <Menu>
+      <Menu v-if="isOwner">
         <MenuItem @click="handleEdit">Editar</MenuItem>
         <MenuItem @click="emit('delete', post.id)">Eliminar</MenuItem>
+      </Menu>
+      <Menu v-else>
+        <MenuItem>Denunciar</MenuItem>
       </Menu>
     </Dropdown>
   </li>
