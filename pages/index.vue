@@ -37,7 +37,6 @@ const store = useMainStore()
 const client = useSupabaseClient()
 const user = useSupabaseUser()
 
-const userId = user.value.id
 const refreshInterval = ref()
 const editId = ref(null)
 const editContent = ref(null)
@@ -81,7 +80,7 @@ const {
 /* Create new post */
 const createPost = async (content) => {
   const { data, error } = await client.from('posts').upsert({
-    author_id: userId,
+    author_id: user.value.id,
     content: content,
     created_at: new Date()
   })
