@@ -1,5 +1,5 @@
 <template>
-  <article v-html="mdContent"></article>
+  <article v-html="modContent"></article>
 </template>
 
 <script setup>
@@ -12,17 +12,54 @@ const props = defineProps({
   }
 })
 
-const md = new MarkdownIt({
-  html: true
-})
 const { content } = toRefs(props)
+const modContent = ref('')
 
-content.value = await parseMentions(content.value)
-content.value = await parseLinks(content.value)
+const parseMentions = async (txt) => {
+  let mod = txt
+  const client = useSupabaseClient()
 
-const mdContent = computed(() => {
-  return md.render(content.value)
-})
+  const mentionRegex = /@([a-z0-9_]+)/g
+  const matches = mod.match(mentionRegex)
+
+  if (matches) {
+    for (const match of matches) {
+      const username = match.substring(1) // Elimina el "@" del inicio
+      const { data: userData } = await client
+        .from('users')
+        .select()
+        .textSearch('handle', `${username}`)
+      const user = userData[0]
+      if (user) {
+        const userLink = `[@${username}](/user/${user.id})`
+        mod = mod.replace(match, userLink)
+      }
+    }
+  }
+  return mod
+}
+
+const parseLinks = (txt) => {
+  let mod = txt
+  const linkRegex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/g
+  const matches = mod.match(linkRegex)
+
+  if (matches) {
+    for (const match of matches) {
+      const link = `<a href="${match}" target="_blank">${match}</a>`
+      mod = mod.replace(match, link)
+    }
+  }
+  return mod
+}
+
+
+const parseMarkdown = (txt) => {
+  const md = new MarkdownIt({
+    html: true
+  })
+  return md.render(txt)
+}
 
 /* const previewUrl = async (str) => {
   const linkRegex =
@@ -37,8 +74,18 @@ const mdContent = computed(() => {
     }
   }
 } */
+const parseContent = async (txt) => {
+  let processedContent = txt
+  processedContent = await parseMentions(processedContent)
+  processedContent = parseLinks(processedContent)
+  processedContent = parseMarkdown(processedContent)
+  modContent.value = processedContent
+}
 
-onMounted(() => {
+parseContent(props.content)
+
+watch(content, async (newContent, oldContent) => {
+  parseContent(newContent)
 })
 </script>
 

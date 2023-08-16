@@ -12,13 +12,13 @@
     "@nuxt/devtools": "latest",
     "@nuxtjs/color-mode": "^3.3.0",
     "@nuxtjs/supabase": "^0.3.8",
+    "markdown-it": "^13.0.1",
     "@types/node": "^18.17.0",
     "nuxt": "^3.6.5"
   },
   "dependencies": {
     "@pinia/nuxt": "^0.4.11",
     "@vueuse/core": "^10.3.0",
-    "markdown-it": "^13.0.1",
     "nuxt-link-preview": "^0.1.5",
     "sass": "^1.64.2"
   }

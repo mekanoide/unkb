@@ -1,4 +1,4 @@
-export const parseMentions = async (txt) => {
+/* export const parseMentions = async (txt) => {
   const client = useSupabaseClient()
 
   const mentionRegex = /@([a-z0-9_]+)/g
@@ -21,15 +21,17 @@ export const parseMentions = async (txt) => {
   return txt
 }
 
-export const parseLinks = async (txt) => {
+export const parseLinks = (txt) => {
+  const content = ref(txt)
   const linkRegex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/g
   const matches = txt.match(linkRegex)
 
   if (matches) {
     for (const match of matches) {
       const link = `<a href="${match}" target="_blank">${match}</a>`
-      txt = txt.replace(match, link)
+      content.value = content.value.replace(match, link)
     }
   }
-  return txt
+  return content.value
 }
+ */

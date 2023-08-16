@@ -31,7 +31,6 @@ definePageMeta({
 })
 
 import { useMainStore } from '@/stores/main'
-import { storeToRefs } from 'pinia'
 
 const store = useMainStore()
 const client = useSupabaseClient()
@@ -70,11 +69,9 @@ const {
       throw postsError
     }
     if (postsData) {
-      console.log('hey', postsData)
       return postsData
     }
-  },
-  { lazy: true }
+  }
 )
 
 /* Create new post */
