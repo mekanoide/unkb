@@ -1,11 +1,15 @@
 <template>
   <main>
-    <h1>@{{ userData.handle }}</h1>
-    <p>{{ userData.bio }}</p>
-    <PostList>
-      <Post v-for="post in posts" />
+    <header>
+      <h1>@{{ userData.handle }}</h1>
+      <p class="bio">{{ userData.bio }}</p>
+    </header>
+    <PostList v-if="postsData">
+      <Post v-for="post in postsData" :post="post" @edit="startPostEdition" @delete="deletePost" />
     </PostList>
+    <EmptyState v-else message="Aún no hay nada publicado" />
   </main>
+  <Aside>No sé si este lateral tiene sentido aquí</Aside>
 </template>
 <script setup>
 const route = useRoute()
@@ -25,4 +29,34 @@ const { data: userData, pending: parentPending } = await useAsyncData('user', as
     .single()
   return data
 })
+
+const {
+  data: postsData,
+  error: postsError,
+  refresh: postsRefresh
+} = await useAsyncData('posts', async () => {
+  const { data, error } = await client
+    .from('posts')
+    .select('*, users(id, handle)')
+    .eq('author_id', route.params.id)
+    .order('created_at', { ascending: false })
+  if (error) {
+    throw error
+  }
+  if (data) {
+    return data
+  }
+})
 </script>
+
+<style scoped>
+header {
+  padding: var(--spaceM);
+  color: var(--colorBackground);
+  background: var(--colorText);
+  border-radius: var(--corner);
+}
+.bio {
+  margin-top: var(--spaceS);
+}
+</style>

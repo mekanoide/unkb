@@ -6,7 +6,7 @@
     </div>
 
     <div v-for="user in searchResults" :key="user.id">
-      <p>{{ user.handle }}</p>
+      <NuxtLink :to="`/user/${user.id}`">@{{ user.handle }}</NuxtLink>
       <Button @click="sendFriendRequest(user.id)">Enviar solicitud de amistad</Button>
     </div>
   </section>
