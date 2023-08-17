@@ -5,11 +5,11 @@
         <User :user="post.users" /> <time :datetime="date">{{ date }}</time>
       </div>
       <div class="actions">
-        <small v-if="post.edited">Editado</small>
         <Button variant="ghost" size="small" @click="store.togglePopover(post.id)">⋯</Button>
       </div>
     </header>
     <Content :content="post.content" />
+    <small v-if="post.edited">Editado</small>
     <Dropdown class="menu" v-if="showPopover === post.id">
       <Menu v-if="isOwner">
         <MenuItem @click="handleEdit">Editar</MenuItem>

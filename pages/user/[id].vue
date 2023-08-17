@@ -2,7 +2,7 @@
   <main>
     <header>
       <h1>@{{ userData.handle }}</h1>
-      <p class="bio">{{ userData.bio }}</p>
+      <p v-if="userData.bio" class="bio">{{ userData.bio }}</p>
     </header>
     <PostList v-if="postsData.length > 0">
       <Post v-for="post in postsData" :post="post" @edit="startPostEdition" @delete="deletePost" />
