@@ -18,23 +18,16 @@
 </template>
 
 <script setup>
-import { useMainStore } from '@/stores/main'
-
 definePageMeta({
   layout: 'clear'
 })
 
-const user = useSupabaseUser()
 const { auth } = useSupabaseAuthClient()
-const router = useRouter()
-const store = useMainStore()
+const user = useSupabaseUser()
 
-const handle = ref('')
 const email = ref('')
 const password = ref('')
 const loading = ref(false)
-
-const activeTab = ref('signin')
 
 const handleSignIn = async () => {
   const { data, error } = await auth.signInWithPassword({
@@ -44,12 +37,12 @@ const handleSignIn = async () => {
   if (error) {
     throw error
   }
-  navigateTo('/')
+  await navigateTo('/')
 }
 
-watchEffect(() => {
+watchEffect(async () => {
   if (user.value) {
-    navigateTo('/')
+    await navigateTo('/')
   }
 })
 </script>

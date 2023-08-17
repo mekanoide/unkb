@@ -1,7 +1,7 @@
 <template>
   <section v-if="requests.length > 0">
     <h3>Peticiones de conexión</h3>
-    <ul>
+    <ul v-if="requests">
       <li v-for="request in requests">
         <span class="handle">@{{ request.requester.handle }}</span>
         <Button size="small" @click="acceptConnection(request.user_id)">Aceptar</Button>

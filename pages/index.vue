@@ -12,7 +12,7 @@
     <EmptyState v-else message="Aún no hay nada publicado" />
   </main>
   <Aside>
-    <SearchUser />
+    <!-- <SearchUser /> -->
     <Invitation />
     <Requests />
   </Aside>

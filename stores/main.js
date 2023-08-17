@@ -7,6 +7,7 @@ export const useMainStore = defineStore('main', () => {
   const requests = ref([])
   const posts = ref([])
   const me = ref(null)
+  const userId = ref(null)
   const contacts = ref([])
   const follows = ref([])
   const requestUrl = ref(null)
@@ -64,6 +65,7 @@ export const useMainStore = defineStore('main', () => {
     requests,
     posts,
     me,
+    userId,
     follows,
     contacts,
     requestUrl,

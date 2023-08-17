@@ -9,6 +9,6 @@ export default defineNuxtRouteMiddleware((to, from) => {
     if (from !== undefined) {
       store.requestUrl = from.path
     }
-    router.push('/access')
+    return navigateTo('/access')
   }
 })
