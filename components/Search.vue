@@ -8,19 +8,21 @@
       />
       <Button @click="searchUsers">Buscar</Button>
     </div>
-    <Dropdown v-if="showPopover === 'search-results'">
-      <ul>
-        <li v-for="result in searchResults" :key="result.id">
-          <NuxtLink :to="`/user/${result.id}`">@{{ result.handle }}</NuxtLink>
-          <Button @click="sendFriendRequest(result.id)">Enviar solicitud de amistad</Button>
-        </li>
-      </ul>
-    </Dropdown>
+    <div class="results-wrapper">
+      <Dropdown class="results" v-if="showPopover === 'search-results'">
+        <ul>
+          <li v-for="result in searchResults" :key="result.id">
+            <NuxtLink :to="`/user/${result.id}`">@{{ result.handle }}</NuxtLink>
+            <Button variant="primary" size="small" @click="sendFriendRequest(result.id)">Conectar</Button>
+          </li>
+        </ul>
+      </Dropdown>
+    </div>
   </section>
 </template>
 
 <script setup>
-import { useMainStore } from '@/stores/main';
+import { useMainStore } from '@/stores/main'
 import { storeToRefs } from 'pinia'
 
 const client = useSupabaseClient()
@@ -53,5 +55,25 @@ const sendFriendRequest = async (friendId) => {}
   display: grid;
   grid-template-columns: 1fr auto;
   gap: var(--spaceXS);
+}
+
+.results-wrapper {
+  position: relative;
+}
+
+.results {
+  width: 100%;
+  top: var(--spaceS);
+}
+
+ul {
+  display: grid;
+  gap: var(--spaceS);
+}
+
+li {
+  display: grid;
+  grid-auto-flow: column;
+  align-items: center;
 }
 </style>

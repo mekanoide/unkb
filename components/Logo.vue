@@ -1,5 +1,5 @@
 <template>
-  <div>tu⦁turra</div>
+  <div>tuturra</div>
 </template>
 
 <style scoped>
