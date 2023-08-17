@@ -9,7 +9,9 @@
     </PostList>
     <EmptyState v-else message="No ha publicado nada aún" />
   </main>
-  <Aside>No sé si este lateral tiene sentido aquí</Aside>
+  <Aside>
+    <Search />
+  </Aside>
 </template>
 <script setup>
 const route = useRoute()
@@ -22,11 +24,7 @@ const posts = ref(null)
 posts.value = store.fetchPostsFromUser(route.params.id)
 
 const { data: userData, pending: parentPending } = await useAsyncData('user', async () => {
-  const { data } = await client
-    .from('users')
-    .select('*')
-    .eq('id', route.params.id)
-    .single()
+  const { data } = await client.from('users').select('*').eq('id', route.params.id).single()
   return data
 })
 
