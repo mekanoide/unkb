@@ -1,7 +1,6 @@
 <template>
   <CreatePost @refresh="postsRefresh" />
   <EditPost v-if="store.postBeingEdited" @refresh="postsRefresh" />
-  <ReplyPost v-if="store.postBeingReplied" @refresh="postsRefresh" />
   <Posts v-if="postsData">
     <Post v-for="post in postsData" :post="post" @edit="startPostEdition" @delete="handleDeletePost" />
   </Posts>

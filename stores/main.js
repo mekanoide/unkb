@@ -46,7 +46,7 @@ export const useMainStore = defineStore('main', () => {
 
     const followedUserIds = followsData.map((item) => item.follow_id)
     followedUserIds.push(user.value.id)
-    console.log('fetcheando!!!')
+
     const { data: postsData, error: postsError } = await client
       .from('posts')
       .select('*, users(id, handle)')
@@ -81,16 +81,35 @@ export const useMainStore = defineStore('main', () => {
     return postsData
   }
 
+  const fetchReplies = async (id) => {
+    const { data: repliesData } = await client.from('replies').select().eq('post_id', id)
+    /* .order('created_at', { ascending: false }) */
+
+    const repliesIds = repliesData.map((item) => item.reply_id)
+    const { data: postsData } = await client
+      .from('posts')
+      .select('*, users(id, handle)')
+      .in('id', repliesIds)
+      .order('created_at', { ascending: false })
+    return postsData
+  }
+
   /* Fetch post */
   const fetchPost = async (id) => {
+    const { data } = await client.from('posts').select('*, users(id, handle)').eq('id', id).single()
+
+    console.log('Post data', data)
+    return data
+  }
+
+  /* Fetch post's author */
+  const fetchPostAuthor = async (id) => {
     const { data } = await client
       .from('posts')
       .select('*, users(id, handle)')
       .eq('id', id)
       .single()
-    
-  console.log('Post data', data)
-    return data
+    return data.users
   }
 
   /* Create new post */
@@ -105,6 +124,35 @@ export const useMainStore = defineStore('main', () => {
     }
     postContent.value = ''
     return data
+  }
+
+  /* Create new reply to post */
+  const createReply = async (id) => {
+    const { data: postData, error: postError } = await client
+      .from('posts')
+      .upsert({
+        author_id: user.value.id,
+        content: postContent.value,
+        created_at: new Date(),
+        reply_to: id
+      })
+      .select()
+      .single()
+    if (postError) {
+      throw postError
+    }
+    console.log('Post data', postData)
+    const newPostId = postData.id
+    const { data: replyData, error: replyError } = await client.from('replies').upsert({
+      post_id: id,
+      reply_id: newPostId
+    })
+    if (replyError) {
+      throw replyError
+    }
+
+    postContent.value = ''
+    return replyData
   }
 
   /* Start post edition */
@@ -185,12 +233,15 @@ export const useMainStore = defineStore('main', () => {
     fetchPostsFromFollowedUsers,
     fetchPostsFromUser,
     fetchPost,
+    fetchPostAuthor,
+    fetchReplies,
     fetchOwnUser,
     startPostEdition,
     cancelPostEdition,
     finishPostEdition,
     startPostReply,
     createPost,
+    createReply,
     deletePost,
     togglePopover
   }

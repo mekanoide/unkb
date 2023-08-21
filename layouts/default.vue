@@ -20,6 +20,8 @@
 
 main {
   padding-top: 7rem;
+  display: grid;
+  gap: var(--spaceM);
 }
 
 @media screen and (max-width: 1024px) {

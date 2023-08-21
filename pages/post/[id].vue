@@ -1,11 +1,15 @@
 <template>
-  <User :user="post.users" /> <time :datetime="date">{{ date }}</time>
-  <PostContent :content="post.content" />
-  <PostEditor />
-  <h2>Respuestas</h2>
-  <PostList>
-    <Reply v-for="post in repliesData" :post="post" />
-  </PostList>
+  <div>
+    <User :user="post.users" /> <time :datetime="date">{{ date }}</time>
+    <PostContent :content="post.content" />
+  </div>
+  <PostEditor @post="handlePost" />
+  <div>
+    <h2>Respuestas</h2>
+    <Posts>
+      <Reply v-for="post in repliesData" :post="post" />
+    </Posts>
+  </div>
 </template>
 
 <script setup>
@@ -13,7 +17,7 @@ import { useMainStore } from '@/stores/main'
 const store = useMainStore()
 const route = useRoute()
 
-const { fetchPost } = store
+const { fetchPost, fetchReplies, createReply } = store
 
 /* Fetch post */
 const {
@@ -22,9 +26,22 @@ const {
   refresh: postRefresh
 } = await useAsyncData('post', async () => {
   const data = await fetchPost(route.params.id)
-  console.log('Datos del post', data)
   return data
 })
+
+const {
+  data: repliesData,
+  error: repliesError,
+  refresh: repliesRefresh
+} = await useAsyncData('replies', async () => {
+  const data = await fetchReplies(route.params.id)
+
+  return data
+})
+
+const handlePost = async () => {
+  await createReply(route.params.id)
+}
 
 const date = computed(() => formatDate(post.value.created_at))
 </script>

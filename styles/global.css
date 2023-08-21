@@ -14,11 +14,11 @@ html {
 *::-webkit-scrollbar {
   width: var(--spaceS);
 }
- 
+
 *::-webkit-scrollbar-track {
   padding: var(--spaceXS);
 }
- 
+
 *::-webkit-scrollbar-thumb {
   background-color: var(--colorText);
   border-radius: var(--corner);
@@ -30,14 +30,19 @@ html {
   color: var(--colorBackground);
 }
 
-h1, h2, h3, h4 {
+h1,
+h2,
+h3,
+h4 {
   font-weight: bold;
   line-height: 1.25;
 }
 
-h1 {
+h1,
+h2 {
   font-size: var(--fontXL);
 }
+
 
 h3 {
   font-size: var(--fontL);
@@ -103,12 +108,11 @@ article {
   & a {
     text-decoration: underline;
   }
-} 
-
+}
 
 /* Form elements */
 
-input:is([type=text], [type=email], [type=password], [type=number], [type=search]),
+input:is([type='text'], [type='email'], [type='password'], [type='number'], [type='search']),
 textarea {
   width: 100%;
   border: 1px solid var(--colorText);
@@ -117,16 +121,22 @@ textarea {
   transition: var(--transition);
 }
 
-input:is([type=text], [type=email], [type=password], [type=number], [type=search]):focus,
+input:is([type='text'], [type='email'], [type='password'], [type='number'], [type='search']):focus,
 textarea:focus {
   outline: 3px solid black;
 }
 
-input:is([type=text], [type=email], [type=password], [type=number], [type=search]) {
+input:is([type='text'], [type='email'], [type='password'], [type='number'], [type='search']) {
   height: 3rem;
 }
 
-input:is([type=text], [type=email], [type=password], [type=number], [type=search]):invalid,
+input:is(
+    [type='text'],
+    [type='email'],
+    [type='password'],
+    [type='number'],
+    [type='search']
+  ):invalid,
 textarea:invalid {
   border-color: var(--colorNegative);
 }

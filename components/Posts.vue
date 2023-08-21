@@ -7,7 +7,7 @@
 <style scoped>
 ul {
   list-style-type: none;
-  padding: var(--spaceXL) 0 0;
+  padding: 0;
   margin: 0;
 }
 </style>
