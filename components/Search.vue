@@ -14,7 +14,7 @@
       <Dropdown class="results" v-if="showPopover === 'search-results'" closeable>
         <ul v-if="searchResults.length > 0">
           <li v-for="result in searchResults" :key="result.id">
-            <NuxtLink :to="`/user/${result.handle}`">@{{ result.handle }}</NuxtLink>
+            <NuxtLink :to="`/${result.handle}`">@{{ result.handle }}</NuxtLink>
             <Button variant="primary" size="small" @click="sendFriendRequest(result.id)">Conectar</Button>
           </li>
         </ul>

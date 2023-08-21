@@ -1,19 +1,17 @@
 <template>
   <li>
-    <NuxtLink :to="`/post/${post.id}`">
-      <header>
-        <div>
-          <User :user="post.users" /> <time :datetime="date">{{ date }}</time>
-        </div>
-        <div class="actions">
-          <Button variant="ghost" size="small" @click="togglePopover(post.id)">
-            <Icon name="carbon:overflow-menu-horizontal" size="1.5rem" />
-          </Button>
-        </div>
-      </header>
-      <PostContent :content="post.content" />
-      <small v-if="post.edited">Editado</small>
-    </NuxtLink>
+    <header>
+      <div>
+        <User :user="post.users" /> <time :datetime="date">{{ date }}</time>
+      </div>
+      <div class="actions">
+        <Button variant="ghost" size="small" @click="togglePopover(post.id)">
+          <Icon name="carbon:overflow-menu-horizontal" size="1.5rem" />
+        </Button>
+      </div>
+    </header>
+    <PostContent :content="post.content" />
+    <small v-if="post.edited">Editado</small>
     <Dropdown class="menu" v-if="showPopover === post.id">
       <Menu v-if="isOwner">
         <MenuItem @click="handleEdit">Editar</MenuItem>

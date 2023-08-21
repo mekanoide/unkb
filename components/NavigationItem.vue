@@ -26,6 +26,14 @@ a {
   align-items: center;
   justify-content: start;
   font-size: var(--fontL);
+  transition: var(--transition);
+  padding: var(--spaceS);
+  border-radius: var(--corner);
+}
+
+a:hover {
+  background-color: var(--colorText);
+  color: var(--colorBackground);
 }
 
 a.router-link-active {

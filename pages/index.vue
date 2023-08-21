@@ -1,9 +1,10 @@
 <template>
   <CreatePost @refresh="postsRefresh" />
   <EditPost v-if="store.postBeingEdited" @refresh="postsRefresh" />
-  <PostList v-if="postsData">
-    <Post v-for="post in postsData" :post="post" @edit="store.startPostEdition" @delete="handleDeletePost" />
-  </PostList>
+  <ReplyPost v-if="store.postBeingReplied" @refresh="postsRefresh" />
+  <Posts v-if="postsData">
+    <Post v-for="post in postsData" :post="post" @edit="startPostEdition" @delete="handleDeletePost" />
+  </Posts>
   <EmptyState v-else message="Aún no hay nada publicado" />
 </template>
 
@@ -21,7 +22,8 @@ const user = useSupabaseUser()
 
 const refreshInterval = ref()
 
-const { me, editContent, editId } = storeToRefs(store)
+const { me } = storeToRefs(store)
+const { startPostEdition } = store
 
 /* Fetch posts from followed users */
 const {
@@ -46,7 +48,6 @@ const { data: ownUserData, error: ownUserError } = await useAsyncData('ownUser',
 /* Delete post */
 
 const handleDeletePost = async (id) => {
-  await store.deletePost(id)
   postsRefresh()
 }
 

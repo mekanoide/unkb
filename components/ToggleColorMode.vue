@@ -1,7 +1,8 @@
 <template>
-  <Button variant="square" @click="toggleColorMode">
+  <NavigationButton @click="toggleColorMode">
     <Icon :name="colorMode.value === 'dark' ? 'carbon:moon' : 'carbon:sun'" size="1.5rem" />
-  </Button>
+    {{ colorMode.value === 'dark' ? 'Modo oscuro' : 'Modo claro' }}
+  </NavigationButton>
 </template>
 
 <script setup>

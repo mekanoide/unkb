@@ -1,23 +1,25 @@
 <template>
   <div class="PAGE">
     <Header />
-    <div class="body">
-      <Aside />
-      <main>
-        <slot><!-- optional fallback --></slot>
-      </main>
-    </div>
+    <main>
+      <slot><!-- optional fallback --></slot>
+    </main>
   </div>
 </template>
 
 <style scoped>
-.body {
-  max-width: 1200px;
+.PAGE {
+  max-width: var(--maxWidthBody);
   margin: auto;
-  padding: var(--spaceXL) var(--spaceM);
+  padding: var(--spaceM);
   display: grid;
   grid-template-columns: 1fr 2fr;
   gap: var(--spaceL);
+  align-items: start;
+}
+
+main {
+  padding-top: 7rem;
 }
 
 @media screen and (max-width: 1024px) {

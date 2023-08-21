@@ -1,5 +1,6 @@
 <template>
   <h1>Aquí irán las conexiones con la peñita</h1>
+  <Requests />
   <div>{{ connectionsData }}</div>
 </template>
 
@@ -15,8 +16,6 @@ const store = useMainStore()
 const client = useSupabaseClient()
 const user = useSupabaseUser()
 
-const refreshInterval = ref()
-
 const { me, editContent, editId } = storeToRefs(store)
 
 /* Fetch posts from followed users */
@@ -26,7 +25,7 @@ const {
   refresh: connectionsRefresh
 } = await useAsyncData('connections', async () => {
   const data = await store.fetchConnections()
-  console.log(connectionsData)
+  console.log(data)
   return data
 })
 </script>

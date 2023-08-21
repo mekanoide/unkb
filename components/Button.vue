@@ -1,5 +1,5 @@
 <template>
-  <button :type="attrs.type || 'button'" :class="[ size, variant ]">
+  <button :type="attrs.type || 'button'" :class="[ size, variant ]" :title="attrs.title">
     <slot />
   </button>
 </template>
@@ -91,8 +91,9 @@ button.square:hover {
 }
 
 button:disabled {
-  background: var(--gradientFaded);
-  border-color: var(--colorBackground);
+  background: transparent;
+  color: var(--colorNeutral);
+  border-color: currentColor;
   pointer-events: none;
 }
 </style>

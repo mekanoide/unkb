@@ -5,8 +5,10 @@ export const useMainStore = defineStore('main', () => {
   const user = useSupabaseUser()
 
   const postBeingEdited = ref(null)
+  const postBeingReplied = ref(null)
 
   const postContent = ref('')
+
   const requests = ref([])
   const posts = ref([])
   const me = ref(null)
@@ -19,6 +21,12 @@ export const useMainStore = defineStore('main', () => {
 
   const getContact = (handle) => {
     return contacts.value.find((user) => user.handle === handle)
+  }
+
+  const fetchOwnUser = async () => {
+    const { data } = await client.from('users').select().eq('id', user.value.id).single()
+    me.value = data
+    return data
   }
 
   const fetchFollows = async () => {
@@ -61,7 +69,6 @@ export const useMainStore = defineStore('main', () => {
     if (error) {
       throw error
     }
-    console.log(data)
     return data
   }
 
@@ -72,6 +79,18 @@ export const useMainStore = defineStore('main', () => {
       .eq('author_id', id)
       .order('created_at', { ascending: false })
     return postsData
+  }
+
+  /* Fetch post */
+  const fetchPost = async (id) => {
+    const { data } = await client
+      .from('posts')
+      .select('*, users(id, handle)')
+      .eq('id', id)
+      .single()
+    
+  console.log('Post data', data)
+    return data
   }
 
   /* Create new post */
@@ -89,11 +108,7 @@ export const useMainStore = defineStore('main', () => {
   }
 
   /* Start post edition */
-  const startPostEdition = async (id, content) => {
-    const edition = {
-      id: id,
-      content: content
-    }
+  const startPostEdition = (id, content) => {
     postBeingEdited.value = id
     postContent.value = content
   }
@@ -130,6 +145,20 @@ export const useMainStore = defineStore('main', () => {
     }
   }
 
+  /* Start post edition */
+  const startPostReply = (id, content) => {
+    const repliedPost = {
+      id: id,
+      content: content
+    }
+    postBeingReplied.value = repliedPost
+    postContent.value = ''
+  }
+  /* Cancel post reply */
+  const cancelPostReply = () => {
+    postBeingEdited.value = null
+  }
+
   const togglePopover = (id) => {
     if (showPopover.value !== id) {
       showPopover.value = id
@@ -141,6 +170,7 @@ export const useMainStore = defineStore('main', () => {
   return {
     postContent,
     postBeingEdited,
+    postBeingReplied,
     requests,
     posts,
     me,
@@ -154,9 +184,12 @@ export const useMainStore = defineStore('main', () => {
     fetchConnections,
     fetchPostsFromFollowedUsers,
     fetchPostsFromUser,
+    fetchPost,
+    fetchOwnUser,
     startPostEdition,
     cancelPostEdition,
     finishPostEdition,
+    startPostReply,
     createPost,
     deletePost,
     togglePopover

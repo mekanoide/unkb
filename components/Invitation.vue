@@ -18,14 +18,13 @@ const config = useRuntimeConfig()
 
 const copied = ref(false)
 
-const { data: profile, error } = await useAsyncData('profile', async () => {
+const { data: userData, error } = await useAsyncData('user', async () => {
   const { data } = await client.from('users').select('*').eq('id', user.value.id).single()
-
   return data
 })
 
 const invitationLink = computed(() => {
-  return `${config.public.baseUrl}/invitation/${profile.value.invitation_token}`
+  return `${config.public.baseUrl}/invitation/${userData.value.invitation_token}`
 })
 
 const copyTokenToClipboard = async () => {

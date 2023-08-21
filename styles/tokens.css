@@ -14,6 +14,8 @@
   --spaceL: 2.5rem;
   --spaceXL: 5rem;
 
+  --maxWidthBody: 1280px;
+
   --fontS: 0.75rem;
   --fontL: 1.25rem;
   --fontXL: 3rem;
@@ -24,5 +26,5 @@
   --corner: 0.5rem;
   --cornerButton: 0.5rem;
 
-  --transition: all 100ms ease;
+  --transition: all 160ms ease;
 }

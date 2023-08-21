@@ -10,6 +10,6 @@ const config = useRuntimeConfig()
 div {
   text-transform: uppercase;
   font-weight: bold;
-  font-size: var(--fontL);
+  font-size: 3rem;
 }
 </style>

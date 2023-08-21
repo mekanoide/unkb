@@ -3,29 +3,34 @@
     <NuxtLink to="/">
       <Logo />
     </NuxtLink>
+    <nav>
+      <Search />
+      <NavigationItem label="Chorreo" icon="carbon:chat" to="/" />
+      <NavigationItem label="Conexiones" icon="carbon:friendship" to="/connections" />
+      <NavigationItem label="Guardados" icon="carbon:bookmark" to="/bookmarks" />
+      <NavigationItem label="Manifiesto" icon="carbon:idea" to="/manifesto" />
+      <NavigationItem label="Perfil" icon="carbon:user" :to="`/${store.me.handle}`" />
+    </nav>
     <div class="actions">
       <ToggleColorMode />
-      <Button variant="square" @click="store.togglePopover('userMenu')"><Icon name="carbon:user-avatar" size="1.5rem" /></Button>
-      <Dropdown class="user-menu" v-if="showPopover === 'userMenu'">
-        <Menu>
-          <MenuItem :link="`/${me.handle}`" @click="showPopover = ''">Ver perfil</MenuItem>
-          <MenuItem @click="handleSignOut">Cerrar sesión</MenuItem>
-        </Menu>
-      </Dropdown>
+      <NavigationButton @click="handleSignOut">
+        <Icon name="carbon:exit" size="1.5rem"/>
+        Cerrar sesión
+      </NavigationButton>
     </div>
   </header>
 </template>
 
 <script setup>
 import { useMainStore } from '@/stores/main'
-import { storeToRefs } from 'pinia'
-const router = useRouter()
-const { auth } = useSupabaseAuthClient()
-
 const store = useMainStore()
-const { me, showPopover } = storeToRefs(store)
+const { fetchOwnUser } = store
 
 const handleSignOut = async () => {
+  const shouldExit = confirm('Seguro que quieres cerrar sesión?')
+  if (!shouldExit) {
+    return
+  }
   const { error } = await auth.signOut()
   if (error) {
     console.log(error)
@@ -34,36 +39,48 @@ const handleSignOut = async () => {
   showPopover.value = ''
   router.push('/access')
 }
+
+const { data, error } = await useAsyncData('user', async () => {
+  const data = await fetchOwnUser()
+  return data
+})
 </script>
 
 <style scoped>
 header {
   position: sticky;
-  top: 0;
-  background-color: var(--colorBackground);
+  top: var(--spaceM);
   display: grid;
-  grid-auto-flow: column;
-  justify-content: space-between;
-  align-items: center;
-  padding: var(--spaceS) var(--spaceM);
-  border-bottom: 1px dotted var(--colorText);
-  z-index: 10;
+  gap: var(--spaceL);
+}
+
+nav {
+  display: grid;
+  align-content: start;
+  grid-auto-flow: row;
+  gap: var(--spaceM);
 }
 
 .actions {
   display: grid;
-  grid-auto-flow: column;
-  gap: var(--spaceM);
-  align-items: center;
-  justify-content: end;
-}
-
-.router-link-active {
-  font-weight: bold;
+  gap: var(--spaceS);
+  border-top: 1px dashed currentColor;
+  align-self: end;
+  padding: var(--spaceM) 0;
 }
 
 .user-menu {
-  top: 4rem;
-  right: var(--spaceM);
+  bottom: 0;
+}
+
+@media screen and (max-width: 1024px) {
+  nav {
+    position: fixed;
+    inset: auto 0 0 0;
+    background-color: var(--colorBackground);
+    grid-auto-flow: column;
+    z-index: 100;
+    border-top: 1px dashed currentColor;
+  }
 }
 </style>
