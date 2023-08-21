@@ -27,15 +27,24 @@ button {
   grid-auto-flow: column;
   place-content: center;
   gap: var(--spaceS);
-  border: 4px double var(--colorText);
+  border: 4px double currentColor;
   font-weight: 600;
   border-radius: var(--cornerButton);
   transition: var(--transition);
 }
+
+button:hover {
+  color: var(--colorBackground);
+  background-color: var(--colorText);
+}
 button.primary {
   background-color: var(--colorText);
-  border: none;
+  border-color: var(--colorText);
   color: var(--colorBackground);
+}
+
+button.primary:hover {
+  border: 4px double currentColor;
 }
 
 button.critical {
@@ -56,8 +65,15 @@ button.large {
   height: 4rem;
   padding: 0 var(--spaceL);
 }
-button.ghost {
+button.ghost,
+button.square {
   border: none;
+}
+
+button.square {
+  aspect-ratio: 1;
+  height: 2.5rem;
+  padding: 0;
 }
 
 button.ghost.small {
@@ -68,9 +84,15 @@ button.ghost:not(.small, .large) {
   height: 2rem;
 }
 
-button.ghost:hover {
+button.ghost:hover,
+button.square:hover {
   background-color: var(--colorText);
   color: var(--colorBackground);
 }
 
+button:disabled {
+  background: var(--gradientFaded);
+  border-color: var(--colorBackground);
+  pointer-events: none;
+}
 </style>

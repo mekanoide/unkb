@@ -1,14 +1,18 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  ssr: false,
   runtimeConfig: {
+    metaUrl: process.env.META_ACCESS_TOKEN,
     public: {
+      appName: 'UNKB',
       baseUrl: process.env.BASE_URL || 'http://localhost:3006'
-    },
+    }
   },
   modules: [
     '@nuxtjs/supabase',
     '@nuxtjs/color-mode',
-    '@pinia/nuxt'
+    '@pinia/nuxt',
+    'nuxt-icon'
   ],
   vite: {
     define: {

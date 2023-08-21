@@ -1,21 +1,10 @@
 <template>
-  <main>
-    <CreatePost
-      :edit="editContent"
-      @post="createPost"
-      @edit="finishPostEdition"
-      @cancel="cancelPostEdition"
-    />
-    <PostList v-if="postsData">
-      <Post v-for="post in postsData" :post="post" @edit="startPostEdition" @delete="deletePost" />
-    </PostList>
-    <EmptyState v-else message="Aún no hay nada publicado" />
-  </main>
-  <Aside>
-    <Search />
-    <Invitation />
-    <Requests />
-  </Aside>
+  <CreatePost @refresh="postsRefresh" />
+  <EditPost v-if="store.postBeingEdited" @refresh="postsRefresh" />
+  <PostList v-if="postsData">
+    <Post v-for="post in postsData" :post="post" @edit="store.startPostEdition" @delete="handleDeletePost" />
+  </PostList>
+  <EmptyState v-else message="Aún no hay nada publicado" />
 </template>
 
 <script setup>
@@ -24,7 +13,6 @@ definePageMeta({
 })
 
 import { storeToRefs } from 'pinia'
-
 import { useMainStore } from '@/stores/main'
 
 const store = useMainStore()
@@ -32,10 +20,8 @@ const client = useSupabaseClient()
 const user = useSupabaseUser()
 
 const refreshInterval = ref()
-const editId = ref(null)
-const editContent = ref(null)
 
-const { me } = storeToRefs(store)
+const { me, editContent, editId } = storeToRefs(store)
 
 /* Fetch posts from followed users */
 const {
@@ -43,29 +29,8 @@ const {
   error: postsError,
   refresh: postsRefresh
 } = await useAsyncData('posts', async () => {
-  const { data: followsData, error: followsError } = await client
-    .from('follows')
-    .select()
-    .eq('user_id', user.value.id)
-
-  if (followsError) {
-    throw followsError
-  }
-
-  const followedUserIds = followsData.map((item) => item.follow_id)
-  followedUserIds.push(user.value.id)
-  console.log('fetcheando!!!')
-  const { data: postsData, error: postsError } = await client
-    .from('posts')
-    .select('*, users(id, handle)')
-    .in('author_id', followedUserIds)
-    .order('created_at', { ascending: false })
-  if (postsError) {
-    throw postsError
-  }
-  if (postsData) {
-    return postsData
-  }
+  const data = await store.fetchPostsFromFollowedUsers()
+  return data
 })
 
 /* Fetch own user */
@@ -78,68 +43,19 @@ const { data: ownUserData, error: ownUserError } = await useAsyncData('ownUser',
   me.value = data
 })
 
-/* Create new post */
-const createPost = async (content) => {
-  const { data, error } = await client.from('posts').upsert({
-    author_id: user.value.id,
-    content: content,
-    created_at: new Date()
-  })
-  if (error) {
-    throw error
-  }
-  postsRefresh()
-}
-
-/* Start post edition */
-const startPostEdition = async (id, content) => {
-  editId.value = id
-  editContent.value = content
-}
-
-/* Cancel post edition */
-const cancelPostEdition = () => {
-  editId.value = null
-  editContent.value = null
-}
-
-/* Finish post edition and update post */
-const finishPostEdition = async (content) => {
-  const { data, error } = await client
-    .from('posts')
-    .update({
-      content: content,
-      edited: true
-    })
-    .eq('id', editId.value)
-  if (error) {
-    throw error
-  }
-  editId.value = null
-  editContent.value = null
-  postsRefresh()
-}
-
 /* Delete post */
 
-const deletePost = async (id) => {
-  const shouldDelete = confirm('De verdad quieres eliminar esta publicación?')
-  if (!shouldDelete) {
-    return
-  }
-  const { error } = await client.from('posts').delete().eq('id', id)
-  if (error) {
-    throw error
-  }
+const handleDeletePost = async (id) => {
+  await store.deletePost(id)
   postsRefresh()
 }
 
 onMounted(() => {
   /* Refreshes posts list every 30 seconds */
-  refreshInterval.value = setInterval(postsRefresh, 30000)
+  /* refreshInterval.value = setInterval(postsRefresh, 60000) */
 })
 
 onBeforeUnmount(() => {
-  clearInterval(refreshInterval.value)
+  /* clearInterval(refreshInterval.value) */
 })
 </script>

@@ -1,21 +1,24 @@
 <template>
   <section>
     <div class="searchfield">
-      <input
-        type="search"
-        v-model="searchQuery"
-        placeholder="Buscar usuarios por nombre o correo electrónico"
-      />
-      <Button @click="searchUsers">Buscar</Button>
+      <form action="search" @submit.prevent="searchUsers">
+        <input
+          type="search"
+          v-model="searchQuery"
+          placeholder="Buscar usuarios"
+        />
+        <Button type="submit" class="search-button" variant="square"><Icon name="carbon:search" size="1.5rem" /></Button>
+      </form>
     </div>
     <div class="results-wrapper">
-      <Dropdown class="results" v-if="showPopover === 'search-results'">
-        <ul>
+      <Dropdown class="results" v-if="showPopover === 'search-results'" closeable>
+        <ul v-if="searchResults.length > 0">
           <li v-for="result in searchResults" :key="result.id">
-            <NuxtLink :to="`/user/${result.id}`">@{{ result.handle }}</NuxtLink>
+            <NuxtLink :to="`/user/${result.handle}`">@{{ result.handle }}</NuxtLink>
             <Button variant="primary" size="small" @click="sendFriendRequest(result.id)">Conectar</Button>
           </li>
         </ul>
+        <div v-else>No se ha encontrado nada con ese nombre</div>
       </Dropdown>
     </div>
   </section>
@@ -51,10 +54,21 @@ const sendFriendRequest = async (friendId) => {}
 </script>
 
 <style scoped>
-.searchfield {
+form {
   display: grid;
   grid-template-columns: 1fr auto;
+  align-items: center;
   gap: var(--spaceXS);
+  position: relative;
+}
+
+.search-button {
+  position: absolute;
+  right: var(--spaceS);
+}
+
+input {
+  padding-right: var(--spaceL);
 }
 
 .results-wrapper {
@@ -64,6 +78,8 @@ const sendFriendRequest = async (friendId) => {}
 .results {
   width: 100%;
   top: var(--spaceS);
+  display: grid;
+  gap: var(--spaceM);
 }
 
 ul {

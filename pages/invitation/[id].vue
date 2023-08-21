@@ -21,6 +21,7 @@
       <TextField label="Contraseña" type="password" v-model="password" />
       <Button type="submit" variant="primary" size="large">Entrar</Button>
     </form>
+    <p>Ya tienes cuenta? <NuxtLink to="/access">Accede aquí</NuxtLink>.</p>
   </div>
 </template>
 
@@ -49,7 +50,11 @@ const validateName = async () => {
       'El nombre debe estar en minúsculas y contener solo caracteres alfanuméricos y guión bajo.'
     return
   }
-  const { data } = await supabase.from('users').select('handle').eq('handle', handle.value).maybeSingle()
+  const { data } = await supabase
+    .from('users')
+    .select('handle')
+    .eq('handle', handle.value)
+    .maybeSingle()
 
   if (data) {
     nameError.value = 'Lo siento, el nombre ya está pillado.'

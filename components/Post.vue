@@ -8,7 +8,7 @@
         <Button variant="ghost" size="small" @click="store.togglePopover(post.id)">⋯</Button>
       </div>
     </header>
-    <Content :content="post.content" />
+    <PostContent :content="post.content" />
     <small v-if="post.edited">Editado</small>
     <Dropdown class="menu" v-if="showPopover === post.id">
       <Menu v-if="isOwner">
@@ -46,7 +46,7 @@ const date = computed(() => formatDate(props.post.created_at))
 
 
 const handleEdit = () => {
-  emit('edit', props.post.id, props.post.content)
+  store.startPostEdition(props.post.id, props.post.content)
   showPopover.value = false
 }
 </script>

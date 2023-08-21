@@ -37,12 +37,12 @@ const handleSignIn = async () => {
   if (error) {
     throw error
   }
-  return navigateTo('/')
+  await navigateTo('/')
 }
 
 watchEffect(async () => {
   if (user.value) {
-    return navigateTo('/')
+    await navigateTo('/')
   }
 })
 </script>

@@ -14,6 +14,7 @@ const props = defineProps({
 
 const { content } = toRefs(props)
 const modContent = ref('')
+const preview = ref(null)
 
 const parseMentions = async (txt) => {
   let mod = txt
@@ -31,7 +32,7 @@ const parseMentions = async (txt) => {
         .textSearch('handle', `${username}`)
       const user = userData[0]
       if (user) {
-        const userLink = `[@${username}](/user/${user.id})`
+        const userLink = `[@${username}](/${username})`
         mod = mod.replace(match, userLink)
       }
     }
@@ -56,33 +57,35 @@ const parseLinks = (txt) => {
 
 const parseMarkdown = (txt) => {
   const md = new MarkdownIt({
-    html: true
+    html: true,
+    breaks: true,
+    linkify: true
   })
   return md.render(txt)
 }
 
-/* const previewUrl = async (str) => {
-  const linkRegex =
-    /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi
-  const matches = str.match(linkRegex)
 
-  if (matches) {
-    for (const match of matches) {
-      const url = match.match(linkRegex)[0]
-      console.log(data)
-      previewData.value = getLinkPreviewData
-    }
+/* TODO: let's see how I can do this */
+/* const previewLink = async (url) => {
+  const apiUrl = `https://jsonlink.io/api/extract?url=${url}`
+  console.log('Link', apiUrl)
+  const { data, error } = await $fetch(apiUrl)
+  if (error) {
+    throw error
   }
-} */
+  return data
+}
+ */
 const parseContent = async (txt) => {
   let processedContent = txt
   processedContent = await parseMentions(processedContent)
-  processedContent = parseLinks(processedContent)
+  // processedContent = parseLinks(processedContent)
   processedContent = parseMarkdown(processedContent)
   modContent.value = processedContent
 }
 
 parseContent(props.content)
+// preview.value = previewLink('https://anaga.dev')
 
 watch(content, async (newContent, oldContent) => {
   parseContent(newContent)
@@ -91,10 +94,10 @@ watch(content, async (newContent, oldContent) => {
 
 <style scoped>
 article {
-  padding: var(--spaceS) 0;
+  padding: 1em 0;
   font-size: var(--fontL);
   display: grid;
-  gap: var(--spaceS);
+  gap: 1em;
   overflow-wrap: anywhere;
   white-space: balance;
 }

@@ -4,6 +4,7 @@
     <NuxtPage />
   </NuxtLayout>
 </template>
+
 <script setup>
 const nuxtApp = useNuxtApp()
 const loading = ref(false)

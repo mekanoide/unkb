@@ -1,6 +1,10 @@
 <template>
-  <div>tuturra</div>
+  <div>{{ config.public.appName }}</div>
 </template>
+
+<script setup>
+const config = useRuntimeConfig()
+</script>
 
 <style scoped>
 div {

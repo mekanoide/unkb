@@ -3,16 +3,12 @@
     <NuxtLink to="/">
       <Logo />
     </NuxtLink>
-    <nav>
-      <NuxtLink to="/">Chorreo</NuxtLink>
-      <NuxtLink to="/connections">Conexiones</NuxtLink>
-    </nav>
     <div class="actions">
       <ToggleColorMode />
-      <Button variant="ghost" @click="store.togglePopover('userMenu')"><Icon>🯅</Icon></Button>
+      <Button variant="square" @click="store.togglePopover('userMenu')"><Icon name="carbon:user-avatar" size="1.5rem" /></Button>
       <Dropdown class="user-menu" v-if="showPopover === 'userMenu'">
         <Menu>
-          <MenuItem :link="`/user/${me.id}`" @click="showPopover = null">Ver perfil</MenuItem>
+          <MenuItem :link="`/${me.handle}`" @click="showPopover = ''">Ver perfil</MenuItem>
           <MenuItem @click="handleSignOut">Cerrar sesión</MenuItem>
         </Menu>
       </Dropdown>
@@ -35,7 +31,7 @@ const handleSignOut = async () => {
     console.log(error)
     return
   }
-  showPopover.value = null
+  showPopover.value = ''
   router.push('/access')
 }
 </script>
@@ -46,7 +42,7 @@ header {
   top: 0;
   background-color: var(--colorBackground);
   display: grid;
-  grid-template-columns: 1fr 3fr 1fr;
+  grid-auto-flow: column;
   justify-content: space-between;
   align-items: center;
   padding: var(--spaceS) var(--spaceM);
@@ -60,13 +56,6 @@ header {
   gap: var(--spaceM);
   align-items: center;
   justify-content: end;
-}
-
-nav {
-  display: grid;
-  grid-auto-flow: column;
-  gap: var(--spaceL);
-  justify-content: center;
 }
 
 .router-link-active {

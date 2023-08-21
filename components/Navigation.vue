@@ -1,11 +1,12 @@
 <template>
-  <main>
+  <nav aria-label="main">
     <slot><!-- optional fallback --></slot>
-  </main>
+  </nav>
 </template>
 
 <style scoped>
-main {
-  padding: 16vh var(--spaceM) var(--spaceM);
+nav {
+  display: grid;
+  gap: var(--spaceS);
 }
 </style>

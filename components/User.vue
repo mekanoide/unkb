@@ -1,5 +1,5 @@
 <template>
-  <NuxtLink class="User" :to="`/user/${user.id}`">@{{ user.handle }}</NuxtLink>
+  <NuxtLink class="User" :to="`/${user.handle}`">@{{ user.handle }}</NuxtLink>
 </template>
 
 <script setup>

@@ -1,5 +1,7 @@
 <template>
-  <Button variant="ghost" @click="toggleColorMode"><Icon>🌣</Icon></Button>
+  <Button variant="square" @click="toggleColorMode">
+    <Icon :name="colorMode.value === 'dark' ? 'carbon:moon' : 'carbon:sun'" size="1.5rem" />
+  </Button>
 </template>
 
 <script setup>

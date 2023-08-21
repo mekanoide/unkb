@@ -4,6 +4,30 @@ html {
   color: var(--colorText);
   line-height: 1.5;
   text-underline-offset: 2px;
+  scroll-behavior: smooth;
+  scrollbar-color: var(--colorText) transparent;
+  scrollbar-width: thin;
+}
+
+/* Scrollbar styles */
+
+*::-webkit-scrollbar {
+  width: var(--spaceS);
+}
+ 
+*::-webkit-scrollbar-track {
+  padding: var(--spaceXS);
+}
+ 
+*::-webkit-scrollbar-thumb {
+  background-color: var(--colorText);
+  border-radius: var(--corner);
+  border: 4px solid var(--colorBackground);
+}
+
+*::selection {
+  background-color: var(--colorText);
+  color: var(--colorBackground);
 }
 
 h1, h2, h3, h4 {
@@ -64,8 +88,11 @@ article {
     list-style: decimal;
   }
   & pre {
-    padding: 0 var(--spaceM);
-    border-left: 4px solid var(--colorText);
+    padding: var(--spaceM);
+    /* border-left: 4px solid var(--colorText); */
+    background-color: var(--colorDark);
+    color: var(--colorLight);
+    border-radius: var(--corner);
   }
   & blockquote {
     font-family: 'Lora', serif;
@@ -150,9 +177,11 @@ button {
 .dark-mode {
   --colorBackground: var(--colorDark);
   --colorText: var(--colorLight);
+  --colorNeutral: var(--colorShadelDark);
 }
 
 .light-mode {
   --colorBackground: var(--colorLight);
   --colorText: var(--colorDark);
+  --colorNeutral: var(--colorShadeLight);
 }
