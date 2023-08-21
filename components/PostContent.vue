@@ -58,8 +58,7 @@ const parseLinks = (txt) => {
 const parseMarkdown = (txt) => {
   const md = new MarkdownIt({
     html: true,
-    breaks: true,
-    linkify: true
+    breaks: true
   })
   return md.render(txt)
 }
@@ -79,7 +78,7 @@ const parseMarkdown = (txt) => {
 const parseContent = async (txt) => {
   let processedContent = txt
   processedContent = await parseMentions(processedContent)
-  // processedContent = parseLinks(processedContent)
+  processedContent = parseLinks(processedContent)
   processedContent = parseMarkdown(processedContent)
   modContent.value = processedContent
 }
