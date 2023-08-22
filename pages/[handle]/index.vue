@@ -1,18 +1,3 @@
-<template>
-  <header>
-    <h1>@{{ userData.handle }}</h1>
-    <p v-if="userData.bio" class="bio">{{ userData.bio }}</p>
-    <!-- TODO: for the moment it's just for me to invite people -->
-    <Invitation v-if="userData.handle === 'mekanoide'" />
-  </header>
-  <div class="status" v-if="!itsMe">
-    <Button v-if="connected">Desconectar</Button>
-    <Button v-else>Solicitar conexión</Button>
-  </div>
-  <EditPost v-if="store.postBeingEdited" @refresh="postsRefresh" />
-  <Posts source="user" :id="userData.id" />
-</template>
-
 <script setup>
 import { useMainStore } from '@/stores/main'
 const store = useMainStore()
@@ -26,7 +11,7 @@ const { startPostEdition } = store
 const posts = ref(null)
 posts.value = store.fetchPostsFromUser(route.params.id)
 
-const { data: userData, pending: parentPending } = await useAsyncData('user', async () => {
+const { data: userData, pending: userPending } = await useAsyncData('user', async () => {
   const { data } = await client
     .from('users')
     .select()
@@ -34,19 +19,6 @@ const { data: userData, pending: parentPending } = await useAsyncData('user', as
     .maybeSingle()
   return data
 })
-
-const { data: connectionsData, pending: connectionsPending } = await useAsyncData(
-  'connections',
-  async () => {
-    const { data } = await client
-      .from('connections')
-      .select()
-      .eq('user_1', user.value.id)
-      .eq('user_2', user.value.id)
-    console.log('Connections', data)
-    return data
-  }
-)
 
 const {
   data: postsData,
@@ -80,6 +52,24 @@ const itsMe = computed(async () => {
   return user.value.id = userData.id
 })
 </script>
+
+<template>
+  <div v-if="userPending">Cargando...</div>
+  <div v-else>
+    <header>
+      <h1>@{{ route.params.handle }}</h1>
+      <p v-if="userData.bio" class="bio">{{ userData.bio }}</p>
+      <!-- TODO: for the moment it's just for me to invite people -->
+      <Invitation v-if="userData.handle === 'mekanoide'" />
+    </header>
+    <div class="status" v-if="!itsMe">
+      <Button v-if="connected">Desconectar</Button>
+      <Button v-else>Solicitar conexión</Button>
+    </div>
+    <EditPost v-if="store.postBeingEdited" @refresh="postsRefresh" />
+    <Posts source="user" :id="userData.id" />
+  </div>
+</template>
 
 <style scoped>
 header {

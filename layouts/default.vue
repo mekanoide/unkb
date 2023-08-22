@@ -2,6 +2,9 @@
   <div class="PAGE">
     <Header />
     <main>
+      <div class="logo-mobile">
+        <Logo />
+      </div>
       <slot><!-- optional fallback --></slot>
     </main>
   </div>
@@ -24,9 +27,21 @@ main {
   gap: var(--spaceM);
 }
 
+.logo-mobile {
+  display: none;
+}
+
 @media screen and (max-width: 1024px) {
   .PAGE {
     grid-template-columns: 1fr;
+  }
+  main {
+    padding-top: 0;
+  }
+  .logo-mobile {
+    display: grid;
+    place-content: center;
+    padding: var(--spaceM);
   }
 }
 </style>

@@ -1,22 +1,3 @@
-<template>
-  <div class="Access">
-    <h1>Entrar</h1>
-    <p>Si no tienes una cuenta, tendrás que pedir que alguien te invite.</p>
-    <form @submit.prevent="handleSignIn">
-      <TextField
-        label="Correo electrónico"
-        type="email"
-        v-model="email" />
-      <TextField
-        label="Contraseña"
-        type="password"
-        v-model="password"
-      />
-      <Button type="submit" variant="primary" :disabled="loading">Entrar</Button>
-    </form>
-  </div>
-</template>
-
 <script setup>
 definePageMeta({
   layout: 'clear'
@@ -46,6 +27,25 @@ watchEffect(async () => {
   }
 })
 </script>
+
+<template>
+  <div class="Access">
+    <h1>Entrar</h1>
+    <p>Si no tienes una cuenta, tendrás que pedir que alguien te invite.</p>
+    <form @submit.prevent="handleSignIn">
+      <TextField
+        label="Correo electrónico"
+        type="email"
+        v-model="email" />
+      <TextField
+        label="Contraseña"
+        type="password"
+        v-model="password"
+      />
+      <Button type="submit" variant="primary" :disabled="loading">Entrar</Button>
+    </form>
+  </div>
+</template>
 
 <style scoped>
 .Access {

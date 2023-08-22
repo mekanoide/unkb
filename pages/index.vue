@@ -1,9 +1,3 @@
-<template>
-  <CreatePost @refresh="postsRefresh" />
-  <EditPost v-if="store.postBeingEdited" @refresh="postsRefresh" />
-  <Posts />
-</template>
-
 <script setup>
 definePageMeta({
   middleware: ['auth']
@@ -56,3 +50,9 @@ onBeforeUnmount(() => {
   /* clearInterval(refreshInterval.value) */
 })
 </script>
+
+<template>
+  <CreatePost @refresh="postsRefresh" />
+  <EditPost v-if="store.postBeingEdited" @refresh="postsRefresh" />
+  <Posts />
+</template>

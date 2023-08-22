@@ -12,7 +12,8 @@ export default defineNuxtConfig({
     '@nuxtjs/supabase',
     '@nuxtjs/color-mode',
     '@pinia/nuxt',
-    'nuxt-icon'
+    'nuxt-icon',
+    'nuxt-security'
   ],
   vite: {
     define: {

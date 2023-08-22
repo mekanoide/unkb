@@ -1,15 +1,3 @@
-<template>
-  <ul v-if="postsData">
-    <Post
-      v-for="post in postsData"
-      :post="post"
-      @edit="startPostEdition"
-      @delete="handleDeletePost"
-    />
-  </ul>
-  <EmptyState v-else message="Aún no hay nada publicado" />
-</template>
-
 <script setup>
 import { storeToRefs } from 'pinia'
 import { useMainStore } from '@/stores/main'
@@ -61,6 +49,18 @@ const handleDeletePost = async (id) => {
   postsRefresh()
 }
 </script>
+
+<template>
+  <ul v-if="postsData">
+    <Post
+      v-for="post in postsData"
+      :post="post"
+      @edit="startPostEdition"
+      @delete="handleDeletePost"
+    />
+  </ul>
+  <EmptyState v-else message="Aún no hay nada publicado" />
+</template>
 
 <style scoped>
 ul {

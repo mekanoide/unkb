@@ -56,11 +56,12 @@ const date = computed(() => formatDate(props.post.created_at))
 
 const handleEdit = () => {
   startPostEdition(props.post.id, props.post.content)
-  showPopover.value = false
+  showPopover.value = null
 }
 
 const handleDelete = async () => {
   await deletePost(props.post.id)
+  showPopover.value = null
   emit('delete')
 }
 </script>
