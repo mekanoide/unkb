@@ -1,45 +1,44 @@
-<template>
-  <div>
-    <User :user="post.users" /> <time :datetime="date">{{ date }}</time>
-    <PostContent :content="post.content" />
-  </div>
-  <PostEditor @post="handlePost" />
-  <div>
-    <h2>Respuestas</h2>
-    <Posts source="replies" :id="route.params.id" />
-  </div>
-</template>
-
 <script setup>
 import { useMainStore } from '@/stores/main'
 const store = useMainStore()
 const route = useRoute()
+const client = useSupabaseClient()
 
-const { fetchPost, fetchReplies, createReply } = store
+const { fetchReplies, createReply } = store
 
 /* Fetch post */
 const {
   data: post,
   error: postError,
   refresh: postRefresh
-} = await useAsyncData('post', async () => {
-  const data = await fetchPost(route.params.id)
-  return data
-})
+} = await client.from('posts').select('*, users(id, handle)').eq('id', route.params.id).single()
 
 const {
-  data: repliesData,
+  data: replies,
   error: repliesError,
   refresh: repliesRefresh
 } = await useAsyncData('replies', async () => {
   const data = await fetchReplies(route.params.id)
-
   return data
-})
+}) 
 
 const handlePost = async () => {
   await createReply(route.params.id)
 }
 
-const date = computed(() => formatDate(post.value.created_at))
+const date = computed(() => formatDate(post.created_at))
 </script>
+
+<template>
+  <div>
+    <User :user="post.users" /> <time :datetime="date">{{ date }}</time>
+    <PostContent :content="post.content" />
+  </div>
+  <PostEditor :rows="2" @post="handlePost" placeholder="Escribe una respuesta" />
+  <div>
+    <Posts>
+      <Post v-for="post in replies" :post="post" @deleted="repliesRefresh" />
+    </Posts>
+    <EmptyState v-if="replies?.length === 0" message="No hay respuestas" />
+  </div>
+</template>

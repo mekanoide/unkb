@@ -41,11 +41,24 @@ header {
   transform-origin: 50% 0%;
   padding: var(--spaceS);
   min-width: 12rem;
-  z-index: 11;
+  top: var(--spaceL);
+  z-index: 2000;
   box-shadow: var(--spaceS) var(--spaceS) 0 var(--colorNeutral);
 }
 
 .close-button {
   justify-self: end;
 }
+/* 
+@media screen and (max-width: 1024px) {
+  .DropdownMenu {
+    min-width: 4rem;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: auto !important;
+    box-shadow: none;
+  }
+} */
 </style>

@@ -30,6 +30,10 @@ html {
   color: var(--colorBackground);
 }
 
+::placeholder {
+  color: var(--colorNeutral);
+}
+
 h1,
 h2,
 h3,

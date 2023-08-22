@@ -6,50 +6,29 @@ const route = useRoute()
 const client = useSupabaseClient()
 const user = useSupabaseUser()
 
-const { startPostEdition } = store
+const { fetchPostsFromUser } = store
 
-const posts = ref(null)
-posts.value = store.fetchPostsFromUser(route.params.id)
+/* Fetch user data */
+const { data: userData, pending: userPending } = await client
+  .from('users')
+  .select()
+  .eq('handle', route.params.handle)
+  .maybeSingle()
 
-const { data: userData, pending: userPending } = await useAsyncData('user', async () => {
-  const { data } = await client
-    .from('users')
-    .select()
-    .eq('handle', route.params.handle)
-    .maybeSingle()
-  return data
-})
-
+/* Fetch posts from user */
 const {
-  data: postsData,
+  data: posts,
   error: postsError,
   refresh: postsRefresh
-} = await useAsyncData('posts', async () => {
-  const { data, error } = await client
-    .from('posts')
-    .select('*, users(id, handle)')
-    .eq('author_id', userData.value.id)
-    .order('created_at', { ascending: false })
-  if (error) {
-    throw error
-  }
-  if (data) {
-    return data
-  }
-})
+} = await client
+  .from('posts')
+  .select('*, users(id, handle)')
+  .eq('author_id', userData.id)
+  .order('created_at', { ascending: false })
 
-/* Delete post */
-
-const handleDeletePost = async (id) => {
-  postsRefresh()
-}
-
-const connected = computed(() => {
-  return
-})
-
+/* Check user is not themselves */
 const itsMe = computed(async () => {
-  return user.value.id = userData.id
+  return (user.value.id = userData.id)
 })
 </script>
 
@@ -67,7 +46,10 @@ const itsMe = computed(async () => {
       <Button v-else>Solicitar conexión</Button>
     </div>
     <EditPost v-if="store.postBeingEdited" @refresh="postsRefresh" />
-    <Posts source="user" :id="userData.id" />
+    <Posts>
+      <Post v-for="post in posts" :post="post" @deleted="postsRefresh" />
+    </Posts>
+    <EmptyState v-if="posts?.length === 0" message="Aún no hay nada publicado" />
   </div>
 </template>
 

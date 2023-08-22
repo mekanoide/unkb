@@ -2,10 +2,9 @@
   <form @submit.prevent="emit('post')">
     <textarea
       v-model="postContent"
-      rows="5"
-      cols="50"
+      :rows="rows || 5"
       maxlength="1024"
-      placeholder="Escribe tu movida (puedes usar Markdown!!!)"
+      :placeholder="$attrs.placeholder || 'Escribe tu movida (puedes usar Markdown!!!)'"
     ></textarea>
     <footer>
       <div class="actions">
@@ -27,6 +26,9 @@ const { postContent } = storeToRefs(store)
 const props = defineProps({
   edition: {
     type: Boolean
+  },
+  rows: {
+    type: Number
   }
 })
 
