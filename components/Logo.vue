@@ -1,5 +1,5 @@
 <template>
-  <div>{{ config.public.appName }}</div>
+  <NuxtLink to="/">{{ config.public.appName }}</NuxtLink>
 </template>
 
 <script setup>
@@ -7,7 +7,7 @@ const config = useRuntimeConfig()
 </script>
 
 <style scoped>
-div {
+a {
   text-transform: uppercase;
   font-weight: bold;
   font-size: 3rem;

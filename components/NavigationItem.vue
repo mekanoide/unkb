@@ -1,5 +1,5 @@
 <template>
-  <NuxtLink :to="to"><Icon :name="icon" size="1.5rem" />{{ label }}</NuxtLink>
+  <NuxtLink :to="to"><Icon :name="icon" size="1.5rem" /><span>{{ label }}</span></NuxtLink>
 </template>
 
 <script setup>
@@ -38,5 +38,11 @@ a:hover {
 
 a.router-link-active {
   font-weight: bold;
+}
+
+@media screen and (max-width: 1024px) {
+  span {
+    display: none;
+  }
 }
 </style>

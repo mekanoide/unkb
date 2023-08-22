@@ -10,10 +10,7 @@
     <Button v-else>Solicitar conexión</Button>
   </div>
   <EditPost v-if="store.postBeingEdited" @refresh="postsRefresh" />
-  <Posts v-if="postsData.length > 0">
-    <Post v-for="post in postsData" :post="post" @edit="startPostEdition" @delete="handleDeletePost" />
-  </Posts>
-  <EmptyState v-else message="No ha publicado nada aún" />
+  <Posts source="user" :id="userData.id" />
 </template>
 
 <script setup>

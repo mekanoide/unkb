@@ -1,10 +1,7 @@
 <template>
   <CreatePost @refresh="postsRefresh" />
   <EditPost v-if="store.postBeingEdited" @refresh="postsRefresh" />
-  <Posts v-if="postsData">
-    <Post v-for="post in postsData" :post="post" @edit="startPostEdition" @delete="handleDeletePost" />
-  </Posts>
-  <EmptyState v-else message="Aún no hay nada publicado" />
+  <Posts />
 </template>
 
 <script setup>

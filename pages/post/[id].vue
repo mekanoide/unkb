@@ -6,9 +6,7 @@
   <PostEditor @post="handlePost" />
   <div>
     <h2>Respuestas</h2>
-    <Posts>
-      <Reply v-for="post in repliesData" :post="post" />
-    </Posts>
+    <Posts source="replies" :id="route.params.id" />
   </div>
 </template>
 

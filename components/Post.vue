@@ -47,7 +47,6 @@ const { startPostEdition, togglePopover, deletePost, fetchPostAuthor } = store
 
 
 const postAuthor = props.post.reply_to ? await fetchPostAuthor(props.post.reply_to) : null
-console.log('Author', postAuthor)
 
 const isOwner = computed(() => {
   return props.post.author_id === user.value.id

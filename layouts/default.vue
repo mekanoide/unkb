@@ -25,7 +25,7 @@ main {
 }
 
 @media screen and (max-width: 1024px) {
-  .body {
+  .PAGE {
     grid-template-columns: 1fr;
   }
 }

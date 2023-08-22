@@ -1,10 +1,9 @@
 <template>
   <header>
-    <NuxtLink to="/">
-      <Logo />
-    </NuxtLink>
+    <Logo class="logo" />
     <nav>
-      <Search />
+      <Search class="search" />
+      <NavigationItem class="search-button" label="Search" icon="carbon:search" to="/search" />
       <NavigationItem label="Chorreo" icon="carbon:chat" to="/" />
       <NavigationItem label="Conexiones" icon="carbon:friendship" to="/connections" />
       <NavigationItem label="Guardados" icon="carbon:bookmark" to="/bookmarks" />
@@ -73,14 +72,28 @@ nav {
   bottom: 0;
 }
 
+.search-button {
+  display: none;
+}
+
 @media screen and (max-width: 1024px) {
-  nav {
+  header {
     position: fixed;
     inset: auto 0 0 0;
     background-color: var(--colorBackground);
     grid-auto-flow: column;
+    justify-content: center;
     z-index: 100;
     border-top: 1px dashed currentColor;
+    padding: var(--spaceS);
+  }
+  nav {
+    grid-auto-flow: column;
+  }
+  .search,
+  .logo,
+  .actions {
+    display: none;
   }
 }
 </style>
