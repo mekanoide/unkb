@@ -40,8 +40,8 @@ main {
   }
   .logo-mobile {
     display: grid;
-    place-content: center;
-    padding: var(--spaceM);
+    place-content: start;
+    padding: var(--spaceM) 0;
   }
 }
 </style>

@@ -1,7 +1,3 @@
-<template>
-  <article v-html="modContent"></article>
-</template>
-
 <script setup>
 import MarkdownIt from 'markdown-it'
 
@@ -94,8 +90,13 @@ watch(content, async (newContent, oldContent) => {
 })
 </script>
 
+<template>
+  <article v-html="modContent"></article>
+</template>
+
 <style scoped>
 article {
+  max-width: calc(100vw - (var(--spaceM) * 2));
   padding: 1em 0;
   font-size: var(--fontL);
   display: grid;

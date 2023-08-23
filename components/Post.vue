@@ -70,6 +70,8 @@ const handleDelete = async () => {
 li {
   padding: var(--spaceM) 0;
   position: relative;
+  width: 100%;
+  max-width: 100%;
 }
 
 li + li {
