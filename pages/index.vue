@@ -2,7 +2,7 @@
 definePageMeta({
   middleware: ['auth']
 })
-
+import { useInfiniteScroll } from '@vueuse/core'
 import { useMainStore } from '@/stores/main'
 
 const store = useMainStore()

@@ -2,7 +2,7 @@
   <form @submit.prevent="emit('post')">
     <textarea
       v-model="postContent"
-      :rows="rows || 5"
+      :rows="rows || 4"
       maxlength="1024"
       :placeholder="$attrs.placeholder || 'Escribe tu movida (puedes usar Markdown!!!)'"
     ></textarea>

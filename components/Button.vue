@@ -53,7 +53,7 @@ button.critical {
 
 button:not(.small, .large) {
   height: 3rem;
-  padding: 0 var(--spaceM);
+  padding: 0 var(--spaceS);
 }
 
 button.small {

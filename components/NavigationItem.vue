@@ -38,6 +38,8 @@ a:hover {
 
 a.router-link-active {
   font-weight: bold;
+  background-color: var(--colorText);
+  color: var(--colorBackground);
 }
 
 @media screen and (max-width: 1024px) {

@@ -1,8 +1,9 @@
 :root {
-  --colorLight: hsl(58 80% 52%);
-  --colorShadeLight: hsl(58 100% 26%);
-  --colorShadeDark: hsl(58 100% 16%);
-  --colorDark: hsl(0 0% 0%);
+  --hue: 14;
+  --colorLight: hsl(var(--hue) 80% 62%);
+  --colorShadeLight: hsl(var(--hue) 60% 36%);
+  --colorShadeDark: hsl(var(--hue) 60% 20%);
+  --colorDark: hsl(var(--hue) 0% 0%);
   
   --colorBackground: var(--colorLight);
   --colorText: var(--colorDark);
@@ -18,7 +19,7 @@
 
   --fontS: 0.75rem;
   --fontL: 1.25rem;
-  --fontXL: 3rem;
+  --fontXL: clamp(1.5rem, calc(1.5rem + 1vw), 3rem);
 
   --gradientFaded: repeating-linear-gradient(-45deg, transparent, transparent 2px, var(--colorText) 2px, var(--colorText) 4px);
   --gradientWork: repeating-linear-gradient(-45deg, transparent, transparent 8px, var(--colorText) 8px, var(--colorText) 16px);

@@ -25,9 +25,13 @@ const {
 </script>
 
 <template>
-  <h1>Aquí irán las conexiones con la peñita</h1>
+  <h1>Conexiones con la peñita</h1>
   <Requests />
   <ul>
-    <li v-for="connection in connectionsData">{{ connection.user2.handle }}</li>
+    <Connection
+      v-for="connection in connectionsData"
+      :user="connection.connection"
+      @deleted="connectionsRefresh"
+    />
   </ul>
 </template>

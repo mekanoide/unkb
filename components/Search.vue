@@ -1,29 +1,3 @@
-<template>
-  <section>
-    <div class="searchfield">
-      <form action="search" @submit.prevent="searchUsers">
-        <input
-          type="search"
-          v-model="searchQuery"
-          placeholder="Buscar usuarios"
-        />
-        <Button type="submit" class="search-button" variant="square"><Icon name="carbon:search" size="1.5rem" /></Button>
-      </form>
-    </div>
-    <div class="results-wrapper">
-      <Dropdown class="results" v-if="showPopover === 'search-results'" closeable>
-        <ul v-if="searchResults.length > 0">
-          <li v-for="result in searchResults" :key="result.id">
-            <NuxtLink :to="`/${result.handle}`">@{{ result.handle }}</NuxtLink>
-            <Button variant="primary" size="small" @click="sendFriendRequest(result.id)">Conectar</Button>
-          </li>
-        </ul>
-        <div v-else>No se ha encontrado nada con ese nombre</div>
-      </Dropdown>
-    </div>
-  </section>
-</template>
-
 <script setup>
 import { useMainStore } from '@/stores/main'
 import { storeToRefs } from 'pinia'
@@ -31,6 +5,8 @@ import { storeToRefs } from 'pinia'
 const client = useSupabaseClient()
 const user = useSupabaseUser()
 const store = useMainStore()
+
+const { sendConnectionRequest } = store
 
 const userId = user.value.id
 const searchQuery = ref('')
@@ -50,8 +26,37 @@ const searchUsers = async () => {
   showPopover.value = 'search-results'
 }
 
-const sendFriendRequest = async (friendId) => {}
+const handleSendConnectionRequest = async (id) => {
+  await sendConnectionRequest(id)
+  console.log('Solicitud enviada!!!')
+}
 </script>
+
+<template>
+  <section>
+    <div class="searchfield">
+      <form action="search" @submit.prevent="searchUsers">
+        <input
+          type="search"
+          v-model="searchQuery"
+          placeholder="Buscar usuarios"
+        />
+        <Button type="submit" class="search-button" variant="square"><Icon name="carbon:search" size="1.5rem" /></Button>
+      </form>
+    </div>
+    <div class="results-wrapper">
+      <Dropdown class="results" v-if="showPopover === 'search-results'" closeable>
+        <ul v-if="searchResults.length > 0">
+          <li v-for="result in searchResults" :key="result.id">
+            <User :user="result" />
+            <Button size="small" @click="handleSendConnectionRequest(result.id)">Conectar</Button>
+          </li>
+        </ul>
+        <div v-else>No se ha encontrado nada con ese nombre</div>
+      </Dropdown>
+    </div>
+  </section>
+</template>
 
 <style scoped>
 form {
@@ -89,7 +94,7 @@ ul {
 
 li {
   display: grid;
-  grid-auto-flow: column;
+  grid-template-columns: 1fr auto;
   align-items: center;
 }
 </style>

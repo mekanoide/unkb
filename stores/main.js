@@ -56,23 +56,59 @@ export const useMainStore = defineStore('main', () => {
       .from('posts')
       .select('*, users(id, handle)')
       .in('author_id', followedUserIds)
-        .order('created_at', { ascending: false })
+      .order('created_at', { ascending: false })
     if (postsError) {
       throw postsError
     }
     return postsData
   }
+  /* Request connection */
+  const sendConnectionRequest = async (id) => {
+    const { data: connectionData, error: connectionError } = await client
+      .from('connection_requests')
+      .upsert({
+        target_id: id,
+        user_id: user.value.id
+      })
+    return connectionData
+  }
 
+  /* Fetch connections */
   const fetchConnections = async () => {
     const { data, error } = await client
       .from('connections')
-      .select('*, user1:users!user1_id(handle), user2:users!user2_id(handle)')
-      .or(`user1_id.eq.${user.value.id},user2_id.eq.${user.value.id}`)
+      .select('*, connection:users!friend_id(id, handle)')
 
     if (error) {
       throw error
     }
     return data
+  }
+  /*  Delete connection */
+  const deleteConnection = async (id) => {
+    const shouldDelete = confirm('Quieres desconectar seguro?')
+    if (!shouldDelete) {
+      return
+    }
+    const { error: error1 } = await client
+      .from('connections')
+      .delete()
+      .eq('friend_id', id)
+      .eq('user_id', user.value.id)
+
+    const { error: error2 } = await client
+      .from('connections')
+      .delete()
+      .eq('user_id', id)
+      .eq('friend_id', user.value.id)
+
+    if (error1) {
+      throw error1
+    }
+
+    if (error2) {
+      throw error2
+    }
   }
 
   const fetchPostsFromUser = async (id) => {
@@ -227,8 +263,10 @@ export const useMainStore = defineStore('main', () => {
     requestUrl,
     showPopover,
     getContact,
+    sendConnectionRequest,
     fetchFollows,
     fetchConnections,
+    deleteConnection,
     fetchPostsFromFollowedUsers,
     fetchPostsFromUser,
     fetchPost,
