@@ -41,7 +41,6 @@ main {
   .logo-mobile {
     display: grid;
     place-content: start;
-    padding: var(--spaceM) 0;
   }
 }
 </style>

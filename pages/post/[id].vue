@@ -35,8 +35,15 @@ const date = computed(() => formatDate(post.created_at))
 </script>
 
 <template>
-  <div>
-    <User :user="post.users" /> <time :datetime="date">{{ date }}</time>
+
+  <div class="post">
+    <header>
+      <span>
+        <User :user="post.users" size="large" />
+      </span>
+      <NuxtLink to="/"><Icon name="carbon:close" size="2.5rem" @click=""/></NuxtLink>
+    </header>
+    <time :datetime="date">{{ date }}</time>
     <PostContent :content="post.content" />
   </div>
   <PostEditor :rows="2" @post="handlePost" placeholder="Escribe una respuesta" />
@@ -47,3 +54,11 @@ const date = computed(() => formatDate(post.created_at))
     <EmptyState v-if="replies?.length === 0" message="No hay respuestas" />
   </div>
 </template>
+
+<style scoped>
+header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+}
+</style>

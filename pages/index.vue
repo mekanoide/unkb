@@ -24,10 +24,10 @@ const {
 </script>
 
 <template>
-  <CreatePost @refresh="refreshPosts" />
-  <EditPost v-if="store.postBeingEdited" @refresh="refreshPosts" />
+  <CreatePost @refresh="postsRefresh" />
+  <EditPost v-if="store.postBeingEdited" @refresh="postsRefresh" />
   <Posts>
-    <Post v-for="post in posts" :post="post" @deleted="refreshPosts" />
+    <Post v-for="post in posts" :post="post" @deleted="postsRefresh" />
   </Posts>
   <EmptyState v-if="posts?.length === 0" message="Aún no hay nada publicado" />
 </template>
