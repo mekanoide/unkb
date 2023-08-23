@@ -1,8 +1,8 @@
 :root {
   --hue: 14;
-  --colorLight: hsl(var(--hue) 80% 62%);
-  --colorShadeLight: hsl(var(--hue) 60% 36%);
-  --colorShadeDark: hsl(var(--hue) 60% 20%);
+  --colorLight: hsl(var(--hue) 100% 66%);
+  --colorShadeLight: hsl(var(--hue) 60% 40%);
+  --colorShadeDark: hsl(var(--hue) 60% 26%);
   --colorDark: hsl(var(--hue) 0% 0%);
   
   --colorBackground: var(--colorLight);
