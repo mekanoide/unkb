@@ -9,15 +9,14 @@ const store = useMainStore()
 const { sendConnectionRequest } = store
 
 const userId = user.value.id
-const searchQuery = ref('')
 const searchResults = ref([])
 const { showPopover } = storeToRefs(store)
 
-const searchUsers = async () => {
+const searchUsers = async (query) => {
   const { data, error } = await client
     .from('users')
     .select()
-    .textSearch('handle', `${searchQuery.value}`)
+    .textSearch('handle', query)
 
   if (error) {
     throw error
@@ -34,16 +33,7 @@ const handleSendConnectionRequest = async (id) => {
 
 <template>
   <section>
-    <div class="searchfield">
-      <form action="search" @submit.prevent="searchUsers">
-        <input
-          type="search"
-          v-model="searchQuery"
-          placeholder="Buscar usuarios"
-        />
-        <Button type="submit" class="search-button" variant="square"><Icon name="carbon:search" size="1.5rem" /></Button>
-      </form>
-    </div>
+    <SearchField @submit="searchUsers" />
     <div class="results-wrapper">
       <Dropdown class="results" v-if="showPopover === 'search-results'" closeable>
         <ul v-if="searchResults.length > 0">
@@ -59,23 +49,6 @@ const handleSendConnectionRequest = async (id) => {
 </template>
 
 <style scoped>
-form {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  align-items: center;
-  gap: var(--spaceXS);
-  position: relative;
-}
-
-.search-button {
-  position: absolute;
-  right: var(--spaceS);
-}
-
-input {
-  padding-right: var(--spaceL);
-}
-
 .results-wrapper {
   position: relative;
 }

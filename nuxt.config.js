@@ -13,7 +13,8 @@ export default defineNuxtConfig({
     '@nuxtjs/color-mode',
     '@pinia/nuxt',
     'nuxt-icon',
-    'nuxt-security'
+    'nuxt-security',
+    '@vite-pwa/nuxt'
   ],
   vite: {
     define: {

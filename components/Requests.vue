@@ -1,31 +1,18 @@
-<template>
-  <section v-if="requests.length > 0">
-    <h3>Peticiones de conexión</h3>
-    <ul v-if="requests">
-      <li v-for="request in requests">
-        <span class="handle">@{{ request.requester.handle }}</span>
-        <Button size="small" @click="acceptConnection(request.user_id)">Aceptar</Button>
-      </li>
-    </ul>
-  </section>
-</template>
-
 <script setup>
+import { useMainStore } from '@/stores/main'
+const store = useMainStore()
+const { fetchConnectionRequests } = store
+
 const client = useSupabaseClient()
 const user = useSupabaseUser()
 const userId = user.value.id
-
-const refreshInterval = ref()
 
 const {
   data: requests,
   error: errorRequests,
   refresh: errorRefresh
 } = await useAsyncData('requests', async () => {
-  const { data } = await client
-    .from('connection_requests')
-    .select('user_id, requester:users!user_id(handle)')
-    .eq('target_id', userId)
+  const data = await fetchConnectionRequests()
   return data
 })
 
@@ -39,15 +26,19 @@ const acceptConnection = async (id) => {
   }
   return data
 }
-
-onMounted(() => {
-  refreshInterval.value = setInterval(errorRefresh, 60000)
-})
-
-onBeforeUnmount(() => {
-  clearInterval(refreshInterval.value)
-})
 </script>
+
+<template>
+  <section v-if="requests.length > 0">
+    <h2>Peticiones de conexión</h2>
+    <ul>
+      <li v-for="request in requests">
+        <span class="handle">@{{ request.requester.handle }}</span>
+        <Button size="small" @click="acceptConnection(request.user_id)">Aceptar</Button>
+      </li>
+    </ul>
+  </section>
+</template>
 
 <style scoped>
 li {

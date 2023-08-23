@@ -2,6 +2,7 @@ html {
   font-family: 'Work Sans', Arial, Helvetica, sans-serif;
   background-color: var(--colorBackground);
   color: var(--colorText);
+  font-size: var(--fontBase);
   line-height: 1.5;
   text-underline-offset: 2px;
   scroll-behavior: smooth;

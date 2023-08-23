@@ -73,6 +73,16 @@ export const useMainStore = defineStore('main', () => {
     return connectionData
   }
 
+  /* Fetch connection requests */
+  const fetchConnectionRequests = async () => {
+    const { data, error } = await client
+      .from('connection_requests')
+      .select('user_id, requester:users!user_id(handle)')
+      .eq('target_id', user.value.id)
+    console.log('Request!!!', data)
+    return data
+  }
+
   /* Fetch connections */
   const fetchConnections = async () => {
     const { data, error } = await client
@@ -266,6 +276,7 @@ export const useMainStore = defineStore('main', () => {
     sendConnectionRequest,
     fetchFollows,
     fetchConnections,
+    fetchConnectionRequests,
     deleteConnection,
     fetchPostsFromFollowedUsers,
     fetchPostsFromUser,
