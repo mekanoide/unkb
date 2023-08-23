@@ -1,4 +1,8 @@
 <script setup>
+definePageMeta({
+  middleware: ['auth']
+})
+
 import { useMainStore } from '@/stores/main'
 const store = useMainStore()
 const route = useRoute()
@@ -20,10 +24,11 @@ const {
 } = await useAsyncData('replies', async () => {
   const data = await fetchReplies(route.params.id)
   return data
-}) 
+})
 
 const handlePost = async () => {
   await createReply(route.params.id)
+  repliesRefresh()
 }
 
 const date = computed(() => formatDate(post.created_at))
@@ -37,7 +42,7 @@ const date = computed(() => formatDate(post.created_at))
   <PostEditor :rows="2" @post="handlePost" placeholder="Escribe una respuesta" />
   <div>
     <Posts>
-      <Post v-for="post in replies" :post="post" @deleted="repliesRefresh" />
+      <Post v-for="post in replies" reply :post="post" @deleted="repliesRefresh" />
     </Posts>
     <EmptyState v-if="replies?.length === 0" message="No hay respuestas" />
   </div>

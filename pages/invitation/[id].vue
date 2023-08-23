@@ -1,30 +1,3 @@
-<template>
-  <div v-if="user">
-    <h1>Ya estás dentro, aquí no hay nada que ver</h1>
-    <NuxtLink to="/">Ve a la página de Inicio</NuxtLink>
-  </div>
-  <div v-else-if="error">
-    <h1>{{ error }}</h1>
-  </div>
-  <div v-else class="Access">
-    <h1>@{{ parent.handle }} te ha invitado a esto</h1>
-    <p>Usa el privilegio con responsabilidad.</p>
-    <form @submit.prevent="handleSignUp">
-      <TextField
-        label="Nombre"
-        instructions="El nombre debe estar en minúsculas y contener solo caracteres alfanuméricos y guión bajo."
-        :error="nameError"
-        v-model="handle"
-        @blur="validateName"
-      />
-      <TextField label="Correo electrónico" type="email" v-model="email" />
-      <TextField label="Contraseña" type="password" v-model="password" />
-      <Button type="submit" variant="primary" size="large">Entrar</Button>
-    </form>
-    <p>Ya tienes cuenta? <NuxtLink to="/access">Accede aquí</NuxtLink>.</p>
-  </div>
-</template>
-
 <script setup>
 definePageMeta({
   layout: 'clear'
@@ -100,6 +73,33 @@ const handleSignUp = async () => {
   router.push('/')
 }
 </script>
+
+<template>
+  <div v-if="user">
+    <h1>Ya estás dentro, aquí no hay nada que ver</h1>
+    <NuxtLink to="/">Ve a la página de Inicio</NuxtLink>
+  </div>
+  <div v-else-if="error">
+    <h1>{{ error }}</h1>
+  </div>
+  <div v-else class="Access">
+    <h1>@{{ parent.handle }} te ha invitado a esto</h1>
+    <p>Usa el privilegio con responsabilidad.</p>
+    <form @submit.prevent="handleSignUp">
+      <TextField
+        label="Nombre"
+        instructions="El nombre debe estar en minúsculas y contener solo caracteres alfanuméricos y guión bajo."
+        :error="nameError"
+        v-model="handle"
+        @blur="validateName"
+      />
+      <TextField label="Correo electrónico" type="email" v-model="email" />
+      <TextField label="Contraseña" type="password" v-model="password" />
+      <Button :disabled="pending" type="submit" variant="primary" size="large">Entrar</Button>
+    </form>
+    <p>Ya tienes cuenta? <NuxtLink to="/access">Accede aquí</NuxtLink>.</p>
+  </div>
+</template>
 
 <style scoped>
 a {

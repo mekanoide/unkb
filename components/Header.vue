@@ -23,6 +23,7 @@
 <script setup>
 import { useMainStore } from '@/stores/main'
 const store = useMainStore()
+const { auth } = useSupabaseAuthClient()
 const { fetchOwnUser } = store
 
 const handleSignOut = async () => {

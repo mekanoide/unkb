@@ -1,9 +1,3 @@
-<template>
-  <h1>Aquí irán las conexiones con la peñita</h1>
-  <Requests />
-  <div>{{ connectionsData }}</div>
-</template>
-
 <script setup>
 definePageMeta({
   middleware: ['auth']
@@ -29,3 +23,11 @@ const {
   return data
 })
 </script>
+
+<template>
+  <h1>Aquí irán las conexiones con la peñita</h1>
+  <Requests />
+  <ul>
+    <li v-for="connection in connectionsData">{{ connection.user2.handle }}</li>
+  </ul>
+</template>

@@ -1,4 +1,8 @@
 <script setup>
+definePageMeta({
+  middleware: ['auth']
+})
+
 import { useMainStore } from '@/stores/main'
 const store = useMainStore()
 

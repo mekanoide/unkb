@@ -93,7 +93,7 @@ export const useMainStore = defineStore('main', () => {
       .from('posts')
       .select('*, users(id, handle)')
       .in('id', repliesIds)
-      .order('created_at', { ascending: false })
+      .order('created_at', { ascending: true })
     return postsData
   }
 

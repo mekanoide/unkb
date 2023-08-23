@@ -48,6 +48,7 @@ form {
 
 textarea {
   font-size: var(--fontL);
+  transition: var(--transition);
 }
 
 footer {
@@ -63,5 +64,9 @@ footer {
   gap: var(--spaceS);
   align-items: center;
   justify-content: start;
+}
+
+textarea:focus {
+  height: 50svh;
 }
 </style>

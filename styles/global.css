@@ -54,6 +54,7 @@ h3 {
 
 code {
   font-family: 'Source Code Pro', monospace;
+  overflow: auto;
 }
 
 section {
@@ -102,6 +103,8 @@ article {
     background-color: var(--colorDark);
     color: var(--colorLight);
     border-radius: var(--corner);
+    max-width: calc(100vw - var(--spaceM) * 2);
+    overflow: auto;
   }
   & blockquote {
     font-family: 'Lora', serif;

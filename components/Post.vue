@@ -7,6 +7,9 @@ const props = defineProps({
   post: {
     type: Object,
     required: true
+  },
+  reply: {
+    type: Boolean
   }
 })
 const emit = defineEmits(['deleted', 'edited'])
@@ -90,7 +93,6 @@ header {
 
 .content {
   max-width: 100%;
-  overflow: hidden;
 }
 
 .actions {

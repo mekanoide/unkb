@@ -17,7 +17,8 @@
 /* Preferred box-sizing value */
 *,
 *::before,
-*::after {
+*::after,
+pre {
     box-sizing: border-box;
 }
 
