@@ -1,6 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  ssr: false,
+  /* ssr: false, */
   runtimeConfig: {
     metaUrl: process.env.META_ACCESS_TOKEN,
     public: {

@@ -35,7 +35,7 @@ const props = defineProps({
 const emit = defineEmits(['post', 'cancel'])
 
 const wordCount = computed(() => {
-  return `${postContent.value.length} / 1024`
+  return `${postContent.value.length}/1024`
 })
 </script>
 
@@ -64,9 +64,5 @@ footer {
   gap: var(--spaceS);
   align-items: center;
   justify-content: start;
-}
-
-textarea:focus {
-  height: 50svh;
 }
 </style>

@@ -9,7 +9,7 @@ const emit = defineEmits(['submit'])
     <form action="search" @submit.prevent="emit('submit', searchQuery)">
       <input type="search" v-model="searchQuery" placeholder="Buscar usuarios" />
       <Button type="submit" class="search-button" variant="square">
-        <Icon name="carbon:search" size="1.5rem"/>
+        <Icon name="carbon:search" size="1.5rem" />
       </Button>
     </form>
   </div>

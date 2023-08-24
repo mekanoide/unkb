@@ -8,11 +8,13 @@
 import { useMainStore } from '@/stores/main'
 const store = useMainStore()
 
-const emit = defineEmits(['refresh'])
+const { finishPostEdition } = store
+
+const emit = defineEmits(['edited'])
 
 const handlePost = async () => {
-  await store.finishPostEdition()
-  emit('refresh')
+  await finishPostEdition()
+  emit('edited')
 }
 </script>
 

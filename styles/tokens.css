@@ -15,9 +15,9 @@
   --spaceL: 2.5rem;
   --spaceXL: 5rem;
 
-  --maxWidthBody: 1280px;
+  --maxWidthBody: 1340px;
 
-  --fontBase: clamp(14px, calc(14px + 0.25vw), 18px);
+  --fontBase: clamp(14px, calc(14px + 0.5vmin), 20px);
   --fontS: 0.75rem;
   --fontL: 1.25rem;
   --fontXL: clamp(1.5rem, calc(1.5rem + 1vw), 3rem);
@@ -25,8 +25,8 @@
   --gradientFaded: repeating-linear-gradient(-45deg, transparent, transparent 2px, var(--colorText) 2px, var(--colorText) 4px);
   --gradientWork: repeating-linear-gradient(-45deg, transparent, transparent 8px, var(--colorText) 8px, var(--colorText) 16px);
 
-  --corner: 0.5rem;
-  --cornerButton: 0.5rem;
+  --corner: 0.25rem;
+  --cornerButton: 0.25rem;
 
   --transition: all 160ms ease;
 }

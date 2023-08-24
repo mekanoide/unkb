@@ -16,7 +16,7 @@ const emit = defineEmits(['deleted', 'edited'])
 
 const { showPopover } = storeToRefs(store)
 
-const { startPostEdition, togglePopover, deletePost, fetchPostAuthor } = store
+const { startPostEdition, togglePopover, deletePost, fetchPostAuthor, fetchReplyCount } = store
 
 const postAuthor = props.post.reply_to ? await fetchPostAuthor(props.post.reply_to) : null
 
@@ -36,13 +36,15 @@ const handleDelete = async () => {
   showPopover.value = null
   emit('deleted')
 }
+
+const replyCount = await fetchReplyCount(props.post.id)
 </script>
 
 <template>
   <li>
     <header>
       <div>
-        <User :user="post.users" /> <time :datetime="date">{{ date }}</time>
+        <User :data="post.users" /> <time :datetime="date">{{ date }}</time>
       </div>
       <div class="actions">
         <Button variant="ghost" size="small" @click.stop="togglePopover(post.id)">
@@ -51,11 +53,14 @@ const handleDelete = async () => {
       </div>
     </header>
     <NuxtLink class="post-link" :to="post.reply_to ? `/post/${post.reply_to}` : `/post/${post.id}`">
-      <div v-if="post.reply_to">En respuesta a <User :user="postAuthor" /></div>
+      <div v-if="post.reply_to">En respuesta a <User :data="postAuthor" /></div>
       <div class="content">
         <PostContent :content="post.content" />
       </div>
       <small v-if="post.edited">Editado</small>
+      <footer v-if="replyCount > 0">
+        <Icon name="carbon:chat" size="1.5rem" /> {{ replyCount }}
+      </footer>
     </NuxtLink>
     <Dropdown class="menu" v-if="showPopover === post.id">
       <Menu v-if="isOwner">

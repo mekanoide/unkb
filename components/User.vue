@@ -1,10 +1,10 @@
 <template>
-  <NuxtLink class="User" :class="[size]" :to="`/${user.handle}`">@{{ user.handle }}</NuxtLink>
+  <NuxtLink class="User" :class="[size]" :to="`/${data.handle}`">@{{ data.handle }}</NuxtLink>
 </template>
 
 <script setup>
 const props = defineProps({
-  user: {
+  data: {
     type: Object,
     required: true
   },

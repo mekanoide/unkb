@@ -11,6 +11,8 @@ export const useMainStore = defineStore('main', () => {
 
   const requests = ref([])
   const posts = ref([])
+  const post = ref(null)
+  const activeUser = ref(null)
   const me = ref(null)
   const userId = ref(null)
   const contacts = ref([])
@@ -29,39 +31,40 @@ export const useMainStore = defineStore('main', () => {
     return data
   }
 
+  const fetchUserByHandle = async (handle) => {
+    const { data, error } = await client.from('users').select().eq('handle', handle).maybeSingle()
+    if (error) {
+      throw error
+    }
+    activeUser.value = data
+  }
+
   const fetchFollows = async () => {
     const { data: followsData } = await client.from('follows').select().eq('user_id', user.value.id)
     follows.value = followsData
   }
 
-  const fetchPostsFromFollowedUsers = async () => {
-    const { data: followsData, error: followsError } = await client
-      .from('follows')
-      .select()
-      .eq('user_id', user?.value.id)
+  /* Fetch active post */
+  const fetchPost = async (id) => {
+    const { data } = await client.from('posts').select('*, users(id, handle)').eq('id', id).single()
+    post.value = data
+  }
 
-    if (followsError) {
-      throw followsError
-    }
+  /* Fetch posts from followed users */
+  const fetchPostsFromFollowedUsers = async () => {
+    const { data: followsData } = await client.from('follows').select().eq('user_id', user.value.id)
 
     const followedUserIds = followsData.map((item) => item.follow_id)
     followedUserIds.push(user.value.id)
 
-    const {
-      data: postsData,
-      pending: postsPending,
-      error: postsError,
-      refresh: postsRefresh
-    } = await client
+    const { data: postsData } = await client
       .from('posts')
       .select('*, users(id, handle)')
       .in('author_id', followedUserIds)
       .order('created_at', { ascending: false })
-    if (postsError) {
-      throw postsError
-    }
-    return postsData
+    posts.value = postsData
   }
+
   /* Request connection */
   const sendConnectionRequest = async (id) => {
     const { data: connectionData, error: connectionError } = await client
@@ -121,13 +124,20 @@ export const useMainStore = defineStore('main', () => {
     }
   }
 
+  /* Fetch posts from user */
   const fetchPostsFromUser = async (id) => {
-    const { data: postsData } = await client
+    const { data } = await client
       .from('posts')
       .select('*, users(id, handle)')
       .eq('author_id', id)
       .order('created_at', { ascending: false })
-    return postsData
+    return data
+  }
+
+  /* fetch replies */
+  const fetchReplyCount = async (id) => {
+    const { data } = await client.from('replies').select().eq('post_id', id)
+    return data.length
   }
 
   const fetchReplies = async (id) => {
@@ -140,15 +150,7 @@ export const useMainStore = defineStore('main', () => {
       .select('*, users(id, handle)')
       .in('id', repliesIds)
       .order('created_at', { ascending: true })
-    return postsData
-  }
-
-  /* Fetch post */
-  const fetchPost = async (id) => {
-    const { data } = await client.from('posts').select('*, users(id, handle)').eq('id', id).single()
-
-    console.log('Post data', data)
-    return data
+    posts.value = postsData
   }
 
   /* Fetch post's author */
@@ -224,7 +226,6 @@ export const useMainStore = defineStore('main', () => {
     }
     postContent.value = ''
     postBeingEdited.value = null
-    return data
   }
 
   const deletePost = async (id) => {
@@ -266,7 +267,9 @@ export const useMainStore = defineStore('main', () => {
     postBeingReplied,
     requests,
     posts,
+    post,
     me,
+    activeUser,
     userId,
     follows,
     contacts,
@@ -283,7 +286,9 @@ export const useMainStore = defineStore('main', () => {
     fetchPost,
     fetchPostAuthor,
     fetchReplies,
+    fetchReplyCount,
     fetchOwnUser,
+    fetchUserByHandle,
     startPostEdition,
     cancelPostEdition,
     finishPostEdition,

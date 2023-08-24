@@ -5,7 +5,7 @@ const store = useMainStore()
 const { deleteConnection } = store
 
 const props = defineProps({
-  user: {
+  data: {
     type: Object,
     required: true
   }
@@ -14,14 +14,14 @@ const props = defineProps({
 const emit = defineEmits(['deleted'])
 
 const handleDelete = async () => {
-  await deleteConnection(props.user.id)
+  await deleteConnection(props.data.id)
   emit('deleted')
 }
 </script>
 
 <template>
   <li>
-    <User :user="user" size="large" />
+    <User :data="data" size="large" />
     <Button @click="handleDelete">Desconectar</Button>
   </li>
 </template>

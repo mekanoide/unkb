@@ -2,7 +2,7 @@
   <li>
     <header>
       <div>
-        <User :user="post.users" /> <time :datetime="date">{{ date }}</time>
+        <User :data="post.users" /> <time :datetime="date">{{ date }}</time>
       </div>
       <div class="actions">
         <Button variant="ghost" size="small" @click="togglePopover(post.id)">

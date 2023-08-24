@@ -30,7 +30,7 @@ const {
   <ul>
     <Connection
       v-for="connection in connectionsData"
-      :user="connection.connection"
+      :data="connection.connection"
       @deleted="connectionsRefresh"
     />
   </ul>

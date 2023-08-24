@@ -131,7 +131,7 @@ textarea {
 
 input:is([type='text'], [type='email'], [type='password'], [type='number'], [type='search']):focus,
 textarea:focus {
-  outline: 3px solid black;
+  outline: 3px solid var(--colorText);
 }
 
 input:is([type='text'], [type='email'], [type='password'], [type='number'], [type='search']) {

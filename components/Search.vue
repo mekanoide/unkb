@@ -38,7 +38,7 @@ const handleSendConnectionRequest = async (id) => {
       <Dropdown class="results" v-if="showPopover === 'search-results'" closeable>
         <ul v-if="searchResults.length > 0">
           <li v-for="result in searchResults" :key="result.id">
-            <User :user="result" />
+            <User :data="result" />
             <Button size="small" @click="handleSendConnectionRequest(result.id)">Conectar</Button>
           </li>
         </ul>
