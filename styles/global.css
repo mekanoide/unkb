@@ -41,14 +41,15 @@ h3,
 h4 {
   font-weight: bold;
   line-height: 1.25;
+  text-transform: uppercase;
 }
 
-h1,
-h2 {
+h1 {
   font-size: var(--fontXL);
+  text-transform: uppercase;
 }
 
-
+h2,
 h3 {
   font-size: var(--fontL);
 }

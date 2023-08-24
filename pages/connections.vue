@@ -25,13 +25,14 @@ const {
 </script>
 
 <template>
-  <h1>Conexiones con la peñita</h1>
   <Requests />
-  <ul>
+  <h2>Conexiones con la peñita</h2>
+  <ul v-if="connectionsData.length > 0">
     <Connection
       v-for="connection in connectionsData"
       :data="connection.connection"
       @deleted="connectionsRefresh"
     />
   </ul>
+  <EmptyState v-else message="No tienes a nadie" />
 </template>

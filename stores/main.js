@@ -10,6 +10,7 @@ export const useMainStore = defineStore('main', () => {
   const postContent = ref('')
 
   const requests = ref([])
+  const requestUrl = ref(null)
   const posts = ref([])
   const post = ref(null)
   const activeUser = ref(null)
@@ -17,7 +18,6 @@ export const useMainStore = defineStore('main', () => {
   const userId = ref(null)
   const contacts = ref([])
   const follows = ref([])
-  const requestUrl = ref(null)
   const userSearch = ref(null)
   const showPopover = ref('')
 
@@ -83,7 +83,7 @@ export const useMainStore = defineStore('main', () => {
       .select('user_id, requester:users!user_id(handle)')
       .eq('target_id', user.value.id)
     console.log('Request!!!', data)
-    return data
+    requests.value = data
   }
 
   /* Fetch connections */

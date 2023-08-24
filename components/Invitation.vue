@@ -45,6 +45,9 @@ const copyTokenToClipboard = async () => {
 section {
   display: grid;
   gap: var(--spaceS);
+  padding: var(--spaceS) var(--spaceM);
+  border: 1px dashed var(--colorText);
+  border-radius: var(--corner);
 }
 
 button {

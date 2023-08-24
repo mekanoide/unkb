@@ -1,31 +1,31 @@
 <script setup>
+import { storeToRefs } from 'pinia'
 import { useMainStore } from '@/stores/main'
 const store = useMainStore()
 const { fetchConnectionRequests } = store
+const { requests } = storeToRefs(store)
 
 const client = useSupabaseClient()
 const user = useSupabaseUser()
 const userId = user.value.id
 
-const {
-  data: requests,
-  error: errorRequests,
-  refresh: errorRefresh
-} = await useAsyncData('requests', async () => {
-  const data = await fetchConnectionRequests()
-  return data
-})
-
 const acceptConnection = async (id) => {
-  console.log(id)
-  const { data, error } = await client
+  const { data: connection1, error: error1 } = await client
     .from('connections')
-    .upsert({ user1_id: userId, user2_id: id })
-  if (error) {
-    throw error
+    .upsert({ user_id: userId, friend_id: id })
+  const { data: connection2, error: error2 } = await client
+    .from('connections')
+    .upsert({ user_id: id, friend_id: userId })
+  if (error1) {
+    throw error1
+  }
+  if (error2) {
+    throw error2
   }
   return data
 }
+
+await fetchConnectionRequests()
 </script>
 
 <template>
@@ -33,14 +33,20 @@ const acceptConnection = async (id) => {
     <h2>Peticiones de conexión</h2>
     <ul>
       <li v-for="request in requests">
-        <span class="handle">@{{ request.requester.handle }}</span>
-        <Button size="small" @click="acceptConnection(request.user_id)">Aceptar</Button>
+        <User :data="request.requester" />
+        <Button @click="acceptConnection(request.user_id)">Aceptar</Button>
       </li>
     </ul>
   </section>
 </template>
 
 <style scoped>
+section {
+  padding: var(--spaceS) var(--spaceM);
+  border: 1px dashed var(--colorText);
+  border-radius: var(--corner);
+}
+
 li {
   padding: var(--spaceS) 0;
   display: grid;

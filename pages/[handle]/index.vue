@@ -27,9 +27,9 @@ await fetchPostsFromUser(activeUser.value.id)
   <header>
     <h1>@{{ route.params.handle }}</h1>
     <p v-if="activeUser.bio" class="bio">{{ activeUser.bio }}</p>
-    <!-- TODO: for the moment it's just for me to invite people -->
-    <Invitation v-if="activeUser.handle === 'mekanoide'" />
   </header>
+  <!-- TODO: for the moment it's just for me to invite people -->
+  <Invitation v-if="activeUser.handle === 'mekanoide'" />
   <div class="status" v-if="!itsMe">
     <Button v-if="connected">Desconectar</Button>
     <Button v-else>Solicitar conexión</Button>
@@ -54,5 +54,9 @@ header {
 
 .status {
   padding-top: var(--spaceM);
+}
+
+h1 {
+  text-transform: none;
 }
 </style>

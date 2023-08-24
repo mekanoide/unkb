@@ -30,7 +30,7 @@ const { data, error } = await useAsyncData('user', async () => {
     <Search class="search" />
     <nav>
       <NavigationItem class="search-button" label="Search" icon="carbon:search" to="/search" />
-      <NavigationItem label="Chorreo" icon="carbon:chat" to="/" />
+      <NavigationItem label="Chorreo" icon="carbon:home" to="/" />
       <NavigationItem label="Conexiones" icon="carbon:friendship" to="/connections" />
       <NavigationItem label="Guardados" icon="carbon:bookmark" to="/bookmarks" />
       <NavigationItem
