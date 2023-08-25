@@ -8,27 +8,24 @@ import { useMainStore } from '@/stores/main'
 const store = useMainStore()
 const route = useRoute()
 
-const {post, posts } = storeToRefs(store)
+const { postBeingEdited } = storeToRefs(store)
 const { fetchPost, fetchReplies, createReply } = store
 const id = route.params.id
 
-const handlePost = async () => {
+const { data: post, error: postError } = useAsyncData(() => fetchPost(id))
+const { data: replies, error: repliesError, refresh: repliesRefresh } = useAsyncData(() => fetchReplies(id))
+
+const handleReply = async () => {
   await createReply(id)
-  await fetchReplies(id)
+  repliesRefresh()
 }
 
-const refresh = async () => {
-  await fetchReplies(route.params.id)
-}
-
-const date = computed(() => formatDate(post.created_at))
-
-await fetchPost(id)
-await fetchReplies(id)
+const date = computed(() => formatDate(post.value.created_at))
 </script>
 
 <template>
   <div class="post">
+    <EditReply v-if="postBeingEdited" @edited="repliesRefresh" />
     <header>
       <span>
         <User :data="post.users" size="large" />
@@ -38,12 +35,12 @@ await fetchReplies(id)
     <time :datetime="date">{{ date }}</time>
     <PostContent :content="post.content" />
   </div>
-  <PostEditor :rows="2" @post="handlePost" placeholder="Escribe una respuesta" />
+  <PostEditor :rows="2" @post="handleReply" placeholder="Escribe una respuesta" />
   <div>
     <Posts>
-      <Post v-for="post in posts" reply :post="post" @deleted="refresh" />
+      <Post v-for="reply in replies" reply :post="reply" :key="reply.id" @deleted="repliesRefresh" />
     </Posts>
-    <EmptyState v-if="posts.length === 0" message="No hay respuestas" />
+    <EmptyState v-if="replies.length === 0" message="No hay respuestas" />
   </div>
 </template>
 

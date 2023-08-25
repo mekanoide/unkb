@@ -11,16 +11,19 @@ const store = useMainStore()
 const route = useRoute()
 const user = useSupabaseUser()
 
-const { posts, activeUser } = storeToRefs(store)
 const { fetchPostsFromUser, fetchUserByHandle } = store
+
+const { data: activeUser, error: activeUserError } = await useAsyncData(() => {
+  return fetchUserByHandle(route.params.handle)
+})
+const { data: posts, error: postsError } = await useAsyncData(() => {
+  return fetchPostsFromUser(activeUser.value.id)
+})
 
 /* Check user is not themselves */
 const itsMe = computed(async () => {
   return (user.value.id = activeUser.value.id)
 })
-
-await fetchUserByHandle(route.params.handle)
-await fetchPostsFromUser(activeUser.value.id)
 </script>
 
 <template>

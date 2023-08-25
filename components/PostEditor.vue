@@ -2,6 +2,7 @@
   <form @submit.prevent="emit('post')">
     <textarea
       v-model="postContent"
+      columns="50"
       :rows="rows || 4"
       maxlength="1024"
       :placeholder="$attrs.placeholder || 'Escribe tu movida (puedes usar Markdown!!!)'"
@@ -47,6 +48,7 @@ form {
 }
 
 textarea {
+  width: 100%;
   font-size: var(--fontL);
   transition: var(--transition);
 }

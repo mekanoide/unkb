@@ -3,14 +3,13 @@ import { useMainStore } from '@/stores/main'
 import { storeToRefs } from 'pinia'
 
 const client = useSupabaseClient()
-const user = useSupabaseUser()
 const store = useMainStore()
 
 const { sendConnectionRequest } = store
 
-const userId = user.value.id
 const searchResults = ref([])
 const { showPopover } = storeToRefs(store)
+const requested = ref(false)
 
 const searchUsers = async (query) => {
   const { data, error } = await client
@@ -27,6 +26,7 @@ const searchUsers = async (query) => {
 
 const handleSendConnectionRequest = async (id) => {
   await sendConnectionRequest(id)
+  requested.value = true
   console.log('Solicitud enviada!!!')
 }
 </script>
@@ -39,7 +39,7 @@ const handleSendConnectionRequest = async (id) => {
         <ul v-if="searchResults.length > 0">
           <li v-for="result in searchResults" :key="result.id">
             <User :data="result" />
-            <Button size="small" @click="handleSendConnectionRequest(result.id)">Conectar</Button>
+            <Button size="small" @click="handleSendConnectionRequest(result.id)">{{ requested ? 'Cancelar' : 'Conectar' }}</Button>
           </li>
         </ul>
         <div v-else>No se ha encontrado nada con ese nombre</div>

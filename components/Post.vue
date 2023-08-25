@@ -98,6 +98,8 @@ header {
 
 .content {
   max-width: 100%;
+  max-height: 33vh;
+  overflow: hidden;
 }
 
 .actions {

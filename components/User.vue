@@ -20,6 +20,6 @@ const props = defineProps({
 }
 
 .User.large {
-  font-size: var(--fontXL);
+  font-size: var(--fontL);
 }
 </style>

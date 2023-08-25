@@ -32,37 +32,34 @@ export const useMainStore = defineStore('main', () => {
   }
 
   const fetchUserByHandle = async (handle) => {
-    const { data, error } = await client.from('users').select().eq('handle', handle).maybeSingle()
-    if (error) {
-      throw error
-    }
-    activeUser.value = data
+    const { data } = await client.from('users').select().eq('handle', handle).maybeSingle()
+    return data
   }
-
+  /* Fetch follows */
   const fetchFollows = async () => {
-    const { data: followsData } = await client.from('follows').select().eq('user_id', user.value.id)
-    follows.value = followsData
+    const { data } = await client.from('follows').select().eq('user_id', user.value.id)
+    follows.value = data
   }
 
   /* Fetch active post */
   const fetchPost = async (id) => {
     const { data } = await client.from('posts').select('*, users(id, handle)').eq('id', id).single()
-    post.value = data
+    return data
   }
 
   /* Fetch posts from followed users */
   const fetchPostsFromFollowedUsers = async () => {
-    const { data: followsData } = await client.from('follows').select().eq('user_id', user.value.id)
-
-    const followedUserIds = followsData.map((item) => item.follow_id)
+    await fetchFollows()
+    const followedUserIds = follows.value.map((item) => item.follow_id)
     followedUserIds.push(user.value.id)
 
-    const { data: postsData } = await client
+    const { data } = await client
       .from('posts')
       .select('*, users(id, handle)')
       .in('author_id', followedUserIds)
+      /* .eq('reply_to', null) */
       .order('created_at', { ascending: false })
-    posts.value = postsData
+    return data
   }
 
   /* Request connection */
@@ -141,16 +138,12 @@ export const useMainStore = defineStore('main', () => {
   }
 
   const fetchReplies = async (id) => {
-    const { data: repliesData } = await client.from('replies').select().eq('post_id', id)
-    /* .order('created_at', { ascending: false }) */
-
-    const repliesIds = repliesData.map((item) => item.reply_id)
-    const { data: postsData } = await client
-      .from('posts')
+    const { data } = await client
+      .from('replies')
       .select('*, users(id, handle)')
-      .in('id', repliesIds)
+      .eq('post_id', id)
       .order('created_at', { ascending: true })
-    posts.value = postsData
+    return data
   }
 
   /* Fetch post's author */
@@ -176,30 +169,20 @@ export const useMainStore = defineStore('main', () => {
   /* Create new reply to post */
   const createReply = async (id) => {
     const { data: postData, error: postError } = await client
-      .from('posts')
+      .from('replies')
       .upsert({
         author_id: user.value.id,
         content: postContent.value,
         created_at: new Date(),
-        reply_to: id
+        post_id: id
       })
       .select()
       .single()
     if (postError) {
       throw postError
     }
-    console.log('Post data', postData)
-    const newPostId = postData.id
-    const { data: replyData, error: replyError } = await client.from('replies').upsert({
-      post_id: id,
-      reply_id: newPostId
-    })
-    if (replyError) {
-      throw replyError
-    }
-
     postContent.value = ''
-    return replyData
+    return postData
   }
 
   /* Start post edition */
@@ -213,7 +196,24 @@ export const useMainStore = defineStore('main', () => {
   }
 
   /* Finish post edition and update post */
-  const finishPostEdition = async () => {
+  const finishPostEdition = async (type) => {
+    if (type === 'reply') {
+      const { data, error } = await client
+        .from('replies')
+        .update({
+          content: postContent.value,
+          edited: true
+        })
+        .eq('id', postBeingEdited.value)
+        .select()
+      if (error) {
+        throw error
+      }
+      postContent.value = ''
+      postBeingEdited.value = null
+      return data
+    }
+
     const { data, error } = await client
       .from('posts')
       .update({
@@ -226,6 +226,7 @@ export const useMainStore = defineStore('main', () => {
     }
     postContent.value = ''
     postBeingEdited.value = null
+    return data
   }
 
   const deletePost = async (id) => {

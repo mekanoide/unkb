@@ -13,16 +13,20 @@ const acceptConnection = async (id) => {
   const { data: connection1, error: error1 } = await client
     .from('connections')
     .upsert({ user_id: userId, friend_id: id })
-  const { data: connection2, error: error2 } = await client
-    .from('connections')
-    .upsert({ user_id: id, friend_id: userId })
   if (error1) {
     throw error1
   }
+  const { data: connection2, error: error2 } = await client
+    .from('connections')
+    .upsert({ user_id: id, friend_id: userId })
   if (error2) {
     throw error2
   }
-  return data
+  refreshRequests()
+}
+
+const refreshRequests = async () => {
+  await fetchConnectionRequests()
 }
 
 await fetchConnectionRequests()

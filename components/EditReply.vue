@@ -15,7 +15,7 @@ const { finishPostEdition } = store
 const emit = defineEmits(['edited'])
 
 const handlePost = async () => {
-  await finishPostEdition()
+  await finishPostEdition('reply')
   console.log('Edición terminada!!!')
   emit('edited')
 }

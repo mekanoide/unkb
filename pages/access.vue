@@ -9,6 +9,7 @@ const user = useSupabaseUser()
 const email = ref('')
 const password = ref('')
 const loading = ref(false)
+const errorMessage = ref(null)
 
 const handleSignIn = async () => {
   const { data, error } = await auth.signInWithPassword({
@@ -16,7 +17,7 @@ const handleSignIn = async () => {
     password: password.value
   })
   if (error) {
-    throw error
+    errorMessage.value = error
   }
   return navigateTo('/')
 }
@@ -44,6 +45,7 @@ watchEffect(async () => {
       />
       <Button type="submit" variant="primary" :disabled="loading">Entrar</Button>
     </form>
+    <div v-if="errorMessage">ERROR!!! Tus credenciales probablemente no sean válidas.</div>
   </div>
 </template>
 
