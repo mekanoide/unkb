@@ -3,33 +3,27 @@ definePageMeta({
   middleware: ['auth']
 })
 
-import { storeToRefs } from 'pinia'
 import { useMainStore } from '@/stores/main'
 
 const store = useMainStore()
-const client = useSupabaseClient()
-const user = useSupabaseUser()
 
-const { me, editContent, editId } = storeToRefs(store)
+const { fetchConnections } = store
 
 /* Fetch posts from followed users */
 const {
-  data: connectionsData,
+  data: connections,
   error: connectionsError,
   refresh: connectionsRefresh
-} = await useAsyncData('connections', async () => {
-  const data = await store.fetchConnections()
-  console.log(data)
-  return data
-})
+} = useAsyncData(() => fetchConnections())
+
 </script>
 
 <template>
   <Requests />
   <h2>Conexiones con la peñita</h2>
-  <ul v-if="connectionsData.length > 0">
+  <ul v-if="connections">
     <Connection
-      v-for="connection in connectionsData"
+      v-for="connection in connections"
       :data="connection.connection"
       @deleted="connectionsRefresh"
     />

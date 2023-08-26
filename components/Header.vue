@@ -3,6 +3,7 @@ import { useMainStore } from '@/stores/main'
 const store = useMainStore()
 const { auth } = useSupabaseAuthClient()
 const { fetchOwnUser } = store
+const router = useRouter()
 
 const handleSignOut = async () => {
   const shouldExit = confirm('Seguro que quieres cerrar sesión?')
@@ -14,7 +15,6 @@ const handleSignOut = async () => {
     console.log(error)
     return
   }
-  showPopover.value = ''
   router.push('/access')
 }
 

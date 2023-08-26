@@ -38,7 +38,7 @@ export const useMainStore = defineStore('main', () => {
   /* Fetch follows */
   const fetchFollows = async () => {
     const { data } = await client.from('follows').select().eq('user_id', user.value.id)
-    follows.value = data
+    return data
   }
 
   /* Fetch active post */
@@ -64,23 +64,20 @@ export const useMainStore = defineStore('main', () => {
 
   /* Request connection */
   const sendConnectionRequest = async (id) => {
-    const { data: connectionData, error: connectionError } = await client
-      .from('connection_requests')
-      .upsert({
-        target_id: id,
-        user_id: user.value.id
-      })
-    return connectionData
+    const { data } = await client.from('connection_requests').upsert({
+      target_id: id,
+      user_id: user.value.id
+    })
+    return data
   }
 
   /* Fetch connection requests */
   const fetchConnectionRequests = async () => {
-    const { data, error } = await client
+    const { data } = await client
       .from('connection_requests')
       .select('user_id, requester:users!user_id(handle)')
       .eq('target_id', user.value.id)
-    console.log('Request!!!', data)
-    requests.value = data
+    return data
   }
 
   /* Fetch connections */
@@ -111,14 +108,6 @@ export const useMainStore = defineStore('main', () => {
       .delete()
       .eq('user_id', id)
       .eq('friend_id', user.value.id)
-
-    if (error1) {
-      throw error1
-    }
-
-    if (error2) {
-      throw error2
-    }
   }
 
   /* Fetch posts from user */

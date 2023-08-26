@@ -7,18 +7,21 @@ import { useMainStore } from '@/stores/main'
 import { storeToRefs } from 'pinia'
 
 const store = useMainStore()
-
 const route = useRoute()
 const user = useSupabaseUser()
 
 const { fetchPostsFromUser, fetchUserByHandle } = store
 
-const { data: activeUser, error: activeUserError } = await useAsyncData(() => {
-  return fetchUserByHandle(route.params.handle)
-})
-const { data: posts, error: postsError } = await useAsyncData(() => {
-  return fetchPostsFromUser(activeUser.value.id)
-})
+const {
+  data: activeUser,
+  error: activeUserError
+} = useAsyncData(() => fetchUserByHandle(route.params.handle))
+
+const {
+  data: posts,
+  error: postsError,
+  refresh: postsRefresh
+} = useAsyncData(() => fetchPostsFromUser(activeUser.value.id))
 
 /* Check user is not themselves */
 const itsMe = computed(async () => {
@@ -37,7 +40,7 @@ const itsMe = computed(async () => {
     <Button v-if="connected">Desconectar</Button>
     <Button v-else>Solicitar conexión</Button>
   </div>
-  <EditPost v-if="store.postBeingEdited" @refresh="postsRefresh" />
+  <EditPost v-if="store.postBeingEdited" @edited="postsRefresh" />
   <Posts>
     <Post v-for="post in posts" :post="post" @deleted="postsRefresh" />
   </Posts>

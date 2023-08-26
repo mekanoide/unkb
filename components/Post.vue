@@ -14,6 +14,10 @@ const props = defineProps({
 })
 const emit = defineEmits(['deleted', 'edited'])
 
+const contentElement = ref(null)
+const truncate = ref(false)
+const expanded = ref(false)
+
 const { showPopover } = storeToRefs(store)
 
 const { startPostEdition, togglePopover, deletePost, fetchPostAuthor, fetchReplyCount } = store
@@ -37,7 +41,17 @@ const handleDelete = async () => {
   emit('deleted')
 }
 
+const toggleExpanded = () => {
+  expanded.value = !expanded.value
+}
+
 const replyCount = await fetchReplyCount(props.post.id)
+
+/* Get content height in order to whether truncate it or not */
+onMounted(() => {
+  console.log('Height', contentElement.value.clientHeight)
+  truncate.value = contentElement.value.clientHeight > 666
+})
 </script>
 
 <template>
@@ -52,16 +66,17 @@ const replyCount = await fetchReplyCount(props.post.id)
         </Button>
       </div>
     </header>
+    <div v-if="post.reply_to">En respuesta a <User :data="postAuthor" /></div>
     <NuxtLink class="post-link" :to="post.reply_to ? `/post/${post.reply_to}` : `/post/${post.id}`">
-      <div v-if="post.reply_to">En respuesta a <User :data="postAuthor" /></div>
-      <div class="content">
+      <div class="content" :class="{ truncate: truncate && !expanded }" ref="contentElement">
         <PostContent :content="post.content" />
       </div>
-      <small v-if="post.edited">Editado</small>
-      <footer v-if="replyCount > 0">
-        <Icon name="carbon:chat" size="1.5rem" /> {{ replyCount }}
-      </footer>
     </NuxtLink>
+    <Truncate v-if="truncate" :expanded="expanded" @click="toggleExpanded" />
+    <small v-if="post.edited">Editado</small>
+    <footer v-if="replyCount > 0">
+      <Icon name="carbon:chat" size="1.5rem" /> {{ replyCount }}
+    </footer>
     <Dropdown class="menu" v-if="showPopover === post.id">
       <Menu v-if="isOwner">
         <MenuItem @click="handleEdit">Editar</MenuItem>
@@ -98,8 +113,11 @@ header {
 
 .content {
   max-width: 100%;
-  max-height: 33vh;
+}
+
+.content.truncate {
   overflow: hidden;
+  max-height: 665px;
 }
 
 .actions {

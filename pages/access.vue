@@ -37,10 +37,12 @@ watchEffect(async () => {
       <TextField
         label="Correo electrónico"
         type="email"
+        autocomplete="email"
         v-model="email" />
       <TextField
         label="Contraseña"
         type="password"
+        autocomplete="current-password"
         v-model="password"
       />
       <Button type="submit" variant="primary" :disabled="loading">Entrar</Button>
