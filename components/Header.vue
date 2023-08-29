@@ -1,8 +1,10 @@
 <script setup>
+import { storeToRefs } from 'pinia'
 import { useMainStore } from '@/stores/main'
 const store = useMainStore()
 const { auth } = useSupabaseAuthClient()
 const { fetchOwnUser } = store
+const { me } = storeToRefs(store)
 const router = useRouter()
 
 const handleSignOut = async () => {
@@ -15,7 +17,7 @@ const handleSignOut = async () => {
     console.log(error)
     return
   }
-  router.push('/access')
+  router.push('/signin')
 }
 
 const { data, error } = await useAsyncData('user', async () => {
@@ -29,22 +31,35 @@ const { data, error } = await useAsyncData('user', async () => {
     <Logo class="logo" />
     <Search class="search" />
     <nav>
-      <NavigationItem class="search-button" label="Search" icon="carbon:search" to="/search" />
-      <NavigationItem label="Chorreo" icon="carbon:home" to="/" />
-      <NavigationItem label="Conexiones" icon="carbon:friendship" to="/connections" />
-      <NavigationItem label="Guardados" icon="carbon:bookmark" to="/bookmarks" />
+      <NavigationItem
+        label="Chorreo"
+        icon="carbon:home"
+        to="/" />
+      <NavigationItem
+        class="search-button"
+        label="Search"
+        icon="carbon:search"
+        to="/search" />
+      <NavigationItem
+        label="Guardados"
+        icon="carbon:bookmark"
+        to="/bookmarks" />
       <NavigationItem
         class="manifesto-button"
         label="Manifiesto"
         icon="carbon:idea"
-        to="/manifesto"
-      />
-      <NavigationItem label="Perfil" icon="carbon:user" :to="`/${store.me.handle}`" />
+        to="/manifesto" />
+      <NavigationItem
+        label="Perfil"
+        icon="carbon:user"
+        :to="`/${me.handle}`" />
     </nav>
     <div class="actions">
       <ToggleColorMode />
       <NavigationButton @click="handleSignOut">
-        <Icon name="carbon:exit" size="1.5rem" />
+        <Icon
+          name="carbon:exit"
+          size="1.5rem" />
         Cerrar sesión
       </NavigationButton>
     </div>

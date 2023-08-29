@@ -16,7 +16,7 @@
   margin: auto;
   padding: var(--spaceM);
   display: grid;
-  grid-template-columns: 1fr 2fr;
+  grid-template-columns: 1fr 3fr;
   gap: var(--spaceL);
   align-items: start;
 }

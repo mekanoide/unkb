@@ -1,9 +1,3 @@
-<template>
-  <div :class="{ expanded: expanded}">
-    <button type="button" @click="emit('click')">{{ expanded ? 'Menos' : 'Leer más' }}</button>
-  </div>
-</template>
-
 <script setup>
 const props = defineProps({
   expanded: {
@@ -12,6 +6,12 @@ const props = defineProps({
 })
 const emit = defineEmits(['click'])
 </script>
+
+<template>
+  <div :class="{ expanded: expanded}">
+    <button type="button" @click="emit('click')">{{ expanded ? 'Ver menos' : 'Ver más' }}</button>
+  </div>
+</template>
 
 <style scoped>
 div {

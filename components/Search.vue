@@ -1,11 +1,13 @@
 <script setup>
 import { useMainStore } from '@/stores/main'
+import { useConnectionsStore } from '@/stores/connections'
 import { storeToRefs } from 'pinia'
 
 const client = useSupabaseClient()
 const store = useMainStore()
+const connectionsStore = useConnectionsStore()
 
-const { sendConnectionRequest } = store
+const { sendConnectionRequest } = connectionsStore
 
 const searchResults = ref([])
 const { showPopover } = storeToRefs(store)

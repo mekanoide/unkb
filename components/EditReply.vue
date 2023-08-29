@@ -7,8 +7,8 @@
 </template>
 
 <script setup>
-import { useMainStore } from '@/stores/main'
-const store = useMainStore()
+import { usePostStore } from '@/stores/post'
+const store = usePostStore()
 
 const { finishPostEdition } = store
 

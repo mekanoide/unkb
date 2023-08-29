@@ -15,7 +15,7 @@
   --spaceL: 2.5rem;
   --spaceXL: 5rem;
 
-  --maxWidthBody: 1340px;
+  --maxWidthBody: 1440px;
 
   --fontBase: clamp(14px, calc(14px + 0.5vmin), 20px);
   --fontS: 0.75rem;

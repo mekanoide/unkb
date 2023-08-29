@@ -3,13 +3,15 @@
 </template>
 
 <script setup>
-import { useMainStore } from '@/stores/main'
-const store = useMainStore()
+import { usePostStore } from '@/stores/post'
+const store = usePostStore()
+
+const { createPost } = store
 
 const emit = defineEmits(['posted'])
 
 const handlePost = async () => {
-  await store.createPost()
+  await createPost()
   emit('posted')
 }
 </script>

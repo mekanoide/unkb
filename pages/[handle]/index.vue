@@ -4,18 +4,24 @@ definePageMeta({
 })
 
 import { useMainStore } from '@/stores/main'
-import { storeToRefs } from 'pinia'
+import { usePostStore } from '@/stores/post'
+import { useConnectionsStore } from '@/stores/connections'
 
-const store = useMainStore()
+const mainStore = useMainStore()
+const postStore = usePostStore()
+const connectionsStore = useConnectionsStore()
 const route = useRoute()
 const user = useSupabaseUser()
+const tab = ref('content')
 
-const { fetchPostsFromUser, fetchUserByHandle } = store
+const { fetchUserByHandle } = mainStore
+const { postBeingEdited, fetchPostsFromUser } = postStore
+const { areWeConnected } = connectionsStore
 
-const {
-  data: activeUser,
-  error: activeUserError
-} = useAsyncData(() => fetchUserByHandle(route.params.handle))
+
+const { data: activeUser, error: activeUserError } = useAsyncData(() =>
+  fetchUserByHandle(route.params.handle)
+)
 
 const {
   data: posts,
@@ -23,28 +29,68 @@ const {
   refresh: postsRefresh
 } = useAsyncData(() => fetchPostsFromUser(activeUser.value.id))
 
-/* Check user is not themselves */
-const itsMe = computed(async () => {
-  return (user.value.id = activeUser.value.id)
-})
+const connected = async (id) => {
+  const data = await areWeConnected(id)
+  console.log('conectados?', data)
+  return data
+ }
 </script>
 
 <template>
   <header>
     <h1>@{{ route.params.handle }}</h1>
-    <p v-if="activeUser.bio" class="bio">{{ activeUser.bio }}</p>
+    <p
+      v-if="activeUser.bio"
+      class="bio">
+      {{ activeUser.bio }}
+    </p>
   </header>
-  <!-- TODO: for the moment it's just for me to invite people -->
-  <Invitation v-if="activeUser.handle === 'mekanoide'" />
-  <div class="status" v-if="!itsMe">
-    <Button v-if="connected">Desconectar</Button>
-    <Button v-else>Solicitar conexión</Button>
+  <div
+    class="status"
+    v-if="user.id !== activeUser.id">
+    <Button v-if="connected(activeUser.id) === true">Desconectar</Button>
+    <Button variant="primary" v-else>Pedir conexión</Button>
   </div>
-  <EditPost v-if="store.postBeingEdited" @edited="postsRefresh" />
-  <Posts>
-    <Post v-for="post in posts" :post="post" @deleted="postsRefresh" />
-  </Posts>
-  <EmptyState v-if="posts?.length === 0" message="Aún no hay nada publicado" />
+  <TabMenu>
+    <Tab
+      value="content"
+      :selected="tab === 'content'"
+      @click="tab = 'content'">
+      Contenido
+    </Tab>
+    <Tab
+      value="connections"
+      :selected="tab === 'connections'"
+      @click="tab = 'connections'">
+      Conexiones
+    </Tab>
+    <Tab
+      v-if="user.id === activeUser.id"
+      value="invitations"
+      :selected="tab === 'invitations'"
+      @click="tab = 'invitations'">
+      Invitaciones
+    </Tab>
+  </TabMenu>
+  <!-- TODO: for the moment it's just for me to invite people -->
+  <Invitations v-if="tab === 'invitations'" />
+  <Connections :id="activeUser.id" v-if="tab === 'connections'" />
+  <div
+    v-if="tab === 'content'"
+    class="posts">
+    <ul>
+      <Post
+        v-for="post in posts"
+        :post="post"
+        @deleted="postsRefresh" />
+    </ul>
+    <EmptyState
+      v-if="posts?.length === 0"
+      message="Aún no hay nada publicado" />
+  </div>
+  <EditPost
+    v-if="postBeingEdited"
+    @edited="postsRefresh" />
 </template>
 
 <style scoped>

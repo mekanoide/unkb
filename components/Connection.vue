@@ -1,6 +1,6 @@
 <script setup>
-import { useMainStore } from '@/stores/main'; 
-const store = useMainStore()
+import { useConnectionsStore } from '@/stores/connections'
+const store = useConnectionsStore()
 
 const { deleteConnection } = store
 
@@ -21,23 +21,17 @@ const handleDelete = async () => {
 
 <template>
   <li>
-    <User :data="data" size="large" />
+    <User
+      :data="data"
+      size="large" />
     <Button @click="handleDelete">Desconectar</Button>
   </li>
 </template>
 
 <style scoped>
 li {
-  padding: var(--spaceM) 0;
-  position: relative;
-  width: 100%;
-  max-width: 100%;
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: center;
-}
-
-li + li {
-  border-top: 1px dashed var(--colorText);
 }
 </style>

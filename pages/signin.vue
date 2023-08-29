@@ -30,7 +30,7 @@ watchEffect(async () => {
 </script>
 
 <template>
-  <div class="Access">
+  <div class="Signin">
     <h1>Entrar</h1>
     <p>Si no tienes una cuenta, tendrás que pedir que alguien te invite.</p>
     <form @submit.prevent="handleSignIn">
@@ -47,12 +47,15 @@ watchEffect(async () => {
       />
       <Button type="submit" variant="primary" :disabled="loading">Entrar</Button>
     </form>
-    <div v-if="errorMessage">ERROR!!! Tus credenciales probablemente no sean válidas.</div>
+    <p>Tienes una invitación? <NuxtLink to="/signup">Entra aquí!</NuxtLink></p>
   </div>
 </template>
 
 <style scoped>
-.Access {
+a {
+  text-decoration: underline;
+}
+.Signin {
   display: grid;
   grid-auto-flow: row;
   gap: var(--spaceM);

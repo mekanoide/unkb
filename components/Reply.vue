@@ -1,35 +1,11 @@
-<template>
-  <li>
-    <header>
-      <div>
-        <User :data="post.users" /> <time :datetime="date">{{ date }}</time>
-      </div>
-      <div class="actions">
-        <Button variant="ghost" size="small" @click="togglePopover(post.id)">
-          <Icon name="carbon:overflow-menu-horizontal" size="1.5rem" />
-        </Button>
-      </div>
-    </header>
-    <PostContent :content="post.content" />
-    <small v-if="post.edited">Editado</small>
-    <Dropdown class="menu" v-if="showPopover === post.id">
-      <Menu v-if="isOwner">
-        <MenuItem @click="handleEdit">Editar</MenuItem>
-        <MenuItem @click="handleDelete">Eliminar</MenuItem>
-      </Menu>
-      <Menu v-else>
-        <MenuItem>Denunciar</MenuItem>
-      </Menu>
-    </Dropdown>
-  </li>
-</template>
-
 <script setup>
 import { useMainStore } from '@/stores/main'
+import { usePostStore } from '@/stores/post'
 import { storeToRefs } from 'pinia'
 const user = useSupabaseUser()
 
 const store = useMainStore()
+const postStore = usePostStore()
 const props = defineProps({
   post: {
     type: Object,
@@ -40,7 +16,8 @@ const emit = defineEmits(['delete', 'edit'])
 
 const { showPopover } = storeToRefs(store)
 
-const { startPostEdition, togglePopover, deletePost } = store
+const { togglePopover } = store
+const { startPostEdition, deletePost } = postStore
 
 const isOwner = computed(() => {
   return props.post.author_id === user.value.id
@@ -58,6 +35,39 @@ const handleDelete = async () => {
   emit('delete')
 }
 </script>
+
+<template>
+  <li>
+    <header>
+      <div>
+        <User :data="post.users" /> <time :datetime="date">{{ date }}</time>
+      </div>
+      <div class="actions">
+        <Button
+          variant="ghost"
+          size="small"
+          @click="togglePopover(post.id)">
+          <Icon
+            name="carbon:overflow-menu-horizontal"
+            size="1.5rem" />
+        </Button>
+      </div>
+    </header>
+    <PostContent :content="post.content" />
+    <small v-if="post.edited">Editado</small>
+    <Dropdown
+      class="menu"
+      v-if="showPopover === post.id">
+      <Menu v-if="isOwner">
+        <MenuItem @click="handleEdit">Editar</MenuItem>
+        <MenuItem @click="handleDelete">Eliminar</MenuItem>
+      </Menu>
+      <Menu v-else>
+        <MenuItem>Denunciar</MenuItem>
+      </Menu>
+    </Dropdown>
+  </li>
+</template>
 
 <style scoped>
 li {

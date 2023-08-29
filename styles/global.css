@@ -71,6 +71,24 @@ small {
   font-size: var(--fontS);
 }
 
+ul:not(article *) {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+}
+
+li:not(article *) {
+  padding: var(--spaceM) 0;
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+}
+
+li + li:not(article *) {
+  border-top: 1px dashed var(--colorText);
+}
+
 /* Post content format */
 
 article {
@@ -121,7 +139,13 @@ article {
 
 /* Form elements */
 
-input:is([type='text'], [type='email'], [type='password'], [type='number'], [type='search']),
+input:is(
+    [type='text'],
+    [type='email'],
+    [type='password'],
+    [type='number'],
+    [type='search']
+  ),
 textarea {
   width: 100%;
   border: 1px solid var(--colorText);
@@ -130,12 +154,24 @@ textarea {
   transition: var(--transition);
 }
 
-input:is([type='text'], [type='email'], [type='password'], [type='number'], [type='search']):focus,
+input:is(
+    [type='text'],
+    [type='email'],
+    [type='password'],
+    [type='number'],
+    [type='search']
+  ):focus,
 textarea:focus {
   outline: 3px solid var(--colorText);
 }
 
-input:is([type='text'], [type='email'], [type='password'], [type='number'], [type='search']) {
+input:is(
+    [type='text'],
+    [type='email'],
+    [type='password'],
+    [type='number'],
+    [type='search']
+  ) {
   height: 3rem;
 }
 

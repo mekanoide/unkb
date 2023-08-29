@@ -1,12 +1,3 @@
-<template>
-  <a
-    :aria-controls="value"
-    role="tab"
-    :aria-selected="selected">
-      <slot><!-- optional fallback --></slot>
-  </a>
-</template>
-
 <script setup>
 const props = defineProps({
   selected: {
@@ -20,6 +11,15 @@ const props = defineProps({
 const emit = defineEmits(['select'])
 </script>
 
+<template>
+  <a
+    :aria-controls="value"
+    role="tab"
+    :aria-selected="selected">
+      <slot><!-- optional fallback --></slot>
+  </a>
+</template>
+
 <style scoped>
 a {
   color: var(--colorSecondary);
@@ -28,7 +28,7 @@ a {
   place-content: center;
   padding: 0 var(--spaceL);
   height: 3rem;
-  border-bottom: 4px solid transparent;
+  border-bottom: 6px solid transparent;
   transition: all 200ms ease;
   cursor: pointer;
 }
@@ -38,6 +38,6 @@ a:hover {
 }
 
 a[aria-selected=true] {
-  border-bottom: 4px solid var(--colorText);
+  border-bottom: 6px solid var(--colorText);
 }
 </style>

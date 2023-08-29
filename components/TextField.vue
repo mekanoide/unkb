@@ -1,3 +1,30 @@
+<script setup>
+const props = defineProps({
+  label: {
+    type: String,
+    required: false
+  },
+  modelValue: {
+    type: String,
+    required: true
+  },
+  textarea: {
+    type: Boolean
+  },
+  disabled: {
+    type: Boolean
+  },
+  error: {
+    type: String
+  },
+  instructions: {
+    type: String
+  }
+})
+
+const emit = defineEmits(['update:modelValue', 'blur'])
+</script>
+
 <template>
   <div class="TextField">
     <label for="textfield">{{ label }}</label>
@@ -26,33 +53,6 @@
     <small v-if="instructions">{{ instructions }}</small>
   </div>
 </template>
-
-<script setup>
-const props = defineProps({
-  label: {
-    type: String,
-    required: false
-  },
-  modelValue: {
-    type: String,
-    required: true
-  },
-  textarea: {
-    type: Boolean
-  },
-  disabled: {
-    type: Boolean
-  },
-  error: {
-    type: String
-  },
-  instructions: {
-    type: String
-  }
-})
-
-const emit = defineEmits(['update:modelValue', 'blur'])
-</script>
 
 <style scoped>
 label {

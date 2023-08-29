@@ -1,8 +1,11 @@
 <script setup>
 import { useMainStore } from '@/stores/main'
+import { usePostStore } from '@/stores/post'
 import { storeToRefs } from 'pinia'
 const user = useSupabaseUser()
 const store = useMainStore()
+const postStore = usePostStore()
+
 const props = defineProps({
   post: {
     type: Object,
@@ -20,9 +23,13 @@ const expanded = ref(false)
 
 const { showPopover } = storeToRefs(store)
 
-const { startPostEdition, togglePopover, deletePost, fetchPostAuthor, fetchReplyCount } = store
+const { togglePopover } = store
+const { startPostEdition, deletePost, fetchPostAuthor, fetchReplyCount } =
+  postStore
 
-const postAuthor = props.post.reply_to ? await fetchPostAuthor(props.post.reply_to) : null
+const postAuthor = props.post.reply_to
+  ? await fetchPostAuthor(props.post.reply_to)
+  : null
 
 const isOwner = computed(() => {
   return props.post.author_id === user.value.id
@@ -57,27 +64,50 @@ onMounted(() => {
 <template>
   <li>
     <header>
-      <div>
-        <User :data="post.users" /> <time :datetime="date">{{ date }}</time>
-      </div>
+      <User :data="post.users" />
       <div class="actions">
-        <Button variant="ghost" size="small" @click.stop="togglePopover(post.id)">
-          <Icon name="carbon:overflow-menu-horizontal" size="1.5rem" />
+        <Button
+          variant="ghost"
+          size="small"
+          @click.stop="togglePopover(post.id)">
+          <Icon
+            name="carbon:overflow-menu-horizontal"
+            size="1.5rem" />
         </Button>
       </div>
     </header>
     <div v-if="post.reply_to">En respuesta a <User :data="postAuthor" /></div>
-    <NuxtLink class="post-link" :to="post.reply_to ? `/post/${post.reply_to}` : `/post/${post.id}`">
-      <div class="content" :class="{ truncate: truncate && !expanded }" ref="contentElement">
+    <NuxtLink
+      class="post-link"
+      :to="post.reply_to ? `/post/${post.reply_to}` : `/post/${post.id}`">
+      <div
+        class="content"
+        :class="{ truncate: truncate && !expanded }"
+        ref="contentElement">
         <PostContent :content="post.content" />
       </div>
     </NuxtLink>
-    <Truncate v-if="truncate" :expanded="expanded" @click="toggleExpanded" />
-    <small v-if="post.edited">Editado</small>
+    <Truncate
+      v-if="truncate"
+      :expanded="expanded"
+      @click="toggleExpanded" />
     <footer v-if="replyCount > 0">
-      <Icon name="carbon:chat" size="1.5rem" /> {{ replyCount }}
+      <div>
+        <small>
+          <time :datetime="date">{{ date }}</time>
+        </small>
+        <small v-if="post.edited"> - editado</small>
+      </div>
+      <div class="reply-count">
+        <Icon
+          name="carbon:chat"
+          size="1.5rem" />
+        {{ replyCount }}
+      </div>
     </footer>
-    <Dropdown class="menu" v-if="showPopover === post.id">
+    <Dropdown
+      class="menu"
+      v-if="showPopover === post.id">
       <Menu v-if="isOwner">
         <MenuItem @click="handleEdit">Editar</MenuItem>
         <MenuItem @click="handleDelete">Eliminar</MenuItem>
@@ -90,17 +120,6 @@ onMounted(() => {
 </template>
 
 <style scoped>
-li {
-  padding: var(--spaceM) 0;
-  position: relative;
-  width: 100%;
-  max-width: 100%;
-}
-
-li + li {
-  border-top: 1px dashed var(--colorText);
-}
-
 .author {
   font-weight: bold;
 }
@@ -130,5 +149,9 @@ header {
 .menu {
   top: 3.5rem;
   right: 0;
+}
+
+.reply-count {
+  margin-top: var(--spaceS);
 }
 </style>

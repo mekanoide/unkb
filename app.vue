@@ -1,10 +1,3 @@
-<template>
-  <NuxtLayout>
-    <Loading v-if="loading" />
-    <NuxtPage />
-  </NuxtLayout>
-</template>
-
 <script setup>
 const nuxtApp = useNuxtApp()
 const loading = ref(false)
@@ -20,3 +13,10 @@ nuxtApp.hook('page:finish', () => {
   loading.value = false
 })
 </script>
+
+<template>
+  <NuxtLayout>
+    <Loading v-if="loading" />
+    <NuxtPage />
+  </NuxtLayout>
+</template>
