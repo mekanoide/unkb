@@ -1,10 +1,11 @@
 <script setup>
 import { useConnectionsStore } from '@/stores/connections'
 const store = useConnectionsStore()
-const { fetchConnectionRequests, makeConnection } = store
+const { fetchConnectionRequests, acceptConnection } = store
 
-const acceptConnection = async (id) => {
-  await makeConnection(id)
+const handleAcceptConnection = async (id) => {
+  console.log('handle!', id)
+  await acceptConnection(id)
   refresh()
 }
 
@@ -21,7 +22,7 @@ const {
     <ul>
       <li v-for="request in requests">
         <User :data="request.requester" />
-        <Button @click="acceptConnection(request.user_id)">Aceptar</Button>
+        <Button @click="handleAcceptConnection(request.user_id)">Aceptar</Button>
       </li>
     </ul>
   </section>

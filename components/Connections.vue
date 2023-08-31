@@ -17,6 +17,8 @@ const {
   error: connectionsError,
   refresh: connectionsRefresh
 } = useAsyncData(() => fetchConnections(props.id))
+
+/* TODO: add requested connections */
 </script>
 
 <template>

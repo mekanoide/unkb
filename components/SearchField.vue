@@ -1,15 +1,31 @@
 <script setup>
 const searchQuery = ref('')
-
 const emit = defineEmits(['submit'])
+
+const handleInput = () => {
+  if (searchQuery.value.length > 0) {
+    emit('submit', searchQuery.value)
+  }
+}
 </script>
 
 <template>
   <div class="SearchField">
-    <form action="search" @submit.prevent="emit('submit', searchQuery)">
-      <input type="search" v-model="searchQuery" placeholder="Buscar usuarios" />
-      <Button type="submit" class="search-button" variant="square">
-        <Icon name="carbon:search" size="1.5rem" />
+    <form
+      action="search"
+      @submit.prevent="emit('submit', searchQuery)">
+      <input
+        type="search"
+        v-model="searchQuery"
+        placeholder="Buscar usuarios"
+        @input="handleInput" />
+      <Button
+        type="submit"
+        class="search-button"
+        variant="square">
+        <Icon
+          name="carbon:search"
+          size="1.5rem" />
       </Button>
     </form>
   </div>

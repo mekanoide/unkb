@@ -91,14 +91,14 @@ onMounted(() => {
       v-if="truncate"
       :expanded="expanded"
       @click="toggleExpanded" />
-    <footer v-if="replyCount > 0">
+    <footer>
       <div>
         <small>
           <time :datetime="date">{{ date }}</time>
         </small>
         <small v-if="post.edited"> - editado</small>
       </div>
-      <div class="reply-count">
+      <div class="reply-count" v-if="replyCount > 0">
         <Icon
           name="carbon:chat"
           size="1.5rem" />

@@ -7,38 +7,35 @@ import { useMainStore } from '@/stores/main'
 import { usePostStore } from '@/stores/post'
 import { useConnectionsStore } from '@/stores/connections'
 
+/* composables */
+
 const mainStore = useMainStore()
 const postStore = usePostStore()
 const connectionsStore = useConnectionsStore()
 const route = useRoute()
 const user = useSupabaseUser()
+
+/* properties and function */
+
 const tab = ref('content')
+const connected = ref(false)
 
 const { fetchUserByHandle } = mainStore
 const { postBeingEdited, fetchPostsFromUser } = postStore
-const { areWeConnected } = connectionsStore
+const { areWeConnected, deleteConnection, sendConnectionRequest } = connectionsStore
 
+/* fetch data */
 
-const { data: activeUser, error: activeUserError } = useAsyncData(() =>
-  fetchUserByHandle(route.params.handle)
-)
+const { data: activeUser } = useAsyncData(() => fetchUserByHandle(route.params.handle))
 
-const {
-  data: posts,
-  error: postsError,
-  refresh: postsRefresh
-} = useAsyncData(() => fetchPostsFromUser(activeUser.value.id))
+const { data: posts } = useAsyncData(() => fetchPostsFromUser(activeUser.value.id))
 
-const connected = async (id) => {
-  const data = await areWeConnected(id)
-  console.log('conectados?', data)
-  return data
- }
+connected.value = await areWeConnected(activeUser.id)
 </script>
 
 <template>
   <header>
-    <h1>@{{ route.params.handle }}</h1>
+    <h1>@{{ activeUser.handle }}</h1>
     <p
       v-if="activeUser.bio"
       class="bio">
@@ -48,8 +45,8 @@ const connected = async (id) => {
   <div
     class="status"
     v-if="user.id !== activeUser.id">
-    <Button v-if="connected(activeUser.id) === true">Desconectar</Button>
-    <Button variant="primary" v-else>Pedir conexión</Button>
+    <Button v-if="connected" @click="deleteConnection(activeUser.id)">Desconectar</Button>
+    <Button variant="primary" v-else @click="sendConnectionRequest(activeUser.id)">Pedir conexión</Button>
   </div>
   <TabMenu>
     <Tab

@@ -1,7 +1,7 @@
 <template>
-  <div><Transition name="inyourface" appear>
+  <div>
     <h1>Cargando!!!</h1>
-  </Transition></div>
+  </div>
 </template>
 
 <style scoped>

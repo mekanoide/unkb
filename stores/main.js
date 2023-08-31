@@ -32,9 +32,10 @@ export const useMainStore = defineStore('main', () => {
       .from('users')
       .select()
       .eq('handle', handle)
-      .maybeSingle()
+      .single()
     return data
   }
+
   const togglePopover = (id) => {
     if (showPopover.value !== id) {
       showPopover.value = id

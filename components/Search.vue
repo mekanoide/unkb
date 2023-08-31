@@ -17,7 +17,8 @@ const searchUsers = async (query) => {
   const { data, error } = await client
     .from('users')
     .select()
-    .textSearch('handle', query)
+    .ilike('handle', `${query}%`)
+    .limit(10)
 
   if (error) {
     throw error
@@ -41,7 +42,8 @@ const handleSendConnectionRequest = async (id) => {
         <ul v-if="searchResults.length > 0">
           <li v-for="result in searchResults" :key="result.id">
             <User :data="result" />
-            <Button size="small" @click="handleSendConnectionRequest(result.id)">{{ requested ? 'Cancelar' : 'Conectar' }}</Button>
+            <Button v-if="requested" size="small" @click="handleSendConnectionRequest(result.id)">Conectar</Button>
+            <Button v-else size="small" @click="handleSendConnectionRequest(result.id)">Conectar</Button>
           </li>
         </ul>
         <div v-else>No se ha encontrado nada con ese nombre</div>

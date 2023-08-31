@@ -34,6 +34,18 @@ export const useConnectionsStore = defineStore('connections', () => {
     return data
   }
 
+  /* Accept connection */
+  const acceptConnection = async (id) => {
+    const { error } = await client
+      .from('connection_requests')
+      .update({ accepted: true })
+      .eq('user_id', id)
+      .eq('target_id', user.value.id)
+    if (error) {
+      throw error
+    }
+  }
+
   /* Fetch connection requests */
   const fetchConnectionRequests = async () => {
     const { data } = await client
@@ -54,21 +66,6 @@ export const useConnectionsStore = defineStore('connections', () => {
       throw error
     }
     return data
-  }
-
-  const makeConnection = async (id) => {
-    const { data: connection1, error: error1 } = await client
-      .from('connections')
-      .upsert({ user_id: user.value.id, friend_id: id, created_at: new Date() })
-    if (error1) {
-      throw error1
-    }
-    const { data: connection2, error: error2 } = await client
-      .from('connections')
-      .upsert({ user_id: id, friend_id: user.value.id, created_at: new Date() })
-    if (error2) {
-      throw error2
-    }
   }
 
   /* Are we connected? */
@@ -92,12 +89,6 @@ export const useConnectionsStore = defineStore('connections', () => {
       .delete()
       .eq('friend_id', id)
       .eq('user_id', user.value.id)
-
-    const { error: error2 } = await client
-      .from('connections')
-      .delete()
-      .eq('user_id', id)
-      .eq('friend_id', user.value.id)
   }
 
   const fetchInviter = async (id) => {
@@ -140,10 +131,10 @@ export const useConnectionsStore = defineStore('connections', () => {
     getContact,
     areWeConnected,
     sendConnectionRequest,
+    acceptConnection,
     fetchInviter,
     createInvitation,
     cancelInvitation,
-    makeConnection,
     fetchConnections,
     fetchConnectionRequests,
     deleteConnection
