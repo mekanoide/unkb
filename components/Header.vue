@@ -1,10 +1,8 @@
 <script setup>
-import { storeToRefs } from 'pinia'
 import { useMainStore } from '@/stores/main'
 const store = useMainStore()
 const { auth } = useSupabaseAuthClient()
 const { fetchOwnUser } = store
-const { me } = storeToRefs(store)
 const router = useRouter()
 
 const handleSignOut = async () => {
@@ -20,10 +18,7 @@ const handleSignOut = async () => {
   router.push('/signin')
 }
 
-const { data, error } = await useAsyncData('user', async () => {
-  const data = await fetchOwnUser()
-  return data
-})
+const { data: me, error } = await useAsyncData(() => fetchOwnUser())
 </script>
 
 <template>
@@ -33,32 +28,32 @@ const { data, error } = await useAsyncData('user', async () => {
     <nav>
       <NavigationItem
         label="Chorreo"
-        icon="carbon:home"
+        icon="ph:house-bold"
         to="/" />
       <NavigationItem
         class="search-button"
         label="Search"
-        icon="carbon:search"
+        icon="ph:magnifying-glass-bold"
         to="/search" />
       <NavigationItem
         label="Guardados"
-        icon="carbon:bookmark"
+        icon="ph:bookmarks-simple-bold"
         to="/bookmarks" />
       <NavigationItem
         class="manifesto-button"
         label="Manifiesto"
-        icon="carbon:idea"
+        icon="ph:lightbulb-bold"
         to="/manifesto" />
       <NavigationItem
         label="Perfil"
-        icon="carbon:user"
+        icon="ph:user-bold"
         :to="`/${me.handle}`" />
     </nav>
     <div class="actions">
       <ToggleColorMode />
       <NavigationButton @click="handleSignOut">
         <Icon
-          name="carbon:exit"
+          name="ph:sign-out-bold"
           size="1.5rem" />
         Cerrar sesión
       </NavigationButton>

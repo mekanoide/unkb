@@ -71,7 +71,7 @@ onMounted(() => {
           size="small"
           @click.stop="togglePopover(post.id)">
           <Icon
-            name="carbon:overflow-menu-horizontal"
+            name="ph:dots-three-bold"
             size="1.5rem" />
         </Button>
       </div>
@@ -79,7 +79,7 @@ onMounted(() => {
     <div v-if="post.reply_to">En respuesta a <User :data="postAuthor" /></div>
     <NuxtLink
       class="post-link"
-      :to="post.reply_to ? `/post/${post.reply_to}` : `/post/${post.id}`">
+      :to="`/post/${post.id}`">
       <div
         class="content"
         :class="{ truncate: truncate && !expanded }"
@@ -100,8 +100,8 @@ onMounted(() => {
       </div>
       <div class="reply-count" v-if="replyCount > 0">
         <Icon
-          name="carbon:chat"
-          size="1.5rem" />
+          name="ph:chat-bold"
+          size="1rem" />
         {{ replyCount }}
       </div>
     </footer>
@@ -153,5 +153,13 @@ header {
 
 .reply-count {
   margin-top: var(--spaceS);
+  display: flex;
+  gap: var(--spaceXS);
+  align-items: center;
+}
+
+.post-link:hover {
+  background-color: blue;
+  border: 2px dashed var(--colorText);
 }
 </style>

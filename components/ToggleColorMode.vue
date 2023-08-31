@@ -12,7 +12,7 @@ const toggleColorMode = () => {
 
 <template>
   <NavigationButton @click="toggleColorMode">
-    <Icon :name="colorMode.value === 'dark' ? 'carbon:moon' : 'carbon:sun'" size="1.5rem" />
+    <Icon :name="colorMode.value === 'dark' ? 'ph:moon-bold' : 'ph:sun-bold'" size="1.5rem" />
     {{ colorMode.value === 'dark' ? 'Modo oscuro' : 'Modo claro' }}
   </NavigationButton>
 </template>

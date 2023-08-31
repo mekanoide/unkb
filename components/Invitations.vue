@@ -1,8 +1,11 @@
 <script async setup>
 import { useConnectionsStore } from '@/stores/connections'
-const store = useConnectionsStore()
+import { useMainStore } from '@/stores/main'
+const connectionStore = useConnectionsStore()
+const mainStore = useMainStore()
 
-const { createInvitation, cancelInvitation } = store
+const { createInvitation, cancelInvitation } = connectionStore
+const { fetchOwnUser, fetchRole } = mainStore
 
 const user = useSupabaseUser()
 const client = useSupabaseClient()
@@ -11,9 +14,7 @@ const invitationsCount = ref(0)
 const showingNewInvitation = ref(false)
 const email = ref('')
 
-const { data: userData, error } = useAsyncData(() =>
-  client.from('users').select().eq('id', user.value.id).single()
-)
+const { data: role } = useAsyncData(() => fetchRole())
 
 const { data: invitations, refresh } = useAsyncData(async () => {
   const { data } = await client
@@ -31,7 +32,7 @@ const openNewInvitation = async () => {
 }
 
 const invitationsLeft = computed(() => {
-  return 2 - invitationsCount.value
+  return role.value.max_invitations - invitationsCount.value
 })
 
 const handleCreateInvitation = async () => {

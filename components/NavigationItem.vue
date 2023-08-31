@@ -1,5 +1,9 @@
 <template>
-  <NuxtLink :to="to"><Icon :name="icon" size="1.5rem" /><span>{{ label }}</span></NuxtLink>
+  <NuxtLink :to="to"
+    ><Icon
+      :name="icon"
+      size="1.5rem" /><span>{{ label }}</span></NuxtLink
+  >
 </template>
 
 <script setup>
@@ -13,7 +17,7 @@ const props = defineProps({
     required: true
   },
   icon: {
-    type: String,
+    type: String
   }
 })
 </script>
@@ -29,6 +33,8 @@ a {
   transition: var(--transition);
   padding: var(--spaceS);
   border-radius: var(--corner);
+  text-transform: uppercase;
+  font-weight: bold;
 }
 
 a:hover {
@@ -37,7 +43,6 @@ a:hover {
 }
 
 a.router-link-active {
-  font-weight: bold;
   background-color: var(--colorText);
   color: var(--colorBackground);
 }

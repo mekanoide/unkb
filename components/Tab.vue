@@ -31,6 +31,8 @@ a {
   border-bottom: 6px solid transparent;
   transition: all 200ms ease;
   cursor: pointer;
+  text-transform: uppercase;
+  font-weight: bold;
 }
 
 a:hover {

@@ -8,8 +8,6 @@ export const useMainStore = defineStore('main', () => {
 
   const notifications = ref([])
   const activeUser = ref(null)
-  const me = ref(null)
-  const userId = ref(null)
   const contacts = ref([])
   const showPopover = ref('')
 
@@ -23,7 +21,22 @@ export const useMainStore = defineStore('main', () => {
       .select()
       .eq('id', user.value.id)
       .single()
-    me.value = data
+    return data
+  }
+
+  const fetchRole = async () => {
+    const { data: myself } = await client
+      .from('users')
+      .select()
+      .eq('id', user.value.id)
+      .single()
+    
+    const { data } = await client
+      .from('roles')
+      .select()
+      .eq('id', myself.role_id)
+      .single()
+    console.log(data)
     return data
   }
 
@@ -45,14 +58,13 @@ export const useMainStore = defineStore('main', () => {
   }
 
   return {
-    me,
     activeUser,
-    userId,
     requestUrl,
     notifications,
     showPopover,
     getContact,
     fetchOwnUser,
+    fetchRole,
     fetchUserByHandle,
     togglePopover
   }

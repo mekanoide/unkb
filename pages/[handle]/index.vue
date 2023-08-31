@@ -27,10 +27,8 @@ const { areWeConnected, deleteConnection, sendConnectionRequest } = connectionsS
 /* fetch data */
 
 const { data: activeUser } = useAsyncData(() => fetchUserByHandle(route.params.handle))
-
 const { data: posts } = useAsyncData(() => fetchPostsFromUser(activeUser.value.id))
-
-connected.value = await areWeConnected(activeUser.id)
+connected.value = areWeConnected(activeUser.id)
 </script>
 
 <template>

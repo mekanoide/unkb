@@ -16,6 +16,7 @@ const emit = defineEmits(['click'])
 <style scoped>
 .MenuItem {
   font-weight: bold;
+  text-transform: uppercase;
   padding: var(--spaceS) var(--spaceM);
   border-radius: var(--corner);
   transition: var(--transition);
