@@ -6,7 +6,8 @@
     "dev": "nuxt dev --port 3006",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "supabase": "supabase"
   },
   "devDependencies": {
     "@nuxt/devtools": "latest",

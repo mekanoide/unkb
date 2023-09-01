@@ -1,7 +1,7 @@
 import { storeToRefs } from 'pinia'
 import { useMainStore } from '@/stores/main'
 
-export default defineNuxtRouteMiddleware((to, from) => {
+export default defineNuxtRouteMiddleware(async (to, from) => {
   const store = useMainStore()
   const user = useSupabaseUser()
   const { requestUrl } = storeToRefs(store)

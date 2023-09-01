@@ -12,7 +12,7 @@ export const useAuthStore = defineStore('auth', () => {
       password: password,
       options: {
         data: {
-          handle: handle,
+          handle: handle.toLowerCase(),
           parent_id: parent
         }
       }

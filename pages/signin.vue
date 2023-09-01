@@ -1,15 +1,9 @@
 <script setup>
-definePageMeta({
-  layout: 'clear'
-})
-
 const { auth } = useSupabaseAuthClient()
 const user = useSupabaseUser()
 
 const email = ref('')
 const password = ref('')
-const loading = ref(false)
-const errorMessage = ref(null)
 
 const handleSignIn = async () => {
   const { data, error } = await auth.signInWithPassword({
@@ -17,15 +11,18 @@ const handleSignIn = async () => {
     password: password.value
   })
   if (error) {
-    errorMessage.value = error
+    throw error
   }
-  return navigateTo('/')
 }
 
-watchEffect(async () => {
-  if (user.value) {
+watch(user, (newValue) => {
+  if (newValue) {
     return navigateTo('/')
   }
+})
+
+definePageMeta({
+  layout: 'clear'
 })
 </script>
 

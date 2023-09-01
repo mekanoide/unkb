@@ -49,7 +49,6 @@ const handleSignUp = async () => {
     .eq('used', false)
     .maybeSingle()
 
-  console.log('Invitación!!!', invitation)
   if (!invitation) {
     notifications.value.push({
       title: 'Error',
@@ -58,8 +57,13 @@ const handleSignUp = async () => {
     return
   }
   await signUp(handle.value, email.value, password.value, invitation.inviter_id)
-  router.push('/')
 }
+
+watch(user, (newValue) => {
+  if (newValue) {
+    return navigateTo('/')
+  }
+})
 </script>
 
 <template>
