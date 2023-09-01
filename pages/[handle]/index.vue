@@ -1,8 +1,4 @@
 <script setup>
-definePageMeta({
-  middleware: ['auth']
-})
-
 import { useMainStore } from '@/stores/main'
 import { usePostStore } from '@/stores/post'
 import { useConnectionsStore } from '@/stores/connections'
@@ -29,6 +25,11 @@ const { areWeConnected, deleteConnection, sendConnectionRequest } = connectionsS
 const { data: activeUser } = useAsyncData(() => fetchUserByHandle(route.params.handle))
 const { data: posts } = useAsyncData(() => fetchPostsFromUser(activeUser.value.id))
 connected.value = areWeConnected(activeUser.id)
+
+/* Middleware */
+definePageMeta({
+  middleware: ['auth']
+})
 </script>
 
 <template>

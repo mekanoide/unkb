@@ -1,39 +1,47 @@
-<script async setup>
+<script setup>
 import { useConnectionsStore } from '@/stores/connections'
 import { useMainStore } from '@/stores/main'
+
 const connectionStore = useConnectionsStore()
 const mainStore = useMainStore()
 
-const { createInvitation, cancelInvitation } = connectionStore
+const { createInvitation, cancelInvitation, fetchInvitations } = connectionStore
 const { fetchOwnUser, fetchRole } = mainStore
 
 const user = useSupabaseUser()
 const client = useSupabaseClient()
 
-const invitationsCount = ref(0)
 const showingNewInvitation = ref(false)
 const email = ref('')
 
-const { data: role } = useAsyncData(() => fetchRole())
+const { data: role, pending: rolePending } = useAsyncData(() => fetchRole())
+const {
+  data: invitations,
+  pending: invitationsPending,
+  refresh
+} = useAsyncData(() => fetchInvitations())
 
-const { data: invitations, refresh } = useAsyncData(async () => {
-  const { data } = await client
-    .from('invitations')
-    .select()
-    .eq('inviter_id', user.value.id)
-  if (data) {
-    invitationsCount.value = data.length
+const numInvitations = computed(() => {
+  if (invitationsPending.value) {
+    return 0
   }
-  return data
+  return invitations.value.length
+})
+
+const numInvitationsLeft = computed(() => {
+  if (rolePending.value || invitationsPending.value) {
+    return 0
+  }
+  return role.value.max_invitations - numInvitations.value
+})
+
+const hasInvitationsLeft = computed(() => {
+  return numInvitationsLeft.value > 0
 })
 
 const openNewInvitation = async () => {
   showingNewInvitation.value = true
 }
-
-const invitationsLeft = computed(() => {
-  return role.value.max_invitations - invitationsCount.value
-})
 
 const handleCreateInvitation = async () => {
   await createInvitation(email.value)
@@ -50,11 +58,13 @@ const handleCancelInvitation = async (email) => {
 
 <template>
   <section>
-    <p v-if="invitationsLeft">Te quedan {{ invitationsLeft }} invitaciones.</p>
+    <p v-if="hasInvitationsLeft">
+      Te quedan {{ numInvitationsLeft }} invitaciones.
+    </p>
     <p v-else>No te quedan invitaciones.</p>
     <div>
       <Button
-        v-if="invitationsLeft > 0"
+        v-if="hasInvitationsLeft"
         variant="primary"
         @click="openNewInvitation">
         Nueva invitación

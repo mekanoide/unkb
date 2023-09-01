@@ -91,6 +91,15 @@ export const useConnectionsStore = defineStore('connections', () => {
       .eq('user_id', user.value.id)
   }
 
+  /* Fetch invitations */
+  const fetchInvitations = async () => {
+    const { data } = await client
+      .from('invitations')
+      .select()
+      .eq('inviter_id', user.value.id)
+    return data
+  }
+
   const fetchInviter = async (id) => {
     const { data } = await client
       .from('users')
@@ -134,6 +143,7 @@ export const useConnectionsStore = defineStore('connections', () => {
     acceptConnection,
     fetchInviter,
     createInvitation,
+    fetchInvitations,
     cancelInvitation,
     fetchConnections,
     fetchConnectionRequests,

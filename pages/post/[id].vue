@@ -1,8 +1,4 @@
 <script async setup>
-definePageMeta({
-  middleware: ['auth']
-})
-
 import { storeToRefs } from 'pinia'
 import { useMainStore } from '@/stores/main'
 import { usePostStore } from '@/stores/post'
@@ -27,6 +23,11 @@ const handleReply = async () => {
 }
 
 const date = computed(() => formatDate(post.value.created_at))
+
+/* Middleware */
+definePageMeta({
+  middleware: ['auth']
+})
 </script>
 
 <template>

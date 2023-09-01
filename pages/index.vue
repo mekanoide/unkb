@@ -1,8 +1,4 @@
 <script setup>
-definePageMeta({
-  middleware: ['auth']
-})
-
 import { storeToRefs } from 'pinia'
 import { usePostStore } from '@/stores/post'
 
@@ -17,6 +13,11 @@ const { data: posts, error, refresh } = useAsyncData(() => fetchPostsFromFollowe
 const handleRefresh = async () => {
   await refresh()
 }
+
+/* Middleware */
+definePageMeta({
+  middleware: ['auth']
+})
 </script>
 
 <template>
