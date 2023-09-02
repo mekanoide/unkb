@@ -17,6 +17,12 @@ dependencies:
   metascraper:
     specifier: ^5.36.0
     version: 5.36.0
+  metascraper-description:
+    specifier: ^5.36.0
+    version: 5.36.0
+  metascraper-title:
+    specifier: ^5.36.0
+    version: 5.36.0
   nuxt-link-preview:
     specifier: ^0.1.5
     version: 0.1.5(rollup@2.79.1)
@@ -5967,6 +5973,30 @@ packages:
   /merge2@1.4.1:
     resolution: {integrity: sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==}
     engines: {node: '>= 8'}
+
+  /metascraper-description@5.36.0:
+    resolution: {integrity: sha512-mz79fie83TYQrAkS6+9SNoRqerL69VFQJN+Wgi6ldrCbLvT1WG1JZpJE9qpGYtVTqETh38wkcdLRHaRiwzFjcg==}
+    engines: {node: '>= 16'}
+    dependencies:
+      '@metascraper/helpers': 5.36.0
+    transitivePeerDependencies:
+      - bufferutil
+      - canvas
+      - supports-color
+      - utf-8-validate
+    dev: false
+
+  /metascraper-title@5.36.0:
+    resolution: {integrity: sha512-cX8WVFWwQ3tpiOkcsl3aIGVk3dDNqumV7t657vCFSW+fQ8NhBntxskQlYR2+dy9rtWPQEf8kgUlOfse1cVRgZw==}
+    engines: {node: '>= 16'}
+    dependencies:
+      '@metascraper/helpers': 5.36.0
+    transitivePeerDependencies:
+      - bufferutil
+      - canvas
+      - supports-color
+      - utf-8-validate
+    dev: false
 
   /metascraper@5.36.0:
     resolution: {integrity: sha512-huFlWbvhzAPY7FXhggzLC2DsFDhy/9E9vUh6aRFy3RL35WIddPanfw1QLl29Yd3rzb+Th0cLvG9DVQXJZ9JXjw==}
