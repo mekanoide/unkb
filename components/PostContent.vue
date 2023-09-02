@@ -36,22 +36,6 @@ const parseMentions = async (txt) => {
   return mod
 }
 
-const parseLinks = (txt) => {
-  let mod = txt
-  const linkRegex =
-    /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/g
-  const matches = mod.match(linkRegex)
-
-  if (matches) {
-    for (const match of matches) {
-      const link = `<a href="${match}" target="_blank">${match}</a>`
-      mod = mod.replace(match, link)
-      links.value.push(match)
-    }
-  }
-  return mod
-}
-
 const getFirstLink = (txt) => {
   let mod = txt
   let links = []
@@ -63,26 +47,6 @@ const getFirstLink = (txt) => {
       links.push(match)
     }
     return links[0]
-  }
-
-}
-
-const getPreview = async (url) => {
-  const response = await $fetch('/.netlify/functions/metalink', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ url }) // Incluye el argumento en el cuerpo de la solicitud
-  })
-  if (response.ok) {
-    const data = await response.json()
-    // Maneja la respuesta de la función de Netlify
-    console.log(data)
-    return data
-  } else {
-    // Maneja errores de la solicitud
-    console.error('Error en la solicitud')
   }
 }
 
@@ -121,12 +85,8 @@ const parseContent = async (txt) => {
 }
 
 parseContent(props.content)
-if (process.env.NODE_ENV === 'production') {
-  const link = getFirstLink(props.content)
-  preview.value = await getPreview(link)
-}
 
-watch(content, async (newContent, oldContent) => {
+watch(content, async (newContent) => {
   parseContent(newContent)
 })
 </script>
