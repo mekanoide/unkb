@@ -1,12 +1,22 @@
 <template>
-  <Transition name="drop" appear>
-  <div class="DropdownMenu">
-    <header>
-      <h2 v-if="title">{{ title }}</h2>
-      <Button class="close-button" v-if="closeable" variant="ghost" size="small" @click="showPopover = null">x</Button>
-    </header>
-    <slot><!-- optional fallback --></slot>
-  </div>
+  <Overlay @click.stop="showPopover = null" />
+  <Transition
+    name="drop"
+    appear>
+    <div class="DropdownMenu">
+      <header>
+        <h2 v-if="title">{{ title }}</h2>
+        <Button
+          class="close-button"
+          v-if="closeable"
+          variant="ghost"
+          size="small"
+          @click="showPopover = null">
+          <Icon name="ph:x-bold" />
+        </Button>
+      </header>
+      <slot><!-- optional fallback --></slot>
+    </div>
   </Transition>
 </template>
 
@@ -14,7 +24,7 @@
 import { useMainStore } from '@/stores/main'
 import { storeToRefs } from 'pinia'
 
-const store= useMainStore()
+const store = useMainStore()
 
 const props = defineProps({
   title: {
@@ -49,7 +59,19 @@ header {
 .close-button {
   justify-self: end;
 }
-/* 
+
+.drop-enter-from,
+.drop-leave-to {
+  scale: 1 0.25;
+  translate: 0 -0.25rem;
+  opacity: 0;
+}
+
+.drop-enter-active,
+.drop-leave-active {
+  transition: all 200ms ease;
+}
+
 @media screen and (max-width: 1024px) {
   .DropdownMenu {
     min-width: 4rem;
@@ -59,6 +81,13 @@ header {
     right: 0;
     top: auto !important;
     box-shadow: none;
+    border: none;
+    transform-origin: 50% 100%;
+    border-top: 1px solid var(--colorText);
   }
-} */
+  .drop-enter-from,
+  .drop-leave-to {
+    translate: 0 2rem;
+  }
+}
 </style>

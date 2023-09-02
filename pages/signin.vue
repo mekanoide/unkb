@@ -6,7 +6,7 @@ const email = ref('')
 const password = ref('')
 
 const handleSignIn = async () => {
-  const { data, error } = await auth.signInWithPassword({
+  const { error } = await auth.signInWithPassword({
     email: email.value,
     password: password.value
   })
@@ -16,7 +16,7 @@ const handleSignIn = async () => {
 }
 
 watch(user, (newValue) => {
-  if (newValue) {
+  if (user.value) {
     return navigateTo('/')
   }
 })
@@ -42,7 +42,7 @@ definePageMeta({
         autocomplete="current-password"
         v-model="password"
       />
-      <Button type="submit" variant="primary" :disabled="loading">Entrar</Button>
+      <Button type="submit" variant="primary">Entrar</Button>
     </form>
     <p>Tienes una invitación? <NuxtLink to="/signup">Entra aquí!</NuxtLink></p>
   </div>

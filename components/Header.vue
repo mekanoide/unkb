@@ -1,9 +1,13 @@
 <script setup>
+import { storeToRefs } from 'pinia'
 import { useMainStore } from '@/stores/main'
 const store = useMainStore()
+
 const { auth } = useSupabaseAuthClient()
-const { fetchOwnUser } = store
 const router = useRouter()
+
+const { fetchOwnUser, togglePopover } = store
+const { showPopover } = storeToRefs(store)
 
 const handleSignOut = async () => {
   const shouldExit = confirm('Seguro que quieres cerrar sesión?')
@@ -49,14 +53,22 @@ const { data: me, error } = await useAsyncData(() => fetchOwnUser())
         icon="ph:user-bold"
         :to="`/${me.handle}`" />
     </nav>
-    <div class="actions">
-      <ToggleColorMode />
-      <NavigationButton @click="handleSignOut">
-        <Icon
-          name="ph:sign-out-bold"
-          size="1.5rem" />
-        Cerrar sesión
-      </NavigationButton>
+    <div class="menu-wrapper">
+      <button class="button-menu" @click.stop="togglePopover('main-menu')">
+        <Icon name="ph:list-bold" size="1.5rem" />
+        <span>Menú</span>
+      </button>
+      <Dropdown
+        v-if="showPopover === 'main-menu'"
+        class="menu">
+        <ToggleColorMode />
+        <NavigationButton @click="handleSignOut">
+          <Icon
+            name="ph:sign-out-bold"
+            size="1.5rem" />
+          Cerrar sesión
+        </NavigationButton>
+      </Dropdown>
     </div>
   </header>
 </template>
@@ -64,6 +76,7 @@ const { data: me, error } = await useAsyncData(() => fetchOwnUser())
 <style scoped>
 header {
   position: sticky;
+  z-index: 1;
   top: var(--spaceM);
   display: grid;
   gap: var(--spaceL);
@@ -76,16 +89,33 @@ nav {
   gap: var(--spaceM);
 }
 
-.actions {
-  display: grid;
-  gap: var(--spaceS);
-  border-top: 1px dashed currentColor;
-  align-self: end;
-  padding: var(--spaceM) 0;
-}
-
 .user-menu {
   bottom: 0;
+}
+
+.menu-wrapper {
+  border-top: 1px dashed currentColor;
+  position: relative;
+}
+
+.button-menu {
+  width: 100%;
+  display: grid;
+  grid-auto-flow: column;
+  gap: var(--spaceS);
+  align-items: center;
+  justify-content: start;
+  font-size: var(--fontL);
+  transition: var(--transition);
+  padding: var(--spaceS);
+  border-radius: var(--corner);
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.button-menu:hover {
+  background-color: var(--colorText);
+  color: var(--colorBackground);
 }
 
 .search-button {
@@ -116,6 +146,12 @@ nav {
   .logo,
   .actions {
     display: none;
+  }
+  .button-menu span {
+    display: none;
+  }
+  .menu-wrapper {
+    border-top: none;
   }
 }
 </style>

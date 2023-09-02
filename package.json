@@ -6,8 +6,7 @@
     "dev": "nuxt dev --port 3006",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare",
-    "supabase": "supabase"
+    "postinstall": "nuxt prepare"
   },
   "devDependencies": {
     "@nuxt/devtools": "latest",
@@ -23,7 +22,6 @@
   "dependencies": {
     "@pinia/nuxt": "^0.4.11",
     "@vueuse/core": "^10.3.0",
-    "click-outside-vue3": "^4.0.1",
     "nuxt-link-preview": "^0.1.5",
     "sass": "^1.64.2"
   }
