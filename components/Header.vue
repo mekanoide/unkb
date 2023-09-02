@@ -54,8 +54,12 @@ const { data: me, error } = await useAsyncData(() => fetchOwnUser())
         :to="`/${me.handle}`" />
     </nav>
     <div class="menu-wrapper">
-      <button class="button-menu" @click.stop="togglePopover('main-menu')">
-        <Icon name="ph:list-bold" size="1.5rem" />
+      <button
+        class="button-menu"
+        @click.stop="togglePopover('main-menu')">
+        <Icon
+          name="ph:list-bold"
+          size="1.5rem" />
         <span>Menú</span>
       </button>
       <Dropdown
@@ -86,7 +90,7 @@ nav {
   display: grid;
   align-content: start;
   grid-auto-flow: row;
-  gap: var(--spaceM);
+  gap: var(--spaceS);
 }
 
 .user-menu {
@@ -94,7 +98,6 @@ nav {
 }
 
 .menu-wrapper {
-  border-top: 1px dashed currentColor;
   position: relative;
 }
 

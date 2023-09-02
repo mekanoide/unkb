@@ -1,9 +1,35 @@
+<script setup>
+import { useMainStore } from '@/stores/main'
+import { storeToRefs } from 'pinia'
+import { onClickOutside } from '@vueuse/core'
+
+const store = useMainStore()
+const { showPopover } = storeToRefs(store)
+
+const props = defineProps({
+  title: {
+    type: String
+  },
+  closeable: {
+    type: Boolean
+  }
+})
+
+const dropdown = ref(null)
+
+onClickOutside(dropdown, (e) => {
+  e.stopPropagation()
+  showPopover.value = null
+})
+</script>
+
 <template>
-  <Overlay @click.stop="showPopover = null" />
   <Transition
     name="drop"
     appear>
-    <div class="DropdownMenu">
+    <div
+      class="DropdownMenu"
+      ref="dropdown">
       <header>
         <h2 v-if="title">{{ title }}</h2>
         <Button
@@ -19,24 +45,6 @@
     </div>
   </Transition>
 </template>
-
-<script setup>
-import { useMainStore } from '@/stores/main'
-import { storeToRefs } from 'pinia'
-
-const store = useMainStore()
-
-const props = defineProps({
-  title: {
-    type: String
-  },
-  closeable: {
-    type: Boolean
-  }
-})
-
-const { showPopover } = storeToRefs(store)
-</script>
 
 <style scoped>
 header {
