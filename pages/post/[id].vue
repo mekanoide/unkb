@@ -36,22 +36,20 @@ definePageMeta({
 </script>
 
 <template>
-  <div>
-    <div class="Post">
+  <div class="Post">
+    <div class="post">
       <header>
         <NuxtLink to="/">
           <Icon
             name="ph:arrow-left-bold"
             size="1.5rem" />
         </NuxtLink>
-        <div class="data">
-          <User
-            :data="post?.users"
-            size="large" />
-          <time :datetime="date">{{ date }}</time>
-        </div>
+        <User
+          :data="post?.users"
+          size="large" />
       </header>
       <PostContent :content="post.content" />
+      <time :datetime="date">{{ date }}</time>
     </div>
     <PostEditor
       :rows="2"
@@ -81,7 +79,8 @@ header {
   align-items: baseline;
 }
 
-.data {
+.Post {
   display: grid;
+  gap: var(--spaceL);
 }
 </style>
