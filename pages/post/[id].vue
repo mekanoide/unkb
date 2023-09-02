@@ -36,40 +36,42 @@ definePageMeta({
 </script>
 
 <template>
-  <div class="post">
-    <header>
-      <NuxtLink to="/">
-        <Icon
-          name="ph:arrow-left-bold"
-          size="1.5rem" />
-      </NuxtLink>
-      <div class="data">
-        <User
-          :data="post?.users"
-          size="large" />
-        <time :datetime="date">{{ date }}</time>
-      </div>
-    </header>
-    <PostContent :content="post.content" />
+  <div>
+    <div class="Post">
+      <header>
+        <NuxtLink to="/">
+          <Icon
+            name="ph:arrow-left-bold"
+            size="1.5rem" />
+        </NuxtLink>
+        <div class="data">
+          <User
+            :data="post?.users"
+            size="large" />
+          <time :datetime="date">{{ date }}</time>
+        </div>
+      </header>
+      <PostContent :content="post.content" />
+    </div>
+    <PostEditor
+      :rows="2"
+      @post="handleReply"
+      placeholder="Escribe una respuesta" />
+    <ul v-if="replies && replies.length > 0">
+      <Post
+        v-for="reply in replies"
+        reply
+        :post="reply"
+        :key="reply.id"
+        @deleted="repliesRefresh" />
+    </ul>
+    <EmptyState
+      v-else
+      message="No hay respuestas" />
+    <EditReply
+      v-if="postBeingEdited"
+      @edited="repliesRefresh" />
   </div>
-  <PostEditor
-    :rows="2"
-    @post="handleReply"
-    placeholder="Escribe una respuesta" />
-  <ul v-if="replies && replies.length > 0">
-    <Post
-      v-for="reply in replies"
-      reply
-      :post="reply"
-      :key="reply.id"
-      @deleted="repliesRefresh" />
-  </ul>
-  <EmptyState
-    v-else
-    message="No hay respuestas" />
-  <EditReply
-    v-if="postBeingEdited"
-    @edited="repliesRefresh" />
 </template>
 
 <style scoped>

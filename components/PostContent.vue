@@ -11,6 +11,7 @@ const props = defineProps({
 const { content } = toRefs(props)
 const modContent = ref('')
 const preview = ref(null)
+const links = ref([])
 
 const parseMentions = async (txt) => {
   let mod = txt
@@ -38,18 +39,54 @@ const parseMentions = async (txt) => {
 
 const parseLinks = (txt) => {
   let mod = txt
-  const linkRegex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/g
+  const linkRegex =
+    /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/g
   const matches = mod.match(linkRegex)
 
   if (matches) {
     for (const match of matches) {
       const link = `<a href="${match}" target="_blank">${match}</a>`
       mod = mod.replace(match, link)
+      links.value.push(match)
     }
   }
   return mod
 }
 
+const getPreview = async (txt) => {
+  let mod = txt
+  let links = []
+  const linkRegex =
+    /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/g
+  const matches = mod.match(linkRegex)
+
+  if (matches) {
+    for (const match of matches) {
+      const link = `<a href="${match}" target="_blank">${match}</a>`
+      mod = mod.replace(match, link)
+      links.push(match)
+    }
+  }
+  const firstLink = links[0]
+  console.log('Link', firstLink)
+
+  const response = await fetch('/.netlify/functions/metalink', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ firstLink }) // Incluye el argumento en el cuerpo de la solicitud
+  })
+  if (response.ok) {
+    const data = await response.json()
+    // Maneja la respuesta de la función de Netlify
+    console.log(data)
+    return data
+  } else {
+    // Maneja errores de la solicitud
+    console.error('Error en la solicitud')
+  }
+}
 
 const parseMarkdown = (txt) => {
   const md = new MarkdownIt({
@@ -57,6 +94,10 @@ const parseMarkdown = (txt) => {
     breaks: true,
     linkify: true
   })
+  md.renderer.rules.link_open = (tokens, idx, options, env, self) => {
+    const token = tokens[idx]
+    return `<a href="${token.attrs[0][1]}" target="_blank">`
+  }
   return md.render(txt)
 }
 
@@ -75,7 +116,7 @@ const parseMarkdown = (txt) => {
 const parseContent = async (txt) => {
   let processedContent = txt
   processedContent = await parseMentions(processedContent)
-  processedContent = parseLinks(processedContent)
+  /* processedContent = parseLinks(processedContent) */
   processedContent = parseMarkdown(processedContent)
   /* TODO: HTML MUST be sanitized */
   /* processedContent = sanitize(processedContent) */
@@ -83,7 +124,7 @@ const parseContent = async (txt) => {
 }
 
 parseContent(props.content)
-// preview.value = previewLink('https://anaga.dev')
+/* preview.value = await getPreview(props.content) */
 
 watch(content, async (newContent, oldContent) => {
   parseContent(newContent)
@@ -91,6 +132,7 @@ watch(content, async (newContent, oldContent) => {
 </script>
 
 <template>
+  <div v-if="preview">{{ preview }}</div>
   <article v-html="modContent"></article>
 </template>
 

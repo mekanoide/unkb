@@ -18,12 +18,20 @@ const connected = ref(false)
 
 const { fetchUserByHandle } = mainStore
 const { postBeingEdited, fetchPostsFromUser } = postStore
-const { areWeConnected, deleteConnection, sendConnectionRequest } = connectionsStore
+const { areWeConnected, deleteConnection, sendConnectionRequest } =
+  connectionsStore
 
 /* fetch data */
 
-const { data: activeUser, pending: activeUserPending } = useAsyncData(() => fetchUserByHandle(route.params.handle))
-const { data: posts, pending: postsPending } = useAsyncData(() => fetchPostsFromUser(activeUser.value.id))
+const { data: activeUser, pending: activeUserPending } = useAsyncData(() =>
+  fetchUserByHandle(route.params.handle)
+)
+const {
+  data: posts,
+  pending: postsPending,
+  error,
+  refresh
+} = useAsyncData(() => fetchPostsFromUser(activeUser.value.id))
 connected.value = areWeConnected(activeUser.id)
 
 /* Middleware */
@@ -44,8 +52,17 @@ definePageMeta({
   <div
     class="status"
     v-if="user.id !== activeUser.id">
-    <Button v-if="connected" @click="deleteConnection(activeUser.id)">Desconectar</Button>
-    <Button variant="primary" v-else @click="sendConnectionRequest(activeUser.id)">Pedir conexión</Button>
+    <Button
+      v-if="connected"
+      @click="deleteConnection(activeUser.id)"
+      >Desconectar</Button
+    >
+    <Button
+      variant="primary"
+      v-else
+      @click="sendConnectionRequest(activeUser.id)"
+      >Pedir conexión</Button
+    >
   </div>
   <TabMenu>
     <Tab
@@ -70,18 +87,20 @@ definePageMeta({
   </TabMenu>
   <!-- TODO: for the moment it's just for me to invite people -->
   <Invitations v-if="tab === 'invitations'" />
-  <Connections :id="activeUser.id" v-if="tab === 'connections'" />
+  <Connections
+    :id="activeUser.id"
+    v-if="tab === 'connections'" />
   <div
     v-if="tab === 'content'"
     class="posts">
-    <ul>
+    <ul v-if="posts?.length > 0">
       <Post
         v-for="post in posts"
         :post="post"
         @deleted="postsRefresh" />
     </ul>
     <EmptyState
-      v-if="posts?.length === 0"
+      v-else
       message="Aún no hay nada publicado" />
   </div>
   <EditPost
