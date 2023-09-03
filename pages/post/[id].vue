@@ -39,11 +39,6 @@ definePageMeta({
   <div class="Post">
     <div class="post">
       <header>
-        <NuxtLink to="/">
-          <Icon
-            name="ph:arrow-left-bold"
-            size="1.5rem" />
-        </NuxtLink>
         <User
           :data="post?.users"
           size="large" />
@@ -52,6 +47,7 @@ definePageMeta({
       <time :datetime="date">{{ date }}</time>
     </div>
     <PostEditor
+      id="write-reply"
       :rows="2"
       @post="handleReply"
       placeholder="Escribe una respuesta" />
@@ -75,7 +71,7 @@ definePageMeta({
 <style scoped>
 header {
   display: flex;
-  gap: var(--spaceM);
+  gap: var(--spaceS);
   align-items: baseline;
 }
 

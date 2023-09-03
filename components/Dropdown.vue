@@ -30,17 +30,7 @@ onClickOutside(dropdown, (e) => {
     <div
       class="DropdownMenu"
       ref="dropdown">
-      <header>
-        <h2 v-if="title">{{ title }}</h2>
-        <Button
-          class="close-button"
-          v-if="closeable"
-          variant="ghost"
-          size="small"
-          @click="showPopover = null">
-          <Icon name="ph:x-bold" />
-        </Button>
-      </header>
+      <h2 v-if="title">{{ title }}</h2>
       <slot><!-- optional fallback --></slot>
     </div>
   </Transition>
@@ -62,10 +52,7 @@ header {
   top: var(--spaceL);
   z-index: 2000;
   box-shadow: var(--spaceS) var(--spaceS) 0 var(--colorNeutral);
-}
-
-.close-button {
-  justify-self: end;
+  display: grid;
 }
 
 .drop-enter-from,

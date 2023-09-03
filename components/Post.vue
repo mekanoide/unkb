@@ -98,11 +98,13 @@ onMounted(() => {
         </small>
         <small v-if="post.edited"> - editado</small>
       </div>
-      <div class="reply-count" v-if="replyCount > 0">
+      <div v-if="!reply" class="reply-count">
+        <NuxtLink :to="`/post/${post.id}#write-reply`">
         <Icon
           name="ph:chat-bold"
           size="1rem" />
         {{ replyCount }}
+        </NuxtLink>
       </div>
     </footer>
     <Dropdown

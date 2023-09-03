@@ -16,6 +16,7 @@ export default defineNuxtConfig({
     'nuxt-security',
     '@vite-pwa/nuxt'
   ],
+  pwa: {},
   vite: {
     define: {
       'process.env.DEBUG': false,

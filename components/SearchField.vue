@@ -36,13 +36,12 @@ form {
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: center;
-  gap: var(--spaceXS);
   position: relative;
 }
 
 .search-button {
   position: absolute;
-  right: var(--spaceS);
+  right: var(--spaceXS);
 }
 
 input {

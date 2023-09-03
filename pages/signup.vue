@@ -88,6 +88,7 @@ watch(user, (newValue) => {
         label="Nombre"
         instructions="El nombre debe estar en minúsculas y contener solo caracteres alfanuméricos y guión bajo."
         :error="nameError"
+        :maxlength="32"
         placeholder="Algo en plan 'persona_tipo_666'"
         v-model="handle"
         @blur="validateName" />

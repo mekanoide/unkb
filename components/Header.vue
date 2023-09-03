@@ -135,6 +135,7 @@ nav {
     z-index: 100;
     border-top: 1px dashed currentColor;
     padding: var(--spaceS);
+    gap: 0;
   }
   nav {
     grid-auto-flow: column;
