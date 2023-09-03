@@ -91,9 +91,7 @@ button.square:hover {
 }
 
 button:disabled {
-  background: transparent;
-  color: var(--colorNeutral);
-  border-color: currentColor;
+  opacity: 0.33;
   pointer-events: none;
 }
 </style>

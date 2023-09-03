@@ -1,4 +1,9 @@
-<script async setup>
+<script setup>
+/* Middleware */
+definePageMeta({
+  middleware: ['auth', 'params']
+})
+
 import { storeToRefs } from 'pinia'
 import { useMainStore } from '@/stores/main'
 import { usePostStore } from '@/stores/post'
@@ -6,6 +11,7 @@ const store = useMainStore()
 const postStore = usePostStore()
 const route = useRoute()
 
+const { paramsId } = storeToRefs(store)
 const { postBeingEdited } = storeToRefs(postStore)
 const { fetchPost, fetchReplies, createReply } = postStore
 
@@ -13,14 +19,14 @@ const {
   data: post,
   pending: postPending,
   error: postError
-} = useAsyncData(() => fetchPost(route.params.id))
+} = useAsyncData(() => fetchPost(paramsId.value))
 
 const {
   data: replies,
   pending: repliesPending,
   error: repliesError,
   refresh: repliesRefresh
-} = useAsyncData(() => fetchReplies(route.params.id))
+} = useAsyncData(() => fetchReplies(paramsId.value))
 
 const handleReply = async () => {
   await createReply(route.params.id)
@@ -28,11 +34,6 @@ const handleReply = async () => {
 }
 
 const date = computed(() => formatDate(post.value.created_at))
-
-/* Middleware */
-definePageMeta({
-  middleware: 'auth'
-})
 </script>
 
 <template>

@@ -139,6 +139,7 @@ nav {
   }
   nav {
     grid-auto-flow: column;
+    margin-right: var(--spaceS);
   }
   .search-button {
     display: grid;

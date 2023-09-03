@@ -22,6 +22,8 @@ const props = defineProps({
 <style scoped>
 .User {
   font-weight: bold;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .User.large {

@@ -26,7 +26,7 @@ a {
   text-decoration: none;
   display: grid;
   place-content: center;
-  padding: 0 var(--spaceL);
+  padding: 0 var(--spaceS);
   height: 3rem;
   border-bottom: 6px solid transparent;
   transition: all 200ms ease;

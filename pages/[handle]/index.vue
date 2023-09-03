@@ -1,7 +1,13 @@
 <script setup>
+/* Middleware */
+definePageMeta({
+  middleware: ['auth', 'params']
+})
+
 import { useMainStore } from '@/stores/main'
 import { usePostStore } from '@/stores/post'
 import { useConnectionsStore } from '@/stores/connections'
+import { storeToRefs } from 'pinia'
 
 /* composables */
 
@@ -14,8 +20,8 @@ const user = useSupabaseUser()
 /* properties and function */
 
 const tab = ref('content')
-const connected = ref(false)
 
+const { paramsHandle } = storeToRefs(mainStore)
 const { fetchUserByHandle } = mainStore
 const { postBeingEdited, fetchPostsFromUser } = postStore
 const { areWeConnected, deleteConnection, sendConnectionRequest } =
@@ -24,7 +30,7 @@ const { areWeConnected, deleteConnection, sendConnectionRequest } =
 /* fetch data */
 
 const { data: activeUser, pending: activeUserPending } = useAsyncData(() =>
-  fetchUserByHandle(route.params.handle)
+  fetchUserByHandle(paramsHandle.value)
 )
 const {
   data: posts,
@@ -32,12 +38,12 @@ const {
   error,
   refresh
 } = useAsyncData(() => fetchPostsFromUser(activeUser.value.id))
-connected.value = areWeConnected(activeUser.id)
 
-/* Middleware */
-definePageMeta({
-  middleware: 'auth'
-})
+const {
+  data: connected,
+  error: connectedError
+} = useAsyncData(() => areWeConnected(activeUser.value.id)
+)
 </script>
 
 <template>
@@ -55,7 +61,7 @@ definePageMeta({
     <Button
       v-if="connected"
       @click="deleteConnection(activeUser.id)"
-      >Desconectar</Button
+      >Cortar</Button
     >
     <Button
       variant="primary"
@@ -75,7 +81,7 @@ definePageMeta({
       value="connections"
       :selected="tab === 'connections'"
       @click="tab = 'connections'">
-      Conexiones
+      Gente
     </Tab>
     <Tab
       v-if="user.id === activeUser.id"

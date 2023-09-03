@@ -24,7 +24,7 @@ const handleDelete = async () => {
     <User
       :data="data"
       size="large" />
-    <Button @click="handleDelete">Desconectar</Button>
+    <Button variant="primary" @click="handleDelete">Cortar</Button>
   </li>
 </template>
 
