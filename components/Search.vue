@@ -21,7 +21,7 @@ const searchUsers = async (query) => {
     .limit(10)
 
   if (error) {
-    throw error
+    console.log('error!!!', error)
   }
   searchResults.value = data
   showPopover.value = 'search-results'

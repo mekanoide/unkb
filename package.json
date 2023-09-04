@@ -9,21 +9,21 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
-    "@nuxt/devtools": "latest",
+    "@nuxt/devtools": "^0.8.2",
     "@nuxtjs/color-mode": "^3.3.0",
-    "@nuxtjs/supabase": "^0.3.8",
-    "@types/node": "^18.17.0",
+    "@nuxtjs/supabase": "^1.0.2",
+    "@types/node": "^20.5.9",
     "@vite-pwa/nuxt": "^0.1.0",
     "markdown-it": "^13.0.1",
-    "nuxt": "^3.6.5",
+    "nuxt": "^3.7.0",
     "nuxt-icon": "^0.5.0",
     "nuxt-security": "^0.14.4"
   },
   "dependencies": {
     "@pinia/nuxt": "^0.4.11",
     "@vueuse/components": "^10.4.1",
-    "@vueuse/core": "^10.3.0",
+    "@vueuse/core": "^10.4.1",
     "nuxt-link-preview": "^0.1.5",
-    "sass": "^1.64.2"
+    "sass": "^1.66.1"
   }
 }

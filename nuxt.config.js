@@ -19,7 +19,7 @@ export default defineNuxtConfig({
   pwa: {},
   vite: {
     define: {
-      'process.env.DEBUG': false,
+      'process.env.DEBUG': true,
     },
     esbuild: {
       drop: ['console']
@@ -37,7 +37,14 @@ export default defineNuxtConfig({
   },
   supabase: {
     url: process.env.SUPABASE_URL,
-    key: process.env.SUPABASE_KEY
+    key: process.env.SUPABASE_KEY,
+    options: {
+      redirectOptions: {
+        login: '/signin',
+        callback: '/',
+        exclude: ['/signup']
+      }
+    }
   },
-  devtools: { enabled: true }
+  devtools: { enabled: false }
 })

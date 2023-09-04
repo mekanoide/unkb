@@ -26,9 +26,9 @@ const parseMentions = async (txt) => {
         .from('users')
         .select()
         .textSearch('handle', `${username}`)
-      const user = userData[0]
-      if (user) {
-        const userLink = `[@${username}](/${username})`
+        .single()
+      if (userData) {
+        const userLink = `[@${userData.handle}](/${userData.handle})`
         mod = mod.replace(match, userLink)
       }
     }
@@ -68,9 +68,6 @@ const parseMarkdown = (txt) => {
   const apiUrl = `https://jsonlink.io/api/extract?url=${url}`
   console.log('Link', apiUrl)
   const { data, error } = await $fetch(apiUrl)
-  if (error) {
-    throw error
-  }
   return data
 }
  */
@@ -79,8 +76,6 @@ const parseContent = async (txt) => {
   processedContent = await parseMentions(processedContent)
   /* processedContent = parseLinks(processedContent) */
   processedContent = parseMarkdown(processedContent)
-  /* TODO: HTML MUST be sanitized */
-  /* processedContent = sanitize(processedContent) */
   modContent.value = processedContent
 }
 
@@ -93,7 +88,6 @@ watch(content, async (newContent) => {
 
 <template>
   <article v-html="modContent"></article>
-  <div v-if="preview">{{ preview }}</div>
 </template>
 
 <style scoped>

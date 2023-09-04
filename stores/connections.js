@@ -42,7 +42,7 @@ export const useConnectionsStore = defineStore('connections', () => {
       .eq('user_id', id)
       .eq('target_id', user.value.id)
     if (error) {
-      throw error
+      console.log('Error!!!', error)
     }
   }
 
@@ -63,7 +63,7 @@ export const useConnectionsStore = defineStore('connections', () => {
       .eq('user_id', id)
 
     if (error) {
-      throw error
+      console.log('Error!!!', error)
     }
     return data
   }
@@ -130,7 +130,7 @@ export const useConnectionsStore = defineStore('connections', () => {
       .delete()
       .eq('target_email', email)
     if (error) {
-      throw error
+      console.log('Error!!!', error)
     }
   }
 

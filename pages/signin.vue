@@ -1,5 +1,5 @@
 <script setup>
-const { auth } = useSupabaseAuthClient()
+const { auth } = useSupabaseClient()
 const user = useSupabaseUser()
 
 const email = ref('')
@@ -11,7 +11,7 @@ const handleSignIn = async () => {
     password: password.value
   })
   if (error) {
-    throw error
+    console.log('Error!!!', error)
   }
 }
 

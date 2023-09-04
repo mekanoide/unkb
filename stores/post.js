@@ -19,20 +19,23 @@ export const usePostStore = defineStore('post', () => {
   }
 
   /* Fetch posts from followed users */
-  const fetchPostsFromFollowedUsers = async () => {
+  const fetchPostsFromConnections = async () => {
+    console.log('Empezamos a fetchear!!!')
     const { data: follows } = await client
       .from('connections')
       .select()
       .eq('user_id', user.value.id)
+    console.log('Follows', follows)
     const followedUserIds = follows.map((item) => item.friend_id)
     followedUserIds.push(user.value.id)
+    console.log('follows ids', followedUserIds)
 
     const { data } = await client
       .from('posts')
       .select('*, users(id, handle)')
       .in('author_id', followedUserIds)
-      /* .eq('reply_to', null) */
       .order('created_at', { ascending: false })
+    console.log('Datos de la mandanga', data)
     return data
   }
 
@@ -60,7 +63,34 @@ export const usePostStore = defineStore('post', () => {
       .order('created_at', { ascending: true })
     return data
   }
+  /*
+  const getMentionsFromPost = async (txt) => {
+     const mentionRegex = /@([a-z0-9_]+)/g
+    const matches = mod.match(mentionRegex)
+    const mentions = ref([])
 
+    if (matches) {
+      for (const match of matches) {
+        const username = match.substring(1) // Remove the @
+        const { data: userData } = await client
+          .from('users')
+          .select()
+          .eq('handle', username)
+          .single()
+
+        const user = userData[0]
+        if (user) {
+          mentions.value.push(user.id)
+        }
+      }
+      console.log(mentions.value)
+    }
+    if (mentions.value.length > 0) {
+      return mentions.value
+    }
+    return
+  }
+*/
   /* Fetch post's author */
   const fetchPostAuthor = async (id) => {
     const { data } = await client
@@ -79,7 +109,7 @@ export const usePostStore = defineStore('post', () => {
       created_at: new Date()
     })
     if (error) {
-      throw error
+      console.log('Error!!!', error)
     }
     postContent.value = ''
     return data
@@ -98,7 +128,7 @@ export const usePostStore = defineStore('post', () => {
       .select()
       .single()
     if (postError) {
-      throw postError
+      console.log('Error!!!', postError)
     }
     postContent.value = ''
     return postData
@@ -126,7 +156,7 @@ export const usePostStore = defineStore('post', () => {
         .eq('id', postBeingEdited.value)
         .select()
       if (error) {
-        throw error
+        console.log('Error!!!', error)
       }
       postContent.value = ''
       postBeingEdited.value = null
@@ -141,7 +171,7 @@ export const usePostStore = defineStore('post', () => {
       })
       .eq('id', postBeingEdited.value)
     if (error) {
-      throw error
+      console.log('Error!!!', error)
     }
     postContent.value = ''
     postBeingEdited.value = null
@@ -155,7 +185,7 @@ export const usePostStore = defineStore('post', () => {
     }
     const { error } = await client.from('posts').delete().eq('id', id)
     if (error) {
-      throw error
+      console.log('Error!!!', error)
     }
   }
 
@@ -177,7 +207,7 @@ export const usePostStore = defineStore('post', () => {
     postContent,
     postBeingEdited,
     postBeingReplied,
-    fetchPostsFromFollowedUsers,
+    fetchPostsFromConnections,
     fetchPostsFromUser,
     fetchPost,
     fetchPostAuthor,

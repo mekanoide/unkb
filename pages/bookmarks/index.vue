@@ -1,10 +1,5 @@
 <script setup>
 const config = useRuntimeConfig()
-
-/* Middleware */
-definePageMeta({
-  middleware: ['auth']
-})
 </script>
 
 <template>

@@ -1,7 +1,7 @@
 <script setup>
 /* Middleware */
 definePageMeta({
-  middleware: ['auth', 'params']
+  middleware: ['params']
 })
 
 import { storeToRefs } from 'pinia'
@@ -41,7 +41,7 @@ const date = computed(() => formatDate(post.value.created_at))
     <div class="post">
       <header>
         <User
-          :data="post?.users"
+          :data="post.users"
           size="large" />
       </header>
       <PostContent :content="post.content" />
@@ -53,9 +53,8 @@ const date = computed(() => formatDate(post.value.created_at))
       @post="handleReply"
       placeholder="Escribe una respuesta" />
     <ul v-if="replies && replies.length > 0">
-      <Post
+      <Reply
         v-for="reply in replies"
-        reply
         :post="reply"
         :key="reply.id"
         @deleted="repliesRefresh" />

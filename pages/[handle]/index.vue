@@ -1,7 +1,7 @@
 <script setup>
 /* Middleware */
 definePageMeta({
-  middleware: ['auth', 'params']
+  middleware: ['params']
 })
 
 import { useMainStore } from '@/stores/main'
@@ -29,8 +29,10 @@ const { areWeConnected, deleteConnection, sendConnectionRequest } =
 
 /* fetch data */
 
-const { data: activeUser, pending: activeUserPending } = useAsyncData(() =>
-  fetchUserByHandle(paramsHandle.value)
+const {
+  data: activeUser,
+  pending: activeUserPending
+} = useAsyncData(() => fetchUserByHandle(paramsHandle.value)
 )
 const {
   data: posts,
@@ -70,6 +72,10 @@ const {
       >Pedir conexión</Button
     >
   </div>
+  <div v-else>
+    <!-- TODO: Finish edit profile modal  -->
+    <!-- <Button @click="editProfile">Editar perfil</Button> -->
+  </div>
   <TabMenu>
     <Tab
       value="content"
@@ -99,7 +105,7 @@ const {
   <div
     v-if="tab === 'content'"
     class="posts">
-    <ul v-if="posts?.length > 0">
+    <ul v-if="posts && posts.length > 0">
       <Post
         v-for="post in posts"
         :post="post"

@@ -3,7 +3,7 @@ import { storeToRefs } from 'pinia'
 import { useMainStore } from '@/stores/main'
 const store = useMainStore()
 
-const { auth } = useSupabaseAuthClient()
+const { auth } = useSupabaseClient()
 const router = useRouter()
 
 const { fetchOwnUser, togglePopover } = store
@@ -39,6 +39,10 @@ const { data: me, error } = await useAsyncData(() => fetchOwnUser())
         label="Search"
         icon="ph:magnifying-glass-bold"
         to="/search" />
+      <NavigationItem
+        label="Actividad"
+        icon="ph:activity-bold"
+        to="/activity" />
       <NavigationItem
         label="Guardados"
         icon="ph:bookmarks-simple-bold"
