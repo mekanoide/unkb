@@ -63,34 +63,33 @@ export const usePostStore = defineStore('post', () => {
       .order('created_at', { ascending: true })
     return data
   }
-  /*
   const getMentionsFromPost = async (txt) => {
-     const mentionRegex = /@([a-z0-9_]+)/g
-    const matches = mod.match(mentionRegex)
+    const mentionRegex = /@([a-z0-9_]+)/g
+    const matches = txt.match(mentionRegex)
     const mentions = ref([])
 
     if (matches) {
       for (const match of matches) {
         const username = match.substring(1) // Remove the @
+        console.log('Nombre de usuario', username)
         const { data: userData } = await client
           .from('users')
-          .select()
+          .select('id, handle')
           .eq('handle', username)
           .single()
 
-        const user = userData[0]
-        if (user) {
-          mentions.value.push(user.id)
+        console.log('Usuario', userData.handle)
+        if (userData) {
+          mentions.value.push(userData)
         }
       }
-      console.log(mentions.value)
     }
     if (mentions.value.length > 0) {
       return mentions.value
     }
     return
   }
-*/
+
   /* Fetch post's author */
   const fetchPostAuthor = async (id) => {
     const { data } = await client
@@ -103,16 +102,30 @@ export const usePostStore = defineStore('post', () => {
 
   /* Create new post */
   const createPost = async () => {
-    const { data, error } = await client.from('posts').upsert({
-      author_id: user.value.id,
-      content: postContent.value,
-      created_at: new Date()
-    })
+    const { data: postData, error } = await client
+      .from('posts')
+      .upsert({
+        author_id: user.value.id,
+        content: postContent.value,
+        created_at: new Date()
+      })
+      .select()
     if (error) {
       console.log('Error!!!', error)
     }
     postContent.value = ''
-    return data
+
+    console.log('Post!!!', postData)
+    const mentions = await getMentionsFromPost(postContent.value)
+    if (mentions) {
+      for (const mention in mentions) {
+        const { data: mentionData } = await client.from('mentions').upsert({
+          user_id: mention.id,
+          post_id: postData.id
+        })
+      }
+    }
+    return post
   }
 
   /* Create new reply to post */
@@ -189,6 +202,17 @@ export const usePostStore = defineStore('post', () => {
     }
   }
 
+  const deleteReply = async (id) => {
+    const shouldDelete = confirm('De verdad quieres eliminar esta publicación?')
+    if (!shouldDelete) {
+      return
+    }
+    const { error } = await client.from('replies').delete().eq('id', id)
+    if (error) {
+      console.log('Error!!!', error)
+    }
+  }
+
   /* Start post edition */
   const startPostReply = (id, content) => {
     const repliedPost = {
@@ -213,6 +237,7 @@ export const usePostStore = defineStore('post', () => {
     fetchPostAuthor,
     fetchReplies,
     fetchReplyCount,
+    getMentionsFromPost,
     startPostEdition,
     cancelPostEdition,
     finishPostEdition,
@@ -220,6 +245,7 @@ export const usePostStore = defineStore('post', () => {
     createPost,
     createReply,
     cancelPostReply,
-    deletePost
+    deletePost,
+    deleteReply
   }
 })

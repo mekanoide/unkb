@@ -1,5 +1,9 @@
 <script setup>
 import MarkdownIt from 'markdown-it'
+import { usePostStore } from '@/stores/post'
+const postStore = usePostStore()
+
+const { getMentionsFromPost } = postStore
 
 const props = defineProps({
   content: {
@@ -14,23 +18,14 @@ const preview = ref(null)
 
 const parseMentions = async (txt) => {
   let mod = txt
-  const client = useSupabaseClient()
 
-  const mentionRegex = /@([a-z0-9_]+)/g
-  const matches = mod.match(mentionRegex)
+  const mentions = await getMentionsFromPost(txt)
+  console.log('Menciones!!!', mentions)
 
-  if (matches) {
-    for (const match of matches) {
-      const username = match.substring(1) // Elimina el "@" del inicio
-      const { data: userData } = await client
-        .from('users')
-        .select()
-        .textSearch('handle', `${username}`)
-        .single()
-      if (userData) {
-        const userLink = `[@${userData.handle}](/${userData.handle})`
-        mod = mod.replace(match, userLink)
-      }
+  if (mentions) {
+    for (const mention of mentions) {
+      const userLink = `[${mention.handle}](/${mention.handle})`
+      mod = mod.replace(mention.handle, userLink)
     }
   }
   return mod
@@ -58,7 +53,14 @@ const parseMarkdown = (txt) => {
   })
   md.renderer.rules.link_open = (tokens, idx, options, env, self) => {
     const token = tokens[idx]
-    return `<a href="${token.attrs[0][1]}" target="_blank">`
+    console.log('token', token)
+    const linkRegex = /https?:/g
+    const match = token.attrs[0][1].match(linkRegex)
+    if (match) {
+      return `<a href="${token.attrs[0][1]}" target="_blank">`
+    } else {
+      return `<a href="${token.attrs[0][1]}">`
+    }
   }
   return md.render(txt)
 }

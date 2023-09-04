@@ -29,7 +29,7 @@ const {
 } = useAsyncData(() => fetchReplies(paramsId.value))
 
 const handleReply = async () => {
-  await createReply(route.params.id)
+  await createReply(paramsId.value)
   repliesRefresh()
 }
 
@@ -62,7 +62,7 @@ const date = computed(() => formatDate(post.value.created_at))
     <EmptyState
       v-else
       message="No hay respuestas" />
-    <EditReply
+    <EditPost
       v-if="postBeingEdited"
       @edited="repliesRefresh" />
   </div>

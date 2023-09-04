@@ -21,7 +21,7 @@ const expanded = ref(false)
 const { showPopover } = storeToRefs(store)
 
 const { togglePopover } = store
-const { startPostEdition, deletePost, fetchPostAuthor, fetchReplyCount } =
+const { startPostEdition, deleteReply, fetchPostAuthor, fetchReplyCount } =
   postStore
 
 const isOwner = computed(() => {
@@ -36,7 +36,7 @@ const handleEdit = () => {
 }
 
 const handleDelete = async () => {
-  await deletePost(props.post.id)
+  await deleteReply(props.post.id)
   showPopover.value = null
   emit('deleted')
 }
