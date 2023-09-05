@@ -59,6 +59,17 @@ const date = computed(() => formatDate(post.value.created_at))
               name="ph:dots-three-bold"
               size="1.5rem" />
           </Button>
+          <Dropdown
+            class="menu"
+            v-if="showPopover === post.id">
+            <Menu v-if="isOwner">
+              <MenuItem @click="handleEdit">Editar</MenuItem>
+              <MenuItem @click="handleDelete">Eliminar</MenuItem>
+            </Menu>
+            <Menu v-else>
+              <MenuItem>Denunciar</MenuItem>
+            </Menu>
+          </Dropdown>
         </div>
       </header>
       <PostContent :content="post.content" />
@@ -82,17 +93,6 @@ const date = computed(() => formatDate(post.value.created_at))
     <EditPost
       v-if="postBeingEdited"
       @edited="repliesRefresh" />
-    <Dropdown
-      class="menu"
-      v-if="showPopover === post.id">
-      <Menu v-if="isOwner">
-        <MenuItem @click="handleEdit">Editar</MenuItem>
-        <MenuItem @click="handleDelete">Eliminar</MenuItem>
-      </Menu>
-      <Menu v-else>
-        <MenuItem>Denunciar</MenuItem>
-      </Menu>
-    </Dropdown>
   </div>
 </template>
 
@@ -102,10 +102,16 @@ header {
   gap: var(--spaceS);
   align-items: center;
   justify-content: space-between;
+  position: relative;
 }
 
 .Post {
   display: grid;
   gap: var(--spaceL);
+}
+
+.menu {
+  right: 0;
+  top: 3rem;
 }
 </style>

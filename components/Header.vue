@@ -69,6 +69,12 @@ const { data: me, error } = await useAsyncData(() => fetchOwnUser())
       <Dropdown
         v-if="showPopover === 'main-menu'"
         class="menu">
+        <NavigationButton>
+          <Icon
+            name="ph:coin-bold"
+            size="1.5rem" />
+          Danos dinero!
+        </NavigationButton>
         <ToggleColorMode />
         <NavigationButton @click="handleSignOut">
           <Icon
@@ -118,6 +124,12 @@ nav {
   border-radius: var(--corner);
   text-transform: uppercase;
   font-weight: bold;
+}
+
+.menu {
+  left: 0;
+  top: 4rem;
+  min-width: 100%;
 }
 
 .button-menu:hover {

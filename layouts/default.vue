@@ -22,7 +22,7 @@
 }
 
 main {
-  padding: 7rem 0 var(--spaceL);
+  padding: 6.25rem 0 var(--spaceL);
   display: grid;
   gap: var(--spaceM);
 }

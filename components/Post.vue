@@ -74,6 +74,17 @@ onMounted(() => {
             name="ph:dots-three-bold"
             size="1.5rem" />
         </Button>
+        <Dropdown
+          class="menu"
+          v-if="showPopover === post.id">
+          <Menu v-if="isOwner">
+            <MenuItem @click="handleEdit">Editar</MenuItem>
+            <MenuItem @click="handleDelete">Eliminar</MenuItem>
+          </Menu>
+          <Menu v-else>
+            <MenuItem>Denunciar</MenuItem>
+          </Menu>
+        </Dropdown>
       </div>
     </header>
     <div v-if="post.reply_to">En respuesta a <User :data="postAuthor" /></div>
@@ -98,26 +109,17 @@ onMounted(() => {
         </small>
         <small v-if="post.edited"> - editado</small>
       </div>
-      <div v-if="!reply" class="reply-count">
+      <div
+        v-if="!reply"
+        class="reply-count">
         <NuxtLink :to="`/post/${post.id}#write-reply`">
-        <Icon
-          name="ph:chat-bold"
-          size="1rem" />
-        {{ replyCount }}
+          <Icon
+            name="ph:chat-bold"
+            size="1rem" />
+          {{ replyCount }}
         </NuxtLink>
       </div>
     </footer>
-    <Dropdown
-      class="menu"
-      v-if="showPopover === post.id">
-      <Menu v-if="isOwner">
-        <MenuItem @click="handleEdit">Editar</MenuItem>
-        <MenuItem @click="handleDelete">Eliminar</MenuItem>
-      </Menu>
-      <Menu v-else>
-        <MenuItem>Denunciar</MenuItem>
-      </Menu>
-    </Dropdown>
   </li>
 </template>
 
@@ -130,6 +132,7 @@ header {
   display: grid;
   grid-auto-flow: column;
   justify-content: space-between;
+  position: relative;
 }
 
 .content {
@@ -149,7 +152,7 @@ header {
 }
 
 .menu {
-  top: 3.5rem;
+  top: 3rem;
   right: 0;
 }
 
