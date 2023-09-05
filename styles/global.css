@@ -138,6 +138,35 @@ article {
   }
 }
 
+/* Syntax highlights */
+
+.hljs-keyword,
+.hljs-attribute,
+.hljs-attr {
+  color: var(--colorSyntaxKeyword);
+}
+.hljs-literal,
+.hljs-number,
+.hljs-tag {
+  color: var(--colorSyntaxLiteral);
+}
+
+.hljs-title,
+.hljs-selector-class,
+.hljs-selector-tag,
+.hljs-name {
+  color: var(--colorSyntaxTitle);
+}
+
+.hljs-variable,
+.hljs-built_in {
+  color: var(--colorSyntaxVariable);
+}
+
+.hljs-string {
+  color: var(--colorSyntaxString);
+}
+
 /* Form elements */
 
 input:is(

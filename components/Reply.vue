@@ -45,6 +45,10 @@ const toggleExpanded = () => {
   expanded.value = !expanded.value
 }
 
+const startReply = () => {
+  
+}
+
 const replyCount = await fetchReplyCount(props.post.id)
 
 /* Get content height in order to whether truncate it or not */
@@ -80,6 +84,7 @@ onMounted(() => {
       :expanded="expanded"
       @click="toggleExpanded" />
     <footer>
+      <Button variant="ghost" @click="startReply">Responder</Button>
       <div>
         <small>
           <time :datetime="date">{{ date }}</time>

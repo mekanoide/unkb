@@ -3,7 +3,7 @@ export const formatDate = (t) => {
   const postDate = new Date(t)
 
   const msDifference = currentDate - postDate
-  const daysDifference = Math.round(msDifference / (1000 * 60 * 60 * 24))
+  const daysDifference = Math.ceil(msDifference / (1000 * 60 * 60 * 24))
 
   const currentYear = currentDate.getFullYear()
   const currentMonth = currentDate.getMonth()

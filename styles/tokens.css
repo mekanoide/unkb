@@ -9,6 +9,13 @@
   --colorText: var(--colorDark);
   --colorNegative: coral;
 
+  /* Syntax */
+  --colorSyntaxKeyword: hsl(24 100% 72%);
+  --colorSyntaxString: hsl(36 100% 72%);
+  --colorSyntaxLiteral: hsl(72 50% 72%);
+  --colorSyntaxTitle: hsl(348 100% 72%);
+  --colorSyntaxVariable: hsl(312 70% 72%);
+
   --spaceXS: 0.375rem;
   --spaceS: 0.75rem;
   --spaceM: 1.5rem;

@@ -4,6 +4,8 @@ definePageMeta({
   middleware: ['params']
 })
 
+const user = useSupabaseUser()
+
 import { storeToRefs } from 'pinia'
 import { useMainStore } from '@/stores/main'
 import { usePostStore } from '@/stores/post'
@@ -11,8 +13,9 @@ const store = useMainStore()
 const postStore = usePostStore()
 const route = useRoute()
 
-const { paramsId } = storeToRefs(store)
+const { paramsId, showPopover } = storeToRefs(store)
 const { postBeingEdited } = storeToRefs(postStore)
+const { togglePopover } = store
 const { fetchPost, fetchReplies, createReply } = postStore
 
 const {
@@ -33,6 +36,10 @@ const handleReply = async () => {
   repliesRefresh()
 }
 
+const isOwner = computed(() => {
+  return post.value.author_id === user.value.id
+})
+
 const date = computed(() => formatDate(post.value.created_at))
 </script>
 
@@ -43,6 +50,16 @@ const date = computed(() => formatDate(post.value.created_at))
         <User
           :data="post.users"
           size="large" />
+        <div class="actions">
+          <Button
+            variant="ghost"
+            size="small"
+            @click.stop="togglePopover(post.id)">
+            <Icon
+              name="ph:dots-three-bold"
+              size="1.5rem" />
+          </Button>
+        </div>
       </header>
       <PostContent :content="post.content" />
       <time :datetime="date">{{ date }}</time>
@@ -65,6 +82,17 @@ const date = computed(() => formatDate(post.value.created_at))
     <EditPost
       v-if="postBeingEdited"
       @edited="repliesRefresh" />
+    <Dropdown
+      class="menu"
+      v-if="showPopover === post.id">
+      <Menu v-if="isOwner">
+        <MenuItem @click="handleEdit">Editar</MenuItem>
+        <MenuItem @click="handleDelete">Eliminar</MenuItem>
+      </Menu>
+      <Menu v-else>
+        <MenuItem>Denunciar</MenuItem>
+      </Menu>
+    </Dropdown>
   </div>
 </template>
 
@@ -72,7 +100,8 @@ const date = computed(() => formatDate(post.value.created_at))
 header {
   display: flex;
   gap: var(--spaceS);
-  align-items: baseline;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .Post {

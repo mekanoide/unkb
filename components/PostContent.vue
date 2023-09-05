@@ -1,5 +1,6 @@
 <script setup>
 import MarkdownIt from 'markdown-it'
+import mditHljs from 'markdown-it-highlightjs'
 import { usePostStore } from '@/stores/post'
 const postStore = usePostStore()
 
@@ -49,7 +50,13 @@ const parseMarkdown = (txt) => {
   const md = new MarkdownIt({
     html: false,
     breaks: true,
-    linkify: true
+    linkify: true,
+    highlights: true
+  })
+  md.use(mditHljs, {
+    inline: true,
+    auto: true,
+    code: true
   })
   md.renderer.rules.link_open = (tokens, idx, options, env, self) => {
     const token = tokens[idx]
