@@ -8,6 +8,7 @@ const config = useRuntimeConfig()
 
 <style scoped>
 a {
+  font-family: var(--fontHeadline);
   text-transform: uppercase;
   font-weight: bold;
   font-size: 3rem;

@@ -1,9 +1,9 @@
 html {
-  font-family: 'Work Sans', Arial, Helvetica, sans-serif;
+  font-family: var(--fontBody);
   background-color: var(--colorBackground);
   color: var(--colorText);
   font-size: var(--fontBase);
-  line-height: 1.5;
+  line-height: 1.25;
   text-underline-offset: 2px;
   scroll-behavior: smooth;
   scrollbar-color: var(--colorText) transparent;
@@ -39,6 +39,7 @@ h1,
 h2,
 h3,
 h4 {
+  font-family: var(--fontHeadline);
   font-weight: bold;
   line-height: 1.25;
   text-transform: uppercase;
@@ -55,7 +56,7 @@ h3 {
 }
 
 code {
-  font-family: 'Source Code Pro', monospace;
+  font-family: var(--fontMono);
   overflow: auto;
 }
 

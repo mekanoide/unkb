@@ -71,23 +71,21 @@ export const usePostStore = defineStore('post', () => {
     if (matches) {
       for (const match of matches) {
         const username = match.substring(1) // Remove the @
-        console.log('Nombre de usuario', username)
         const { data: userData } = await client
           .from('users')
           .select('id, handle')
           .eq('handle', username)
           .single()
 
-        console.log('Usuario', userData.handle)
         if (userData) {
           mentions.value.push(userData)
         }
       }
     }
+    console.log('Menciones a devolver', mentions.value)
     if (mentions.value.length > 0) {
       return mentions.value
     }
-    return
   }
 
   /* Fetch post's author */
@@ -113,19 +111,20 @@ export const usePostStore = defineStore('post', () => {
     if (error) {
       console.log('Error!!!', error)
     }
-    postContent.value = ''
 
     console.log('Post!!!', postData)
     const mentions = await getMentionsFromPost(postContent.value)
     if (mentions) {
-      for (const mention in mentions) {
+      for (const mention of mentions) {
+        console.log('Creando mención!!!!')
         const { data: mentionData } = await client.from('mentions').upsert({
           user_id: mention.id,
           post_id: postData.id
         })
       }
     }
-    return post
+    postContent.value = ''
+    return postData
   }
 
   /* Create new reply to post */
