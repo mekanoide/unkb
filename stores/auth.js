@@ -4,8 +4,7 @@ export const useAuthStore = defineStore('auth', () => {
   const client = useSupabaseClient()
   const user = useSupabaseUser()
 
-  const signUp = async (handle, email, password, parent) => {
-    console.log('Parent', parent)
+  const register = async (handle, email, password, parent) => {
     const { data, error } = await client.auth.signUp({
       email: email,
       password: password,
@@ -19,6 +18,6 @@ export const useAuthStore = defineStore('auth', () => {
     return data
   }
   return {
-    signUp
+    register
   }
 })

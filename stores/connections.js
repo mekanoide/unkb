@@ -124,7 +124,6 @@ export const useConnectionsStore = defineStore('connections', () => {
     if (!shouldCancel) {
       return
     }
-    console.log('Correo a eliminar', email)
     const { error } = await client
       .from('invitations')
       .delete()

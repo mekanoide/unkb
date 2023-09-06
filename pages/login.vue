@@ -1,12 +1,18 @@
 <script setup>
-const { auth } = useSupabaseClient()
+definePageMeta({
+  layout: 'clear'
+})
+
+const client = useSupabaseClient()
 const user = useSupabaseUser()
+
+const router = useRouter()
 
 const email = ref('')
 const password = ref('')
 
 const handleLogin = async () => {
-  const { error } = await auth.signInWithPassword({
+  const { error } = await client.auth.signInWithPassword({
     email: email.value,
     password: password.value
   })
@@ -15,15 +21,14 @@ const handleLogin = async () => {
   }
 }
 
-watch(user, (newValue) => {
-  if (user.value) {
-    return navigateTo('/')
-  }
-})
-
-definePageMeta({
-  layout: 'clear'
-})
+watchEffect(
+  async () => {
+    if (user.value) {
+      return navigateTo('/')
+    }
+  },
+  { immediate: true }
+)
 </script>
 
 <template>
@@ -40,11 +45,17 @@ definePageMeta({
         label="Contraseña"
         type="password"
         autocomplete="current-password"
-        v-model="password"
-      />
-      <Button type="submit" variant="primary">Entrar</Button>
+        v-model="password" />
+      <Button
+        type="submit"
+        variant="primary"
+        >Entrar</Button
+      >
     </form>
-    <p>Tienes una invitación? <NuxtLink to="/register">Entra aquí!</NuxtLink></p>
+    <p>
+      Tienes una invitación?
+      <NuxtLink to="/register">Regístrate aquí!</NuxtLink>
+    </p>
   </div>
 </template>
 

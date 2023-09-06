@@ -20,22 +20,18 @@ export const usePostStore = defineStore('post', () => {
 
   /* Fetch posts from followed users */
   const fetchPostsFromConnections = async () => {
-    console.log('Empezamos a fetchear!!!')
     const { data: follows } = await client
       .from('connections')
       .select()
       .eq('user_id', user.value.id)
-    console.log('Follows', follows)
     const followedUserIds = follows.map((item) => item.friend_id)
     followedUserIds.push(user.value.id)
-    console.log('follows ids', followedUserIds)
 
     const { data } = await client
       .from('posts')
       .select('*, users(id, handle)')
       .in('author_id', followedUserIds)
       .order('created_at', { ascending: false })
-    console.log('Datos de la mandanga', data)
     return data
   }
 
@@ -112,11 +108,9 @@ export const usePostStore = defineStore('post', () => {
       console.log('Error!!!', error)
     }
 
-    console.log('Post!!!', postData)
     const mentions = await getMentionsFromPost(postContent.value)
     if (mentions) {
       for (const mention of mentions) {
-        console.log('Creando mención!!!!')
         const { data: mentionData } = await client.from('mentions').upsert({
           user_id: mention.id,
           post_id: postData.id

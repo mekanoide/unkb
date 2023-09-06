@@ -30,7 +30,6 @@ const searchUsers = async (query) => {
 const handleSendConnectionRequest = async (id) => {
   await sendConnectionRequest(id)
   requested.value = true
-  console.log('Solicitud enviada!!!')
 }
 </script>
 

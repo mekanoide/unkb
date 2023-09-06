@@ -50,7 +50,6 @@ const handleCreateInvitation = async () => {
 }
 
 const handleCancelInvitation = async (email) => {
-  console.log('Correo a cancelar', email)
   await cancelInvitation(email)
   refresh()
 }
@@ -61,7 +60,7 @@ const handleCancelInvitation = async (email) => {
     <p v-if="hasInvitationsLeft">
       Te quedan {{ numInvitationsLeft }} invitaciones.
     </p>
-    <p v-else>No te quedan invitaciones.</p>
+    <p v-else>No tienes invitaciones.</p>
     <div>
       <Button
         v-if="hasInvitationsLeft"

@@ -1,9 +1,4 @@
 <script setup>
-/* Middleware */
-definePageMeta({
-  middleware: ['params']
-})
-
 import { useMainStore } from '@/stores/main'
 import { usePostStore } from '@/stores/post'
 import { useConnectionsStore } from '@/stores/connections'
@@ -21,7 +16,6 @@ const user = useSupabaseUser()
 
 const tab = ref('content')
 
-const { paramsHandle } = storeToRefs(mainStore)
 const { fetchUserByHandle } = mainStore
 const { postBeingEdited, fetchPostsFromUser } = postStore
 const { areWeConnected, deleteConnection, sendConnectionRequest } =
@@ -32,7 +26,7 @@ const { areWeConnected, deleteConnection, sendConnectionRequest } =
 const {
   data: activeUser,
   pending: activeUserPending
-} = useAsyncData(() => fetchUserByHandle(paramsHandle.value)
+} = useAsyncData(() => fetchUserByHandle(route.params.handle)
 )
 const {
   data: posts,

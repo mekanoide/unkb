@@ -1,9 +1,4 @@
 <script setup>
-/* Middleware */
-definePageMeta({
-  middleware: ['params']
-})
-
 const user = useSupabaseUser()
 
 import { storeToRefs } from 'pinia'
@@ -13,7 +8,7 @@ const store = useMainStore()
 const postStore = usePostStore()
 const route = useRoute()
 
-const { paramsId, showPopover } = storeToRefs(store)
+const { showPopover } = storeToRefs(store)
 const { postBeingEdited } = storeToRefs(postStore)
 const { togglePopover } = store
 const { fetchPost, fetchReplies, createReply } = postStore
@@ -22,17 +17,17 @@ const {
   data: post,
   pending: postPending,
   error: postError
-} = useAsyncData(() => fetchPost(paramsId.value))
+} = useAsyncData(() => fetchPost(route.params.id))
 
 const {
   data: replies,
   pending: repliesPending,
   error: repliesError,
   refresh: repliesRefresh
-} = useAsyncData(() => fetchReplies(paramsId.value))
+} = useAsyncData(() => fetchReplies(route.params.id))
 
 const handleReply = async () => {
-  await createReply(paramsId.value)
+  await createReply(route.params.id)
   repliesRefresh()
 }
 

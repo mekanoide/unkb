@@ -2,7 +2,6 @@
 export default defineNuxtConfig({
   /* ssr: false, */
   runtimeConfig: {
-    metaUrl: process.env.META_ACCESS_TOKEN,
     public: {
       appName: 'UNKB',
       baseUrl: process.env.BASE_URL || 'http://localhost:3006'
@@ -13,13 +12,11 @@ export default defineNuxtConfig({
     '@nuxtjs/color-mode',
     '@pinia/nuxt',
     'nuxt-icon',
-    'nuxt-security',
-    '@vite-pwa/nuxt'
+    'nuxt-security'
   ],
-  pwa: {},
   vite: {
     define: {
-      'process.env.DEBUG': true,
+      'process.env.DEBUG': true
     },
     esbuild: {
       drop: ['console']
@@ -39,10 +36,11 @@ export default defineNuxtConfig({
     url: process.env.SUPABASE_URL,
     key: process.env.SUPABASE_KEY,
     options: {
+      redirect: true,
       redirectOptions: {
         login: '/login',
         callback: '/',
-        exclude: ['/register']
+        exclude: ['/register', '/post/*', '/manifesto']
       }
     }
   },

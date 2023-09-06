@@ -6,7 +6,7 @@ const loadTimeout = ref(null)
 nuxtApp.hook('page:start', () => {
   loadTimeout.value = setTimeout(() => {
     loading.value = true
-  }, 250)
+  }, 100)
 })
 nuxtApp.hook('page:finish', () => {
   clearTimeout(loadTimeout.value)

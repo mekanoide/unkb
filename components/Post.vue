@@ -2,6 +2,7 @@
 import { useMainStore } from '@/stores/main'
 import { usePostStore } from '@/stores/post'
 import { storeToRefs } from 'pinia'
+const router = useRouter()
 const user = useSupabaseUser()
 const store = useMainStore()
 const postStore = usePostStore()
@@ -37,6 +38,10 @@ const isOwner = computed(() => {
 
 const date = computed(() => formatDate(props.post.created_at))
 
+const linkPost = (id) => {
+  router.push(`/post/${id}`)
+}
+
 const handleEdit = () => {
   startPostEdition(props.post.id, props.post.content)
   showPopover.value = null
@@ -55,8 +60,8 @@ const toggleExpanded = () => {
 const replyCount = await fetchReplyCount(props.post.id)
 
 /* Get content height in order to whether truncate it or not */
+
 onMounted(() => {
-  console.log('Height', contentElement.value.clientHeight)
   truncate.value = contentElement.value.clientHeight > 666
 })
 </script>
@@ -86,16 +91,14 @@ onMounted(() => {
       </Dropdown>
     </header>
     <div v-if="post.reply_to">En respuesta a <User :data="postAuthor" /></div>
-    <NuxtLink
-      class="post-link"
-      :to="`/post/${post.id}`">
       <div
         class="content"
         :class="{ truncate: truncate && !expanded }"
-        ref="contentElement">
+        role="link"
+        ref="contentElement"
+        @click.prevent="linkPost(post.id)">
         <PostContent :content="post.content" />
       </div>
-    </NuxtLink>
     <Truncate
       v-if="truncate"
       :expanded="expanded"
@@ -110,7 +113,7 @@ onMounted(() => {
       <div
         v-if="!reply"
         class="actions">
-        <NuxtLink :to="`/post/${post.id}#write-reply`">
+        <NuxtLink class="link-reply" :to="`/post/${post.id}#write-reply`">
           <Icon
             name="ph:chat-bold"
             size="1rem" />
@@ -142,6 +145,7 @@ header {
 
 .content {
   max-width: 100%;
+  cursor: pointer;
 }
 
 .content.truncate {
@@ -163,8 +167,13 @@ header {
   right: 0;
 }
 
-.post-link:hover {
-  background-color: blue;
-  border: 2px dashed var(--colorText);
+.link-reply {
+  border-radius: var(--corner);
+  padding: var(--spaceXS) var(--spaceS);
+}
+
+.link-reply:hover {
+  background-color: var(--colorText);
+  color: var(--colorBackground);
 }
 </style>

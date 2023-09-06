@@ -4,7 +4,6 @@ const store = useConnectionsStore()
 const { fetchConnectionRequests, acceptConnection } = store
 
 const handleAcceptConnection = async (id) => {
-  console.log('handle!', id)
   await acceptConnection(id)
   refresh()
 }

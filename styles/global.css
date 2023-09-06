@@ -92,50 +92,47 @@ li + li:not(article *) {
 
 /* Post content format */
 
-article {
-  & strong {
-    font-weight: bold;
-  }
-  & em {
-    font-style: italic;
-  }
-  & h1 {
-    font-size: 2em;
-  }
-  & h2 {
-    font-size: 1.5em;
-  }
-  & h3 {
-    font-size: 1.25em;
-  }
-  & :is(ul, ol) {
-    padding-left: var(--spaceM);
-    margin-left: var(--spaceM);
-  }
-  & ul li {
-    list-style: circle;
-  }
-  & ol li {
-    list-style: decimal;
-  }
-  & pre {
-    padding: var(--spaceM);
-    /* border-left: 4px solid var(--colorText); */
-    background-color: var(--colorDark);
-    color: var(--colorLight);
-    border-radius: var(--corner);
-    max-width: calc(100vw - var(--spaceM) * 2);
-    overflow: auto;
-  }
-  & blockquote {
-    font-family: 'Lora', serif;
-    padding: 0 var(--spaceM);
-    border-left: 4px solid var(--colorText);
-    font-style: italic;
-  }
-  & a {
-    text-decoration: underline;
-  }
+article strong {
+  font-weight: bold;
+}
+article em {
+  font-style: italic;
+}
+article h1 {
+  font-size: 2em;
+}
+article h2 {
+  font-size: 1.5em;
+}
+article h3 {
+  font-size: 1.25em;
+}
+article :is(ul, ol) {
+  padding-left: var(--spaceM);
+  margin-left: var(--spaceM);
+}
+article ul li {
+  list-style: circle;
+}
+article ol li {
+  list-style: decimal;
+}
+article pre {
+  padding: var(--spaceM);
+  background-color: var(--colorDark);
+  color: var(--colorLight);
+  border-radius: var(--corner);
+  max-width: calc(100vw - var(--spaceM) * 2);
+  overflow: auto;
+}
+article blockquote {
+  font-family: 'Lora', serif;
+  padding: 0 var(--spaceM);
+  border-left: 4px solid var(--colorText);
+  font-style: italic;
+}
+article a {
+  text-decoration: underline;
 }
 
 /* Syntax highlights */

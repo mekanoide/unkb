@@ -53,7 +53,6 @@ const replyCount = await fetchReplyCount(props.data.id)
 
 /* Get content height in order to whether truncate it or not */
 onMounted(() => {
-  console.log('Height', contentElement.value.clientHeight)
   truncate.value = contentElement.value.clientHeight > 666
 })
 </script>

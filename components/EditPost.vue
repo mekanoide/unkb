@@ -15,7 +15,6 @@ const emit = defineEmits(['edited'])
 const handlePost = async () => {
   const type = props.reply ? 'reply' : ''
   await finishPostEdition(type)
-  console.log('Edición terminada!!!')
   emit('edited')
 }
 </script>

@@ -3,17 +3,12 @@ definePageMeta({
   layout: 'clear'
 })
 
-import { storeToRefs } from 'pinia'
-import { useMainStore } from '@/stores/main'
 import { useAuthStore } from '@/stores/auth'
-const store = useMainStore()
 const authStore = useAuthStore()
 
-const router = useRouter()
 const client = useSupabaseClient()
 const user = useSupabaseUser()
 
-const { notifications } = storeToRefs(store)
 const { register } = authStore
 
 const handle = ref('')
@@ -49,21 +44,25 @@ const handleRegistry = async () => {
     .eq('used', false)
     .maybeSingle()
 
-  if (!invitation) {
-    notifications.value.push({
-      title: 'Error',
-      message: 'Tu correo no está en la lista de invitados'
-    })
-    return
-  }
-  await register(handle.value, email.value, password.value, invitation.inviter_id)
+  await register(
+    handle.value,
+    email.value,
+    password.value,
+    invitation.inviter_id
+  )
 }
 
-watch(user, (newValue) => {
-  if (newValue) {
-    return navigateTo('/')
+watch(
+  user,
+  (newValue) => {
+    if (newValue) {
+      return navigateTo('/')
+    }
+  },
+  {
+    immediate: true
   }
-})
+)
 </script>
 
 <template>
