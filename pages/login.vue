@@ -5,7 +5,7 @@ const user = useSupabaseUser()
 const email = ref('')
 const password = ref('')
 
-const handleSignIn = async () => {
+const handleLogin = async () => {
   const { error } = await auth.signInWithPassword({
     email: email.value,
     password: password.value
@@ -27,10 +27,10 @@ definePageMeta({
 </script>
 
 <template>
-  <div class="Signin">
+  <div class="Login">
     <h1>Entrar</h1>
     <p>Si no tienes una cuenta, tendrás que pedir que alguien te invite.</p>
-    <form @submit.prevent="handleSignIn">
+    <form @submit.prevent="handleLogin">
       <TextField
         label="Correo electrónico"
         type="email"
@@ -44,7 +44,7 @@ definePageMeta({
       />
       <Button type="submit" variant="primary">Entrar</Button>
     </form>
-    <p>Tienes una invitación? <NuxtLink to="/signup">Entra aquí!</NuxtLink></p>
+    <p>Tienes una invitación? <NuxtLink to="/register">Entra aquí!</NuxtLink></p>
   </div>
 </template>
 
@@ -52,7 +52,7 @@ definePageMeta({
 a {
   text-decoration: underline;
 }
-.Signin {
+.Login {
   display: grid;
   grid-auto-flow: row;
   gap: var(--spaceM);

@@ -65,27 +65,25 @@ onMounted(() => {
   <li>
     <header>
       <User :data="post.users" />
-      <div class="actions">
-        <Button
-          variant="ghost"
-          size="small"
-          @click.stop="togglePopover(post.id)">
-          <Icon
-            name="ph:dots-three-bold"
-            size="1.5rem" />
-        </Button>
-        <Dropdown
-          class="menu"
-          v-if="showPopover === post.id">
-          <Menu v-if="isOwner">
-            <MenuItem @click="handleEdit">Editar</MenuItem>
-            <MenuItem @click="handleDelete">Eliminar</MenuItem>
-          </Menu>
-          <Menu v-else>
-            <MenuItem>Denunciar</MenuItem>
-          </Menu>
-        </Dropdown>
-      </div>
+      <Button
+        variant="ghost"
+        size="small"
+        @click.stop="togglePopover(post.id)">
+        <Icon
+          name="ph:dots-three-bold"
+          size="1.5rem" />
+      </Button>
+      <Dropdown
+        class="menu"
+        v-if="showPopover === post.id">
+        <Menu v-if="isOwner">
+          <MenuItem @click="handleEdit">Editar</MenuItem>
+          <MenuItem @click="handleDelete">Eliminar</MenuItem>
+        </Menu>
+        <Menu v-else>
+          <MenuItem>Denunciar</MenuItem>
+        </Menu>
+      </Dropdown>
     </header>
     <div v-if="post.reply_to">En respuesta a <User :data="postAuthor" /></div>
     <NuxtLink
@@ -111,13 +109,20 @@ onMounted(() => {
       </div>
       <div
         v-if="!reply"
-        class="reply-count">
+        class="actions">
         <NuxtLink :to="`/post/${post.id}#write-reply`">
           <Icon
             name="ph:chat-bold"
             size="1rem" />
           {{ replyCount }}
         </NuxtLink>
+        <Button
+          variant="ghost"
+          @click="">
+          <Icon
+            name="ph:bookmark-bold"
+            size="1rem" />
+        </Button>
       </div>
     </footer>
   </li>
@@ -148,19 +153,14 @@ header {
   display: grid;
   grid-auto-flow: column;
   align-items: center;
+  justify-content: start;
   gap: var(--spaceS);
+  margin-top: var(--spaceM);
 }
 
 .menu {
   top: 3rem;
   right: 0;
-}
-
-.reply-count {
-  margin-top: var(--spaceS);
-  display: flex;
-  gap: var(--spaceXS);
-  align-items: center;
 }
 
 .post-link:hover {

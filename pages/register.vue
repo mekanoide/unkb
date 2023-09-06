@@ -14,7 +14,7 @@ const client = useSupabaseClient()
 const user = useSupabaseUser()
 
 const { notifications } = storeToRefs(store)
-const { signUp } = authStore
+const { register } = authStore
 
 const handle = ref('')
 const email = ref('')
@@ -41,7 +41,7 @@ const validateName = async () => {
   nameError.value = null
 }
 
-const handleSignUp = async () => {
+const handleRegistry = async () => {
   const { data: invitation, error: invitationError } = await client
     .from('invitations')
     .select()
@@ -56,7 +56,7 @@ const handleSignUp = async () => {
     })
     return
   }
-  await signUp(handle.value, email.value, password.value, invitation.inviter_id)
+  await register(handle.value, email.value, password.value, invitation.inviter_id)
 }
 
 watch(user, (newValue) => {
@@ -83,7 +83,7 @@ watch(user, (newValue) => {
       <br />
       Usa este privilegio con responsabilidad.
     </p>
-    <form @submit.prevent="handleSignUp">
+    <form @submit.prevent="handleRegistry">
       <TextField
         label="Nombre"
         instructions="El nombre debe estar en minúsculas y contener solo caracteres alfanuméricos y guión bajo."
@@ -107,7 +107,7 @@ watch(user, (newValue) => {
         >Entrar</Button
       >
     </form>
-    <p>Ya tienes cuenta? <NuxtLink to="/signin">Accede aquí</NuxtLink>.</p>
+    <p>Ya tienes cuenta? <NuxtLink to="/login">Accede aquí</NuxtLink>.</p>
   </div>
 </template>
 

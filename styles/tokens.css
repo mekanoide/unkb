@@ -30,8 +30,8 @@
   --fontXL: clamp(1.5rem, calc(1.5rem + 1vw), 3rem);
 
   --fontHeadline: 'Work Sans', Arial, Helvetica, sans-serif;
-  --fontBody: 'Source Code Pro', monospace;
-  --fontMono: 'Source Code Pro', monospace;
+  --fontBody: 'Inconsolata', monospace;
+  --fontMono: 'Inconsolata', monospace;
 
   --gradientFaded: repeating-linear-gradient(-45deg, transparent, transparent 2px, var(--colorText) 2px, var(--colorText) 4px);
   --gradientWork: repeating-linear-gradient(-45deg, transparent, transparent 8px, var(--colorText) 8px, var(--colorText) 16px);
