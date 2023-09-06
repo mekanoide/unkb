@@ -40,9 +40,9 @@ export default defineNuxtConfig({
     key: process.env.SUPABASE_KEY,
     options: {
       redirectOptions: {
-        login: '/signin',
+        login: '/login',
         callback: '/',
-        exclude: ['/signup']
+        exclude: ['/register']
       }
     }
   },
