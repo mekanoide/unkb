@@ -1,25 +1,32 @@
-<template>
-  <div class="EditPost">
-    <div class="wrapper">
-      <PostEditor edition @post="handlePost" />
-    </div>
-  </div>
-</template>
-
 <script setup>
+const props = defineProps({
+  reply: {
+    type: Boolean
+  }
+})
+
 import { usePostStore } from '@/stores/post'
 const store = usePostStore()
 
-const { finishPostEdition } = store
+const { finishPostEdition, cancelPostEdition } = store
 
 const emit = defineEmits(['edited'])
 
 const handlePost = async () => {
-  await finishPostEdition()
+  const type = props.reply ? 'reply' : ''
+  await finishPostEdition(type)
   console.log('Edición terminada!!!')
   emit('edited')
 }
 </script>
+
+<template>
+  <div class="EditPost">
+    <div class="wrapper">
+      <PostEditor cancellable :rows="16" @post="handlePost" @cancel="cancelPostEdition" />
+    </div>
+  </div>
+</template>
 
 <style scoped>
 .EditPost {

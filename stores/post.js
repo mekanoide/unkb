@@ -154,6 +154,7 @@ export const usePostStore = defineStore('post', () => {
   /* Cancel post edition */
   const cancelPostEdition = () => {
     postBeingEdited.value = null
+    postContent.value = ''
   }
 
   /* Finish post edition and update post */
@@ -224,6 +225,7 @@ export const usePostStore = defineStore('post', () => {
   /* Cancel post reply */
   const cancelPostReply = () => {
     postBeingEdited.value = null
+    postContent.value = ''
   }
 
   return {

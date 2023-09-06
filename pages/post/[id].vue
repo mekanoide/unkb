@@ -83,7 +83,7 @@ const date = computed(() => formatDate(post.value.created_at))
     <ul v-if="replies && replies.length > 0">
       <Reply
         v-for="reply in replies"
-        :post="reply"
+        :data="reply"
         :key="reply.id"
         @deleted="repliesRefresh" />
     </ul>

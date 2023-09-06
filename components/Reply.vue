@@ -7,7 +7,7 @@ const store = useMainStore()
 const postStore = usePostStore()
 
 const props = defineProps({
-  post: {
+  data: {
     type: Object,
     required: true
   }
@@ -25,18 +25,18 @@ const { startPostEdition, deleteReply, fetchPostAuthor, fetchReplyCount } =
   postStore
 
 const isOwner = computed(() => {
-  return props.post.author_id === user.value.id
+  return props.data.author_id === user.value.id
 })
 
-const date = computed(() => formatDate(props.post.created_at))
+const date = computed(() => formatDate(props.data.created_at))
 
 const handleEdit = () => {
-  startPostEdition(props.post.id, props.post.content)
+  startPostEdition(props.data.id, props.data.content)
   showPopover.value = null
 }
 
 const handleDelete = async () => {
-  await deleteReply(props.post.id)
+  await deleteReply(props.data.id)
   showPopover.value = null
   emit('deleted')
 }
@@ -49,7 +49,7 @@ const startReply = () => {
   
 }
 
-const replyCount = await fetchReplyCount(props.post.id)
+const replyCount = await fetchReplyCount(props.data.id)
 
 /* Get content height in order to whether truncate it or not */
 onMounted(() => {
@@ -61,12 +61,12 @@ onMounted(() => {
 <template>
   <li>
     <header>
-      <User :data="post.users" />
+      <User :data="data.users" />
       <div class="actions">
         <Button
           variant="ghost"
           size="small"
-          @click.stop="togglePopover(post.id)">
+          @click.stop="togglePopover(data.id)">
           <Icon
             name="ph:dots-three-bold"
             size="1.5rem" />
@@ -77,7 +77,7 @@ onMounted(() => {
       class="content"
       :class="{ truncate: truncate && !expanded }"
       ref="contentElement">
-      <PostContent :content="post.content" />
+      <PostContent :content="data.content" />
     </div>
     <Truncate
       v-if="truncate"
@@ -89,12 +89,12 @@ onMounted(() => {
         <small>
           <time :datetime="date">{{ date }}</time>
         </small>
-        <small v-if="post.edited"> - editado</small>
+        <small v-if="data.edited"> - editado</small>
       </div>
     </footer>
     <Dropdown
       class="menu"
-      v-if="showPopover === post.id">
+      v-if="showPopover === data.id">
       <Menu v-if="isOwner">
         <MenuItem @click="handleEdit">Editar</MenuItem>
         <MenuItem @click="handleDelete">Eliminar</MenuItem>

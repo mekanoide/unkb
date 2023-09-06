@@ -7,7 +7,7 @@ const { postContent } = storeToRefs(store)
 const { cancelPostEdition } = store
 
 const props = defineProps({
-  edition: {
+  cancellable: {
     type: Boolean
   },
   rows: {
@@ -27,7 +27,7 @@ const wordCount = computed(() => {
     <textarea
       v-model="postContent"
       columns="50"
-      :rows="rows || 4"
+      :rows="rows || 2"
       maxlength="1024"
       :placeholder="
         $attrs.placeholder || 'Escribe tu movida (puedes usar Markdown!!!)'
@@ -41,8 +41,8 @@ const wordCount = computed(() => {
           >Enviar</Button
         >
         <Button
-          v-if="edition"
-          @click="cancelPostEdition"
+          v-if="cancellable"
+          @click="emit('cancel')"
           >Cancelar</Button
         >
       </div>
@@ -62,6 +62,10 @@ textarea {
   width: 100%;
   font-size: var(--fontL);
   transition: var(--transition);
+}
+
+textarea:focus {
+  min-height: calc(var(--fontL) * 1.25 * 8);
 }
 
 footer {
