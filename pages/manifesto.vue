@@ -34,12 +34,17 @@ const config = useRuntimeConfig()
   <h2>El buen rollo</h2>
   <p>
     Parece un poco iluso prometer el buen rollo en una cosa que se parece un
-    poco al difunto Twitter que era un espanto, ¿verdad?
+    poco al difunto (o metamorfoseado) Twitter, que era un espanto, ¿verdad?
+    Pues el caso es que me parece algo alcanzable.
   </p>
-  <p>La cosa es que querría dejar esto accesible solo por invitación.</p>
   <p>
-    Lo bello, y terrible, de esto es que la responsabilidad sube hacia arriba, así que puedes
-    terminar con la expulsión de la plataforma si invitas a gente que no se
-    comporta, o si
+    En primer lugar, querría dejar esto accesible solo por invitación, lo que
+    hará el acceso bastante más controlado. Y esto conllevará también algo
+    precioso y terrible: La responsabilidad subirá hacia arriba, es decir, que
+    si un acólito es expulsado por su mal comportamiento, quien lo invitó
+    recibirá una amonestación. Una persona podría llegar a ser expulsada de la
+    plataforma exclusivamente por los actos de sus invitados, lo que puede parecer un poco
+    nazi, pero creo que podría cortar de raíz el tema bots y trolls con cuentas en
+    serie, y hará que la peñita se piense bien a quién invita y cómo se comporta.
   </p>
 </template>

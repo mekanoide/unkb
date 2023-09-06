@@ -69,12 +69,11 @@ const { data: me, error } = await useAsyncData(() => fetchOwnUser())
       <Dropdown
         v-if="showPopover === 'main-menu'"
         class="menu">
-        <NavigationButton>
-          <Icon
-            name="ph:coin-bold"
-            size="1.5rem" />
-          Danos dinero!
-        </NavigationButton>
+        <NavigationItem
+        label="Danos dinero!"
+        icon="ph:coin-bold"
+        to="/support"
+        />
         <ToggleColorMode />
         <NavigationButton @click="handleSignOut">
           <Icon

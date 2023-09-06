@@ -81,7 +81,7 @@ const {
       value="connections"
       :selected="tab === 'connections'"
       @click="tab = 'connections'">
-      Gente
+      Lazos
     </Tab>
     <Tab
       v-if="user.id === activeUser.id"
@@ -92,10 +92,6 @@ const {
     </Tab>
   </TabMenu>
   <!-- TODO: for the moment it's just for me to invite people -->
-  <Invitations v-if="tab === 'invitations'" />
-  <Connections
-    :id="activeUser.id"
-    v-if="tab === 'connections'" />
   <div
     v-if="tab === 'content'"
     class="posts">
@@ -109,6 +105,10 @@ const {
       v-else
       message="Aún no hay nada publicado" />
   </div>
+  <Connections
+    :id="activeUser.id"
+    v-else-if="tab === 'connections'" />
+  <Invitations v-else-if="tab === 'invitations'" />
   <EditPost
     v-if="postBeingEdited"
     @edited="postsRefresh" />

@@ -28,6 +28,6 @@ span:nth-child(2) {
   background-clip: text;
   -webkit-text-fill-color: transparent;
   rotate: -6deg;
-  translate: 0.5rem 0.125rem;
+  translate: 0.25rem 0.5rem;
 }
 </style>

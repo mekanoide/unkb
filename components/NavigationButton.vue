@@ -13,6 +13,8 @@ button {
   transition: var(--transition);
   padding: var(--spaceS);
   border-radius: var(--corner);
+  text-transform: uppercase;
+  font-weight: bold;
 }
 
 button:hover {
