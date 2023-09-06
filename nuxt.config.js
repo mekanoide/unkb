@@ -16,7 +16,7 @@ export default defineNuxtConfig({
   ],
   vite: {
     define: {
-      'process.env.DEBUG': true
+      'process.env.DEBUG': false
     },
     esbuild: {
       drop: ['console']
@@ -35,13 +35,10 @@ export default defineNuxtConfig({
   supabase: {
     url: process.env.SUPABASE_URL,
     key: process.env.SUPABASE_KEY,
-    options: {
-      redirect: true,
-      redirectOptions: {
-        login: '/login',
-        callback: '/',
-        exclude: ['/register', '/post/*', '/manifesto']
-      }
+    redirectOptions: {
+      login: '/login',
+      callback: '/',
+      exclude: ['/register', '/post/*', '/manifesto']
     }
   },
   devtools: { enabled: false }

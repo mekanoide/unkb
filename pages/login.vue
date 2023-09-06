@@ -3,7 +3,7 @@ definePageMeta({
   layout: 'clear'
 })
 
-const client = useSupabaseClient()
+const { auth } = useSupabaseClient()
 const user = useSupabaseUser()
 
 const router = useRouter()
@@ -12,7 +12,7 @@ const email = ref('')
 const password = ref('')
 
 const handleLogin = async () => {
-  const { error } = await client.auth.signInWithPassword({
+  const { error } = await auth.signInWithPassword({
     email: email.value,
     password: password.value
   })
@@ -21,14 +21,11 @@ const handleLogin = async () => {
   }
 }
 
-watchEffect(
-  async () => {
-    if (user.value) {
-      return navigateTo('/')
-    }
-  },
-  { immediate: true }
-)
+watchEffect(async () => {
+  if (user.value) {
+    return navigateTo('/')
+  }
+})
 </script>
 
 <template>

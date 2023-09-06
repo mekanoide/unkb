@@ -1,11 +1,11 @@
 import { defineStore } from 'pinia'
 
 export const useAuthStore = defineStore('auth', () => {
-  const client = useSupabaseClient()
+  const { auth } = useSupabaseClient()
   const user = useSupabaseUser()
 
   const register = async (handle, email, password, parent) => {
-    const { data, error } = await client.auth.signUp({
+    const { data, error } = await auth.signUp({
       email: email,
       password: password,
       options: {
