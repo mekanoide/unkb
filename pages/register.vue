@@ -76,7 +76,7 @@ watch(user, (newValue) => {
   </div>
   <div
     v-else
-    class="Signup">
+    class="Register">
     <h1>Registro</h1>
     <p>
       Puedes unirte si tu correo está en la lista de invitaciones.
@@ -116,7 +116,7 @@ a {
   text-decoration: underline;
 }
 
-.Signup {
+.Register {
   display: grid;
   grid-auto-flow: row;
   gap: var(--spaceM);
