@@ -23,7 +23,7 @@ const parseMentions = async (txt) => {
   const mentions = await getMentionsFromPost(txt)
   if (mentions) {
     for (const mention of mentions) {
-      const userLink = `[${mention.handle}](/${mention.handle})`
+      const userLink = `[${mention.handle}](/user/${mention.handle})`
       mod = mod.replace(mention.handle, userLink)
     }
   }

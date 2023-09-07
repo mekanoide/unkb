@@ -50,7 +50,7 @@ const { data: me, error } = await useAsyncData(() => fetchOwnUser())
       <NavigationItem
         label="Perfil"
         icon="ph:user-bold"
-        :to="`/${me.handle}`" />
+        :to="`/user/${me.handle}`" />
     </nav>
     <div class="menu-wrapper">
       <button

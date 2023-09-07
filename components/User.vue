@@ -14,7 +14,7 @@ const props = defineProps({
   <NuxtLink
     class="User"
     :class="[size]"
-    :to="`/${data.handle}`"
+    :to="`/user/${data.handle}`"
     >@{{ data.handle }}</NuxtLink
   >
 </template>

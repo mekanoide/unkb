@@ -23,23 +23,24 @@ const { areWeConnected, deleteConnection, sendConnectionRequest } =
 
 /* fetch data */
 
-const {
-  data: activeUser,
-  pending: activeUserPending
-} = useAsyncData(() => fetchUserByHandle(route.params.handle)
+const { data: activeUser, pending: activeUserPending } = useAsyncData(
+  async () => await fetchUserByHandle(route.params.handle)
 )
 const {
   data: posts,
   pending: postsPending,
   error,
   refresh
-} = useAsyncData(() => fetchPostsFromUser(activeUser.value.id))
+} = useAsyncData(async () => await fetchPostsFromUser(activeUser.value.id))
 
-const {
-  data: connected,
-  error: connectedError
-} = useAsyncData(() => areWeConnected(activeUser.value.id)
+const { data: weConnected, error: connectedError } = useAsyncData(
+  async () => await areWeConnected(activeUser.value.id)
 )
+
+const connected = computed(() => {
+  return weConnected.value
+ })
+
 </script>
 
 <template>
@@ -68,7 +69,7 @@ const {
   </div>
   <div v-else>
     <!-- TODO: Finish edit profile modal  -->
-    <!-- <Button @click="editProfile">Editar perfil</Button> -->
+    <Button @click="editProfile">Editar perfil</Button>
   </div>
   <TabMenu>
     <Tab
