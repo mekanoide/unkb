@@ -14,7 +14,10 @@ const password = ref('')
 const handleLogin = async () => {
   const { error } = await auth.signInWithPassword({
     email: email.value,
-    password: password.value
+    password: password.value,
+    options: {
+      emailRedirectTo: 'http://localhost:3006/confirm',
+    }
   })
   if (error) {
     console.log('Error!!!', error)

@@ -47,7 +47,13 @@ const { data: me, error } = await useAsyncData(() => fetchOwnUser())
         label="Guardados"
         icon="ph:bookmarks-simple-bold"
         to="/bookmarks" />
+      <!-- 
+        Ponemos un v-if porque `me` puede ser `null` si cuando se
+        resuelve fetchOwnUser es `null` o porque todavía no ha terminado
+        de cargar los recursos. 
+      -->
       <NavigationItem
+        v-if="me"
         label="Perfil"
         icon="ph:user-bold"
         :to="`/user/${me.handle}`" />

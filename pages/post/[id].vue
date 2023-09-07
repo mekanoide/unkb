@@ -17,14 +17,18 @@ const {
   data: post,
   pending: postPending,
   error: postError
-} = useAsyncData(() => fetchPost(route.params.id))
+} = useAsyncData('post', () => fetchPost(route.params.id), {
+  lazy: true
+})
 
 const {
   data: replies,
   pending: repliesPending,
   error: repliesError,
   refresh: repliesRefresh
-} = useAsyncData(() => fetchReplies(route.params.id))
+} = useAsyncData('replies', () => fetchReplies(route.params.id), {
+  lazy: true
+})
 
 const handleReply = async () => {
   await createReply(route.params.id)
@@ -43,6 +47,7 @@ const date = computed(() => formatDate(post.value.created_at))
     <div class="post">
       <header>
         <User
+          v-if="post"
           :data="post.users"
           size="large" />
         <div class="actions">
@@ -67,7 +72,7 @@ const date = computed(() => formatDate(post.value.created_at))
           </Dropdown>
         </div>
       </header>
-      <PostContent :content="post.content" />
+      <PostContent v-if="post" :content="post.content" />
       <time :datetime="date">{{ date }}</time>
     </div>
     <PostEditor
