@@ -23,38 +23,42 @@ const { areWeConnected, deleteConnection, sendConnectionRequest } =
 
 /* fetch data */
 
-const { data: activeUser, pending: activeUserPending } = useAsyncData(
-  async () => await fetchUserByHandle(route.params.handle)
-)
+const {
+  data: activeUser,
+  pending: activeUserPending
+} = useAsyncData('user', () => fetchUserByHandle(route.params.handle), {
+  lazy: true
+})
+
 const {
   data: posts,
   pending: postsPending,
   error,
-  refresh
-} = useAsyncData(async () => await fetchPostsFromUser(activeUser.value.id))
+  refresh: postsRefresh
+} = useAsyncData('posts', () => fetchPostsFromUser(activeUser.value.id), {
+  lazy: true
+})
 
-const { data: weConnected, error: connectedError } = useAsyncData(
-  async () => await areWeConnected(activeUser.value.id)
-)
-
-const connected = computed(() => {
-  return weConnected.value
- })
-
+const {
+  data: connected,
+  error: connectedError
+} = useAsyncData('connected', () => areWeConnected(activeUser.value.id), {
+  lazy: true
+})
 </script>
 
 <template>
   <header>
-    <h1>@{{ activeUser.handle }}</h1>
+    <h1 v-if="activeUser">@{{ activeUser.handle }}</h1>
     <p
-      v-if="activeUser.bio"
+      v-if="activeUser && activeUser.bio"
       class="bio">
       {{ activeUser.bio }}
     </p>
   </header>
   <div
     class="status"
-    v-if="user.id !== activeUser.id">
+    v-if="activeUser && user.id !== activeUser.id">
     <Button
       v-if="connected"
       @click="deleteConnection(activeUser.id)"
@@ -85,7 +89,7 @@ const connected = computed(() => {
       Lazos
     </Tab>
     <Tab
-      v-if="user.id === activeUser.id"
+      v-if="activeUser && user.id === activeUser.id"
       value="invitations"
       :selected="tab === 'invitations'"
       @click="tab = 'invitations'">

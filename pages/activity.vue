@@ -6,13 +6,17 @@ const activityStore = useActivityStore()
 
 const { fetchActivity } = activityStore
 
-const { data: activity, error, refresh } = useAsyncData(() => fetchActivity())
+const { data: activity, error, refresh } = useAsyncData('activity', () => fetchActivity(), {
+  lazy: true
+})
 
 const {
   data: posts,
   error: postsError,
   refresh: postsRefresh
-} = useAsyncData(() => fetchPostsFromConnections())
+} = useAsyncData('posts', () => fetchPostsFromConnections(), {
+  lazy: true
+})
 
 const handleRefresh = async () => {
   await refresh()

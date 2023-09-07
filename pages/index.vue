@@ -2,6 +2,11 @@
 import { storeToRefs } from 'pinia'
 import { usePostStore } from '@/stores/post'
 
+// TODO: Hacer el middleware de autenticación
+definePageMeta({
+  middleware: ['auth']
+})
+
 const client = useSupabaseClient()
 
 const postStore = usePostStore()
@@ -14,11 +19,11 @@ const {
   data: posts,
   error,
   refresh
-} = useAsyncData(async () => await fetchPostsFromConnections())
+} = useAsyncData('posts', async () => await fetchPostsFromConnections(), {
+  lazy: true
+})
 
-const handleRefresh = async () => {
-  refresh()
-}
+const handleRefresh = async () => refresh()
 </script>
 
 <template>
