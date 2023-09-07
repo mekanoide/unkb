@@ -48,11 +48,6 @@ const { data: me, error } = await useAsyncData(() => fetchOwnUser())
         icon="ph:bookmarks-simple-bold"
         to="/bookmarks" />
       <NavigationItem
-        class="manifesto-button"
-        label="Manifiesto"
-        icon="ph:lightbulb-bold"
-        to="/manifesto" />
-      <NavigationItem
         label="Perfil"
         icon="ph:user-bold"
         :to="`/${me.handle}`" />
@@ -64,16 +59,20 @@ const { data: me, error } = await useAsyncData(() => fetchOwnUser())
         <Icon
           name="ph:list-bold"
           size="1.5rem" />
-        <span>Menú</span>
+        <span>Más</span>
       </button>
       <Dropdown
         v-if="showPopover === 'main-menu'"
         class="menu">
         <NavigationItem
-        label="Danos dinero!"
-        icon="ph:coin-bold"
-        to="/support"
-        />
+          class="manifesto-button"
+          label="Manifiesto"
+          icon="ph:lightbulb-bold"
+          to="/manifesto" />
+        <NavigationItem
+          label="Danos dinero!"
+          icon="ph:coin-bold"
+          to="/support" />
         <ToggleColorMode />
         <NavigationButton @click="handleSignOut">
           <Icon

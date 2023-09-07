@@ -1,19 +1,25 @@
 <template>
-  <div>
-    <h1>Cargando!!!</h1>
-  </div>
+  <div></div>
 </template>
 
 <style scoped>
 div {
-  background-color: var(--colorBackground);
   position: fixed;
-  inset: 0;
+  inset: -1rem;
   z-index: 5000;
   display: grid;
   place-content: center;
+  animation: pulse 1s alternate infinite;
+  border-radius: 3rem;
+  pointer-events: none;
 }
-h1 {
-  font-size: 10vw;
+
+@keyframes pulse {
+  from {
+    box-shadow: inset 0 0 0 0 var(--colorText);
+  }
+  to {
+    box-shadow: inset 0 0 0 2rem var(--colorText);
+  }
 }
 </style>

@@ -7,6 +7,7 @@ const props = defineProps({
   }
 })
 
+const user = useSupabaseUser()
 const store = useConnectionsStore()
 
 const { fetchConnections } = store
@@ -22,7 +23,7 @@ const {
 </script>
 
 <template>
-  <Requests />
+  <Requests v-if="user.id === props.id" />
   <ul v-if="connections && connections.length > 0">
     <Connection
       v-for="connection in connections"
