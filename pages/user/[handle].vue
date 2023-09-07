@@ -21,28 +21,32 @@ const { postBeingEdited, fetchPostsFromUser } = postStore
 const { areWeConnected, deleteConnection, sendConnectionRequest } =
   connectionsStore
 
+const editProfile = () => {
+  console.log('Edit profile')
+}
+
 /* fetch data */
 
 const {
   data: activeUser,
   pending: activeUserPending
-} = useAsyncData('user', () => fetchUserByHandle(route.params.handle), {
+} = useAsyncData('user', async () => await fetchUserByHandle(route.params.handle), {
   lazy: true
 })
 
 const {
-  data: posts,
+  data: userPosts,
   pending: postsPending,
   error,
   refresh: postsRefresh
-} = useAsyncData('posts', () => fetchPostsFromUser(activeUser.value.id), {
+} = useAsyncData('user-posts', async () => await fetchPostsFromUser(activeUser.value.id), {
   lazy: true
 })
 
 const {
   data: connected,
   error: connectedError
-} = useAsyncData('connected', () => areWeConnected(activeUser.value.id), {
+} = useAsyncData('connected', async () => await areWeConnected(activeUser.value.id), {
   lazy: true
 })
 </script>
@@ -100,9 +104,9 @@ const {
   <div
     v-if="tab === 'content'"
     class="posts">
-    <ul v-if="posts && posts.length > 0">
+    <ul v-if="userPosts && userPosts.length > 0">
       <Post
-        v-for="post in posts"
+        v-for="post in userPosts"
         :post="post"
         @deleted="postsRefresh" />
     </ul>

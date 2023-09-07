@@ -16,7 +16,7 @@ const { fetchPostsFromConnections } = postStore
 
 /* Fetch posts from followed users */
 const {
-  data: posts,
+  data: postsFromConnections,
   error,
   refresh
 } = useAsyncData('posts', async () => await fetchPostsFromConnections(), {
@@ -28,9 +28,9 @@ const handleRefresh = async () => refresh()
 
 <template>
   <CreatePost @posted="handleRefresh" />
-  <ul v-if="posts && posts.length > 0">
+  <ul v-if="postsFromConnections && postsFromConnections.length > 0">
     <Post
-      v-for="post in posts"
+      v-for="post in postsFromConnections"
       :post="post"
       :key="post.id"
       @deleted="handleRefresh" />

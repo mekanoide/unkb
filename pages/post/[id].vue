@@ -17,7 +17,7 @@ const {
   data: post,
   pending: postPending,
   error: postError
-} = useAsyncData('post', () => fetchPost(route.params.id), {
+} = useAsyncData('post', async () => await fetchPost(route.params.id), {
   lazy: true
 })
 
@@ -26,7 +26,7 @@ const {
   pending: repliesPending,
   error: repliesError,
   refresh: repliesRefresh
-} = useAsyncData('replies', () => fetchReplies(route.params.id), {
+} = useAsyncData('replies', async () => await fetchReplies(route.params.id), {
   lazy: true
 })
 
