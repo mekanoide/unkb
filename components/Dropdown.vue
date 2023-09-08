@@ -53,6 +53,7 @@ header {
   z-index: 2000;
   box-shadow: var(--spaceS) var(--spaceS) 0 var(--colorNeutral);
   display: grid;
+  gap: var(--spaceS);
 }
 
 .drop-enter-from,

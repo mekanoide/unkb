@@ -41,7 +41,7 @@ h3,
 h4 {
   font-family: var(--fontHeadline);
   font-weight: bold;
-  line-height: 1.25;
+  line-height: 1;
   text-transform: uppercase;
 }
 

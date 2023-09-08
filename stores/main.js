@@ -15,6 +15,17 @@ export const useMainStore = defineStore('main', () => {
     return contacts.value.find((user) => user.handle === handle)
   }
 
+  const getRoleNameById = (id) => {
+    const roles = [
+      { id: 1, icon: 'ph:pentagram-bold', name: 'demiurgo' },
+      { id: 2, icon: false, name: 'arconte' },
+      { id: 3, icon: false, name: 'hierofante' },
+      { id: 4, icon: false, name: 'neófit' }
+    ]
+    const role = roles.find((role) => role.id === id)
+    return role
+  }
+
   const fetchOwnUser = async () => {
     const { data } = await client
       .from('users')
@@ -66,6 +77,7 @@ export const useMainStore = defineStore('main', () => {
     fetchOwnUser,
     fetchRole,
     fetchUserByHandle,
-    togglePopover
+    togglePopover,
+    getRoleNameById
   }
 })

@@ -44,8 +44,8 @@ const { data: me, error } = await useAsyncData(() => fetchOwnUser())
         icon="ph:activity-bold"
         to="/activity" />
       <NavigationItem
-        label="Guardados"
-        icon="ph:bookmarks-simple-bold"
+        label="Biblioteca"
+        icon="ph:books-bold"
         to="/bookmarks" />
       <!-- 
         Ponemos un v-if porque `me` puede ser `null` si cuando se

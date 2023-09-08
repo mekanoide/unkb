@@ -1,4 +1,9 @@
 <script setup>
+import { useMainStore } from '@/stores/main'
+const mainStore = useMainStore()
+
+const { getRoleNameById } = mainStore
+
 const props = defineProps({
   data: {
     type: Object,
@@ -8,19 +13,28 @@ const props = defineProps({
     type: String
   }
 })
+
+const role = getRoleNameById(props.data.role_id)
 </script>
 
 <template>
   <NuxtLink
     class="User"
     :class="[size]"
-    :to="`/user/${data.handle}`"
-    >@{{ data.handle }}</NuxtLink
-  >
+    :to="`/user/${data.handle}`">
+    <span class="name">@{{ data.handle }}</span>
+    <Badge v-if="role.id !== 4" :data="role" />
+  </NuxtLink>
 </template>
 
 <style scoped>
 .User {
+  display: flex;
+  gap: var(--spaceS);
+  align-items: center;
+}
+
+.name {
   font-weight: bold;
   overflow: hidden;
   text-overflow: ellipsis;

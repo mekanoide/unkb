@@ -12,7 +12,7 @@ export const usePostStore = defineStore('post', () => {
   const fetchPost = async (id) => {
     const { data } = await client
       .from('posts')
-      .select('*, users(id, handle)')
+      .select('*, users(*)')
       .eq('id', id)
       .single()
     return data
@@ -29,7 +29,7 @@ export const usePostStore = defineStore('post', () => {
 
     const { data } = await client
       .from('posts')
-      .select('*, users(id, handle)')
+      .select('*, users(*)')
       .in('author_id', followedUserIds)
       .order('created_at', { ascending: false })
     return data
@@ -39,7 +39,7 @@ export const usePostStore = defineStore('post', () => {
   const fetchPostsFromUser = async (id) => {
     const { data } = await client
       .from('posts')
-      .select('*, users(id, handle)')
+      .select('*, users(*)')
       .eq('author_id', id)
       .order('created_at', { ascending: false })
     return data
@@ -54,7 +54,7 @@ export const usePostStore = defineStore('post', () => {
   const fetchReplies = async (id) => {
     const { data } = await client
       .from('replies')
-      .select('*, users(id, handle)')
+      .select('*, users(*)')
       .eq('post_id', id)
       .order('created_at', { ascending: true })
     return data
@@ -88,7 +88,7 @@ export const usePostStore = defineStore('post', () => {
   const fetchPostAuthor = async (id) => {
     const { data } = await client
       .from('posts')
-      .select('*, users(id, handle)')
+      .select('*, users(*)')
       .eq('id', id)
       .single()
     return data.users

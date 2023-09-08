@@ -113,7 +113,8 @@ onMounted(() => {
 header {
   display: grid;
   grid-auto-flow: column;
-  justify-content: space-between;
+  grid-template-columns: 1fr auto;
+  position: relative;
 }
 
 .content {
