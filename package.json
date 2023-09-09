@@ -19,6 +19,7 @@
     "nuxt-security": "^0.14.4"
   },
   "dependencies": {
+    "@nuxtjs/robots": "^3.0.0",
     "@pinia/nuxt": "^0.4.11",
     "@vueuse/components": "^10.4.1",
     "@vueuse/core": "^10.4.1",

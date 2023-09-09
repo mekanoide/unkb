@@ -8,18 +8,25 @@ const user = useSupabaseUser()
 
 const email = ref('')
 const password = ref('')
+const pending = ref(false)
 
 const handleLogin = async () => {
+  pending.value = true
   const { error } = await auth.signInWithPassword({
     email: email.value,
-    password: password.value,
-    options: {
-      emailRedirectTo: 'http://localhost:3006/confirm',
-    }
+    password: password.value
   })
   if (error) {
     console.log('Error!!!', error)
   }
+  pending.value = false
+  /*   const { error } = await useFetch('/api/v1/auth/login', {
+    method: 'post',
+    body: {
+      email: email.value,
+      password: password.value
+    }
+  }) */
 }
 
 watchEffect(async () => {
@@ -47,7 +54,8 @@ watchEffect(async () => {
       <Button
         type="submit"
         variant="primary"
-        >Entrar</Button
+        :disabled="pending"
+        >{{ pending ? '...' : 'Entrar' }}</Button
       >
     </form>
     <p>

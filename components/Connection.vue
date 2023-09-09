@@ -8,13 +8,21 @@ const props = defineProps({
   data: {
     type: Object,
     required: true
+  },
+  ownUser: {
+    type: Boolean
   }
 })
 
 const emit = defineEmits(['deleted'])
 
 const handleDelete = async () => {
-  await deleteConnection(props.data.id)
+  await useFetch('/api/v1/connections/delete', {
+    method: 'post',
+    body: {
+      id: props.data.id
+    }
+  })
   emit('deleted')
 }
 </script>
@@ -24,7 +32,7 @@ const handleDelete = async () => {
     <User
       :data="data"
       size="large" />
-    <Button variant="primary" @click="handleDelete">Cortar</Button>
+    <Button v-if="ownUser" variant="primary" @click="handleDelete">Cortar</Button>
   </li>
 </template>
 

@@ -22,6 +22,7 @@ const user = useSupabaseUser()
     <Connection
       v-for="connection in data"
       :key="connection.id"
+      :ownUser="user.id === id"
       :data="connection.connection"
       @deleted="emit('changed')" />
   </ul>

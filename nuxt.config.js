@@ -1,6 +1,12 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   /* ssr: false, */
+  app: {
+    head: {
+      title: 'UNKB',
+      meta: [{ name: 'robots', content: 'none' }]
+    }
+  },
   runtimeConfig: {
     public: {
       appName: 'UNKB',
@@ -10,10 +16,15 @@ export default defineNuxtConfig({
   modules: [
     '@nuxtjs/supabase',
     '@nuxtjs/color-mode',
+    '@nuxtjs/robots',
     '@pinia/nuxt',
     'nuxt-icon',
     'nuxt-security'
   ],
+  robots: {
+    UserAgent: '*',
+    Disallow: '*'
+  },
   vite: {
     define: {
       'process.env.DEBUG': false

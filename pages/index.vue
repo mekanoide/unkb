@@ -10,24 +10,22 @@ const postStore = usePostStore()
 
 const { postBeingEdited } = storeToRefs(postStore)
 
-const { data: postsFromConnections } = await useFetch('/api/v1/posts/followed')
-
-const handleRefresh = async () => refresh()
+const { data: postsFromConnections, refresh } = await useFetch('/api/v1/posts/followed')
 </script>
 
 <template>
-  <CreatePost @posted="handleRefresh" />
+  <CreatePost @posted="refresh" />
   <ul v-if="postsFromConnections && postsFromConnections.length > 0">
     <Post
       v-for="post in postsFromConnections"
       :post="post"
       :key="post.id"
-      @deleted="handleRefresh" />
+      @deleted="refresh" />
   </ul>
   <EmptyState
     v-else
     message="Aún no hay nada publicado" />
   <EditPost
     v-if="postBeingEdited"
-    @edited="handleRefresh" />
+    @edited="refresh" />
 </template>

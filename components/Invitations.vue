@@ -44,8 +44,13 @@ const openNewInvitation = async () => {
 }
 
 const handleCreateInvitation = async () => {
-  /*   await createInvitation(email.value) */
-  const { data } = await client.auth.inviteUserByEmail(email.value) 
+  /* await createInvitation(email.value) */
+  const { data, error } = await useFetch('/api/v1/auth/invitations/create', {
+    method: 'post',
+    body: {
+      email: email.value
+    }
+  })
   showingNewInvitation.value = false
   refresh()
 }

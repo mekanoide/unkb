@@ -1,37 +1,66 @@
 <script setup>
 import { storeToRefs } from 'pinia'
 import { usePostStore } from '@/stores/post'
+import { onClickOutside } from '@vueuse/core'
 const store = usePostStore()
 
 const { postContent } = storeToRefs(store)
-const { cancelPostEdition } = store
+const focused = ref(false)
 
 const props = defineProps({
   cancellable: {
     type: Boolean
   },
-  rows: {
+  minRows: {
     type: Number
+  },
+  maxRows: {
+    type: Number
+  },
+  size: {
+    type: String
   }
 })
 
+const post = ref(null)
+
 const emit = defineEmits(['post', 'cancel'])
+
+const handleSubmit = () => {
+  emit('post')
+  focused.value = false
+}
 
 const wordCount = computed(() => {
   return `${postContent.value.length}/1024`
 })
+
+onClickOutside(post, (e) => {
+  focused.value = false
+})
+
+const computedRows = computed(() => {
+  if (focused.value) {
+    return props.maxRows || 8
+  } else {
+    return props.minRows || 2
+  }
+})
 </script>
 
 <template>
-  <form @submit.prevent="emit('post')">
+  <form @submit.prevent="handleSubmit" ref="post">
     <textarea
       v-model="postContent"
       columns="50"
-      :rows="rows || 2"
+      :rows="computedRows"
       maxlength="1024"
       :placeholder="
         $attrs.placeholder || 'Escribe tu movida (puedes usar Markdown!!!)'
-      "></textarea>
+      "
+      :class="{ focus: focused }"
+      @click="focused = true">
+    </textarea>
     <footer>
       <div class="actions">
         <Button
@@ -62,10 +91,6 @@ textarea {
   width: 100%;
   font-size: var(--fontL);
   transition: var(--transition);
-}
-
-textarea:focus {
-  min-height: calc(var(--fontL) * 1.25 * 8);
 }
 
 footer {

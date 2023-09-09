@@ -22,7 +22,7 @@ const handlePost = async () => {
 <template>
   <div class="EditPost">
     <div class="wrapper">
-      <PostEditor cancellable :rows="16" @post="handlePost" @cancel="cancelPostEdition" />
+      <PostEditor cancellable minRows="16" maxRows="16" @post="handlePost" @cancel="cancelPostEdition" />
     </div>
   </div>
 </template>

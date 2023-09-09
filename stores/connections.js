@@ -57,15 +57,7 @@ export const useConnectionsStore = defineStore('connections', () => {
 
   /*  Delete connection */
   const deleteConnection = async (id) => {
-    const shouldDelete = confirm('Quieres desconectar seguro?')
-    if (!shouldDelete) {
-      return
-    }
-    const { error: error1 } = await client
-      .from('connections')
-      .delete()
-      .eq('friend_id', id)
-      .eq('user_id', user.value.id)
+
   }
 
   /* Fetch invitations */
@@ -88,12 +80,7 @@ export const useConnectionsStore = defineStore('connections', () => {
 
   /* Create invitation */
   const createInvitation = async (email) => {
-    const { data } = await client.from('invitations').upsert({
-      inviter_id: user.value.id,
-      target_email: email,
-      created_at: new Date()
-    })
-    return data
+
   }
   /* Cancel pending invitation */
   const cancelInvitation = async (email) => {

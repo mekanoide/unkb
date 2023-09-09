@@ -52,12 +52,7 @@ export const useMainStore = defineStore('main', () => {
   }
 
   const fetchUserByHandle = async (handle) => {
-    const { data } = await client
-      .from('users')
-      .select()
-      .eq('handle', handle)
-      .single()
-    return data
+
   }
 
   const togglePopover = (id) => {

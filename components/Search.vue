@@ -28,7 +28,12 @@ const searchUsers = async (query) => {
 }
 
 const handleSendConnectionRequest = async (id) => {
-  await sendConnectionRequest(id)
+  await useFetch('/api/v1/connections/request', {
+    method: 'post',
+    body: {
+      id: id
+    }
+  })
   requested.value = true
 }
 </script>

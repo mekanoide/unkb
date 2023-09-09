@@ -78,7 +78,14 @@ export const usePostStore = defineStore('post', () => {
 
   /* Create new post */
   const createPost = async () => {
-    const { data: postData, error } = await client
+    const { data, error } = await useFetch('/api/v1/posts/create', {
+      method: 'post',
+      body: {
+        content: postContent.value
+      }
+    })
+    postContent.value = ''
+/*     const { data: postData, error } = await client
       .from('posts')
       .upsert({
         author_id: user.value.id,
@@ -100,7 +107,7 @@ export const usePostStore = defineStore('post', () => {
       }
     }
     postContent.value = ''
-    return postData
+    return postData */
   }
 
   /* Create new reply to post */
