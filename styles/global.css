@@ -64,10 +64,6 @@ section {
   position: relative;
 }
 
-aside > section + aside > section {
-  border-top: 1px dashed var(--colorText);
-}
-
 small {
   font-size: var(--fontS);
 }
@@ -87,7 +83,7 @@ li:not(article *) {
 }
 
 li + li:not(article *) {
-  border-top: 1px dashed var(--colorText);
+  border-top: 2px dashed var(--colorText);
 }
 
 /* Post content format */
@@ -175,7 +171,7 @@ input:is(
   ),
 textarea {
   width: 100%;
-  border: 1px solid var(--colorText);
+  border: 2px solid var(--colorText);
   padding: var(--spaceS);
   border-radius: var(--corner);
   transition: var(--transition);
@@ -189,7 +185,7 @@ input:is(
     [type='search']
   ):focus,
 textarea:focus {
-  outline: 3px solid var(--colorText);
+  outline: 4px solid var(--colorText);
 }
 
 input:is(

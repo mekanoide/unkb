@@ -1,27 +1,16 @@
 <script setup>
-import { storeToRefs } from 'pinia'
-import { usePostStore } from '@/stores/post'
-
-// TODO: Hacer el middleware de autenticación
 definePageMeta({
   middleware: ['auth']
 })
 
-const client = useSupabaseClient()
+import { storeToRefs } from 'pinia'
+import { usePostStore } from '@/stores/post'
 
 const postStore = usePostStore()
 
 const { postBeingEdited } = storeToRefs(postStore)
-const { fetchPostsFromConnections } = postStore
 
-/* Fetch posts from followed users */
-const {
-  data: postsFromConnections,
-  error,
-  refresh
-} = useAsyncData('posts', async () => await fetchPostsFromConnections(), {
-  lazy: true
-})
+const { data: postsFromConnections } = await useFetch('/api/v1/posts/followed')
 
 const handleRefresh = async () => refresh()
 </script>

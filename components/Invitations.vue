@@ -44,7 +44,8 @@ const openNewInvitation = async () => {
 }
 
 const handleCreateInvitation = async () => {
-  await createInvitation(email.value)
+  /*   await createInvitation(email.value) */
+  const { data } = await client.auth.inviteUserByEmail(email.value) 
   showingNewInvitation.value = false
   refresh()
 }

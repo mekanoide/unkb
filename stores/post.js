@@ -20,29 +20,11 @@ export const usePostStore = defineStore('post', () => {
 
   /* Fetch posts from followed users */
   const fetchPostsFromConnections = async () => {
-    const { data: follows } = await client
-      .from('connections')
-      .select()
-      .eq('user_id', user.value.id)
-    const followedUserIds = follows.map((item) => item.friend_id)
-    followedUserIds.push(user.value.id)
 
-    const { data } = await client
-      .from('posts')
-      .select('*, users(*)')
-      .in('author_id', followedUserIds)
-      .order('created_at', { ascending: false })
-    return data
   }
 
   /* Fetch posts from user */
   const fetchPostsFromUser = async (id) => {
-    const { data } = await client
-      .from('posts')
-      .select('*, users(*)')
-      .eq('author_id', id)
-      .order('created_at', { ascending: false })
-    return data
   }
 
   /* fetch replies */

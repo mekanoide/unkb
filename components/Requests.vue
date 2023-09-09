@@ -8,11 +8,7 @@ const handleAcceptConnection = async (id) => {
   refresh()
 }
 
-const {
-  data: requests,
-  error,
-  refresh
-} = useAsyncData(() => fetchConnectionRequests())
+const { data: requests, refresh } = await useFetch('/api/v1/connections/requests')
 </script>
 
 <template>
@@ -30,7 +26,7 @@ const {
 <style scoped>
 section {
   padding: var(--spaceS) var(--spaceM);
-  border: 1px dashed var(--colorText);
+  border: 2px dashed var(--colorText);
   border-radius: var(--corner);
 }
 
@@ -42,6 +38,6 @@ li {
 }
 
 li + li {
-  border-top: 1px dashed var(--colorText);
+  border-top: 2px dashed var(--colorText);
 }
 </style>

@@ -1,3 +1,9 @@
+<script setup>
+definePageMeta({
+  middleware: ['auth']
+})
+</script>
+
 <template>
   <h1>Danos dinero!!!</h1>
   <p>

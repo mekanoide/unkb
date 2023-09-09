@@ -153,7 +153,7 @@ nav {
     grid-auto-flow: column;
     justify-content: center;
     z-index: 100;
-    border-top: 1px dashed currentColor;
+    border-top: 2px dashed currentColor;
     padding: var(--spaceS);
     gap: 0;
   }

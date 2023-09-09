@@ -4,31 +4,26 @@ const props = defineProps({
   id: {
     type: String,
     required: true
+  },
+  data: {
+    type: Array,
+    required: true
   }
 })
-
+const emit = defineEmits(['changed'])
 const user = useSupabaseUser()
-const store = useConnectionsStore()
-
-const { fetchConnections } = store
-
-/* Fetch posts from followed users */
-const {
-  data: connections,
-  error: connectionsError,
-  refresh: connectionsRefresh
-} = useAsyncData(() => fetchConnections(props.id))
 
 /* TODO: add requested connections */
 </script>
 
 <template>
-  <Requests v-if="user.id === props.id" />
-  <ul v-if="connections && connections.length > 0">
+  <Requests v-if="user.id === id" />
+  <ul v-if="data && data.length > 0">
     <Connection
-      v-for="connection in connections"
+      v-for="connection in data"
+      :key="connection.id"
       :data="connection.connection"
-      @deleted="connectionsRefresh" />
+      @deleted="emit('changed')" />
   </ul>
   <EmptyState
     v-else

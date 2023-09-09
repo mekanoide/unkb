@@ -22,7 +22,7 @@ const role = getRoleNameById(props.data.role_id)
     class="User"
     :class="[size]"
     :to="`/user/${data.handle}`">
-    <span class="name">@{{ data.handle }}</span>
+    <span class="name">{{ data.handle }}</span>
     <Badge v-if="role.id !== 4" :data="role" />
   </NuxtLink>
 </template>

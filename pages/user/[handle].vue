@@ -1,4 +1,8 @@
 <script setup>
+definePageMeta({
+  middleware: ['auth']
+})
+
 import { useMainStore } from '@/stores/main'
 import { usePostStore } from '@/stores/post'
 import { useConnectionsStore } from '@/stores/connections'
@@ -18,8 +22,12 @@ const tab = ref('content')
 
 const { fetchUserByHandle } = mainStore
 const { postBeingEdited, fetchPostsFromUser } = postStore
-const { areWeConnected, deleteConnection, sendConnectionRequest } =
-  connectionsStore
+const {
+  fetchConnections,
+  areWeConnected,
+  deleteConnection,
+  sendConnectionRequest
+} = connectionsStore
 
 const editProfile = () => {
   console.log('Edit profile')
@@ -27,51 +35,56 @@ const editProfile = () => {
 
 /* fetch data */
 
-const {
-  data: activeUser,
-  pending: activeUserPending
-} = useAsyncData('user', async () => await fetchUserByHandle(route.params.handle), {
-  lazy: true
-})
+const { data: selectedUser, pending: selectedUserPending } = await useFetch(
+  `/api/v1/users/${route.params.handle}`
+)
 
-const {
-  data: userPosts,
-  pending: postsPending,
-  error,
-  refresh: postsRefresh
-} = useAsyncData('user-posts', async () => await fetchPostsFromUser(activeUser.value.id), {
-  lazy: true
-})
+console.log('selected user ', selectedUser.value)
 
-const {
-  data: connected,
-  error: connectedError
-} = useAsyncData('connected', async () => await areWeConnected(activeUser.value.id), {
-  lazy: true
-})
+const { data: userPosts, refresh: refreshPosts } = await useFetch(
+  `/api/v1/posts/${selectedUser.value.id}`
+)
+
+/* Fetch user connections */
+const { data: connections, refresh: refreshConnections } = await useFetch(
+  `/api/v1/connections/${selectedUser.value.id}`
+)
+
+const { data: connected, error: connectedError } = useAsyncData(
+  'connected',
+  () => areWeConnected(selectedUser.value.id),
+  {
+    lazy: true
+  }
+)
+
+const handleDeleteConnection = async (id) => {
+  await deleteConnection(selectedUser.id)
+  refreshConnections()
+}
 </script>
 
 <template>
   <header>
-    <h1 v-if="activeUser">@{{ activeUser.handle }}</h1>
+    <h1 v-if="selectedUser">{{ selectedUser.handle }}</h1>
     <p
-      v-if="activeUser && activeUser.bio"
+      v-if="selectedUser && selectedUser.bio"
       class="bio">
-      {{ activeUser.bio }}
+      {{ selectedUser.bio }}
     </p>
   </header>
   <div
     class="status"
-    v-if="activeUser && user.id !== activeUser.id">
+    v-if="selectedUser && user.id !== selectedUser.id">
     <Button
       v-if="connected"
-      @click="deleteConnection(activeUser.id)"
+      @click="handleDeleteConnection(selectedUser.id)"
       >Cortar</Button
     >
     <Button
       variant="primary"
       v-else
-      @click="sendConnectionRequest(activeUser.id)"
+      @click="sendConnectionRequest(selectedUser.id)"
       >Pedir conexión</Button
     >
   </div>
@@ -93,7 +106,7 @@ const {
       Lazos
     </Tab>
     <Tab
-      v-if="activeUser && user.id === activeUser.id"
+      v-if="selectedUser && user.id === selectedUser.id"
       value="invitations"
       :selected="tab === 'invitations'"
       @click="tab = 'invitations'">
@@ -115,8 +128,10 @@ const {
       message="Aún no hay nada publicado" />
   </div>
   <Connections
-    :id="activeUser.id"
-    v-else-if="tab === 'connections'" />
+    :id="selectedUser.id"
+    :data="connections"
+    v-else-if="tab === 'connections'"
+    @changed="connectionsRefresh" />
   <Invitations v-else-if="tab === 'invitations'" />
   <EditPost
     v-if="postBeingEdited"

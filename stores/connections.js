@@ -48,34 +48,11 @@ export const useConnectionsStore = defineStore('connections', () => {
 
   /* Fetch connection requests */
   const fetchConnectionRequests = async () => {
-    const { data } = await client
-      .from('connection_requests')
-      .select('user_id, requester:users!user_id(handle)')
-      .eq('target_id', user.value.id)
-    return data
+
   }
 
   /* Fetch connections */
   const fetchConnections = async (id) => {
-    const { data, error } = await client
-      .from('connections')
-      .select('*, connection:users!friend_id(id, handle)')
-      .eq('user_id', id)
-
-    if (error) {
-      console.log('Error!!!', error)
-    }
-    return data
-  }
-
-  /* Are we connected? */
-  const areConnected = async (id) => {
-    const { data } = await client
-      .from('connections')
-      .select()
-      .eq('friend_id', id)
-      .eq('user_id', user.value.id)
-      .maybeSingle()
   }
 
   /*  Delete connection */

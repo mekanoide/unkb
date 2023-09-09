@@ -43,7 +43,7 @@ header {
 }
 .DropdownMenu {
   position: absolute;
-  border: 1px solid var(--colorText);
+  border: 2px solid var(--colorText);
   border-radius: var(--corner);
   background-color: var(--colorBackground);
   transform-origin: 50% 0%;
@@ -79,7 +79,7 @@ header {
     box-shadow: none;
     border: none;
     transform-origin: 50% 100%;
-    border-top: 1px solid var(--colorText);
+    border-top: 2px solid var(--colorText);
   }
   .drop-enter-from,
   .drop-leave-to {
