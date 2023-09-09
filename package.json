@@ -1,6 +1,7 @@
 {
   "name": "unkb",
   "private": true,
+  "license": "UNLICENSED",
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev --port 3006",
