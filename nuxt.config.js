@@ -4,7 +4,13 @@ export default defineNuxtConfig({
   app: {
     head: {
       title: 'UNKB',
-      meta: [{ name: 'robots', content: 'none' }],
+      meta: [
+        { name: 'robots', content: 'none' },
+        { property: 'og:title', content: 'UNKB' },        
+        { property: 'og:type', content: 'website' },
+        { property: 'og:locale', content: 'es_ES' },
+        { property: 'og:description', content: 'Esto es una red social' }
+      ],
       link: [{ rel: 'icon', type: 'image/svg', href: '/favicon.svg' }]
     }
   },
