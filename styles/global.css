@@ -42,7 +42,6 @@ h4 {
   font-family: var(--fontHeadline);
   font-weight: bold;
   line-height: 1;
-  text-transform: uppercase;
 }
 
 h1 {
@@ -88,6 +87,11 @@ li + li:not(article *) {
 
 /* Post content format */
 
+article {
+  display: grid;
+  gap: var(--spaceL);
+}
+
 article strong {
   font-weight: bold;
 }
@@ -106,13 +110,16 @@ article h3 {
 article :is(ul, ol) {
   padding-left: var(--spaceM);
   margin-left: var(--spaceM);
+  display: grid;
+  gap: var(--spaceS);
 }
 article ul li {
-  list-style: circle;
+  list-style: disc;
 }
 article ol li {
   list-style: decimal;
 }
+
 article pre {
   padding: var(--spaceM);
   background-color: var(--colorDark);

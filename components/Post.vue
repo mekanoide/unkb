@@ -114,28 +114,28 @@ onMounted(() => {
       :expanded="expanded"
       @click="toggleExpanded" />
     <footer>
-      <div>
-        <small>
-          <time :datetime="date">{{ date }}</time>
-        </small>
-        <small v-if="post.edited"> - editado</small>
-      </div>
       <div
         v-if="!reply"
         class="actions">
         <NuxtLink class="link-reply" :to="`/post/${post.id}#write-reply`">
           <Icon
             name="ph:chat-bold"
-            size="1rem" />
+            size="1.5rem" />
           {{ replyCount }}
         </NuxtLink>
         <Button
           variant="ghost"
           @click="handleSavePost(post.id)">
           <Icon
-            name="ph:bookmark-bold"
-            size="1rem" />
+            name="ph:bookmark-simple-bold"
+            size="1.5rem" />
         </Button>
+      </div>
+      <div>
+        <small>
+          <time :datetime="date">{{ date }}</time>
+        </small>
+        <small v-if="post.edited"> - editado</small>
       </div>
     </footer>
   </li>
@@ -164,12 +164,16 @@ header {
 }
 
 .actions {
-  display: grid;
-  grid-auto-flow: column;
+  display: flex;
   align-items: center;
   justify-content: start;
   gap: var(--spaceS);
-  margin-top: var(--spaceM);
+}
+
+footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .menu {
@@ -178,8 +182,12 @@ header {
 }
 
 .link-reply {
+  display: flex;
+  height: 2rem;
+  gap: var(--spaceXS);
   border-radius: var(--corner);
-  padding: var(--spaceXS) var(--spaceS);
+  padding: 0 var(--spaceS);
+  align-items: center;
 }
 
 .link-reply:hover {

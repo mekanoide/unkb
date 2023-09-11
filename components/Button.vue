@@ -83,6 +83,7 @@ button.ghost.small {
 
 button.ghost:not(.small, .large) {
   height: 2rem;
+  padding: 0 var(--spaceS);
 }
 
 button.ghost:hover,
