@@ -49,12 +49,22 @@ const handleEdit = () => {
 
 const handleDelete = async () => {
   await deletePost(props.post.id)
-  showPopover.value = null
   emit('deleted')
+  showPopover.value = null
 }
 
 const toggleExpanded = () => {
   expanded.value = !expanded.value
+}
+
+const handleSavePost = async (id) => {
+  console.log('vamo a salva el pos')
+  await useFetch('/api/v1/bookmarks/posts/create', {
+    method: 'post',
+    body: {
+      id: id
+    }
+  })
 }
 
 const replyCount = await fetchReplyCount(props.post.id)
@@ -121,7 +131,7 @@ onMounted(() => {
         </NuxtLink>
         <Button
           variant="ghost"
-          @click="">
+          @click="handleSavePost(post.id)">
           <Icon
             name="ph:bookmark-bold"
             size="1rem" />

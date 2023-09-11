@@ -16,6 +16,7 @@
   --colorSyntaxTitle: hsl(348 100% 72%);
   --colorSyntaxVariable: hsl(312 70% 72%);
 
+  --spaceXXS: 0.15rem;
   --spaceXS: 0.375rem;
   --spaceS: 0.75rem;
   --spaceM: 1.5rem;
@@ -38,6 +39,8 @@
 
   --corner: 0.75rem;
   --cornerButton: 0.75rem;
+
+  --shadowLayer: var(--spaceS) var(--spaceS) 0 var(--colorText);
 
   --transition: all 160ms ease;
 }

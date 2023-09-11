@@ -51,7 +51,7 @@ header {
   min-width: 12rem;
   top: var(--spaceL);
   z-index: 2000;
-  box-shadow: var(--spaceS) var(--spaceS) 0 var(--colorNeutral);
+  box-shadow: var(--shadowLayer);
   display: grid;
   gap: var(--spaceS);
 }

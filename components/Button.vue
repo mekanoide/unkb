@@ -31,19 +31,20 @@ button {
   font-weight: 600;
   border-radius: var(--cornerButton);
   transition: var(--transition);
+  text-transform: uppercase;
 }
 
 button:hover {
   color: var(--colorBackground);
   background-color: var(--colorText);
 }
-button.primary {
+button:not(.secondary, .ghost, .square) {
   background-color: var(--colorText);
   border-color: var(--colorText);
   color: var(--colorBackground);
 }
 
-button.primary:hover {
+button:not(.secondary, .ghost, .square):hover {
   border: 4px double currentColor;
 }
 
@@ -53,7 +54,7 @@ button.critical {
 
 button:not(.small, .large) {
   height: 3rem;
-  padding: 0 var(--spaceS);
+  padding: 0 var(--spaceM);
 }
 
 button.small {

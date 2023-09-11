@@ -32,7 +32,7 @@ const handleDelete = async () => {
     <User
       :data="data"
       size="large" />
-    <Button v-if="ownUser" variant="primary" @click="handleDelete">Cortar</Button>
+    <Button v-if="ownUser" size="small" @click="handleDelete">Cortar</Button>
   </li>
 </template>
 

@@ -7,34 +7,31 @@ const client = useSupabaseClient()
 const store = useMainStore()
 const connectionsStore = useConnectionsStore()
 
-const { sendConnectionRequest } = connectionsStore
-
 const searchResults = ref([])
 const { showPopover } = storeToRefs(store)
-const requested = ref(false)
 
 const searchUsers = async (query) => {
-  const { data, error } = await client
-    .from('users')
-    .select()
-    .ilike('handle', `${query}%`)
-    .limit(10)
-
-  if (error) {
-    console.log('error!!!', error)
-  }
-  searchResults.value = data
+  const { data, error } = await useFetch(`/api/v1/search/${query}`)
+  searchResults.value = data.value
   showPopover.value = 'search-results'
 }
 
-const handleSendConnectionRequest = async (id) => {
-  await useFetch('/api/v1/connections/request', {
+const handleCreateConnectionRequest = async (id) => {
+  await useFetch('/api/v1/connections/requests/create', {
     method: 'post',
     body: {
       id: id
     }
   })
-  requested.value = true
+}
+
+const handleCancelConnectionRequest = async (id) => {
+  await useFetch('/api/v1/connections/requests/cancel', {
+    method: 'post',
+    body: {
+      id: id
+    }
+  })
 }
 </script>
 
@@ -42,12 +39,14 @@ const handleSendConnectionRequest = async (id) => {
   <section>
     <SearchField @submit="searchUsers" />
     <div class="results-wrapper">
-      <Dropdown class="results" v-if="showPopover === 'search-results'" closeable>
+      <Dropdown
+        class="results"
+        v-if="showPopover === 'search-results'">
         <ul v-if="searchResults.length > 0">
-          <li v-for="result in searchResults" :key="result.id">
-            <User :data="result" />
-            <Button v-if="requested" size="small" @click="handleSendConnectionRequest(result.id)">Conectar</Button>
-            <Button v-else size="small" @click="handleSendConnectionRequest(result.id)">Conectar</Button>
+          <li
+            v-for="result in searchResults"
+            :key="result.id">
+            <User :data="result" @click="showPopover = null" />
           </li>
         </ul>
         <div v-else>No se ha encontrado nada con ese nombre</div>
@@ -64,13 +63,10 @@ const handleSendConnectionRequest = async (id) => {
 .results {
   width: 100%;
   top: var(--spaceS);
-  display: grid;
-  gap: var(--spaceM);
 }
 
 ul {
   display: grid;
-  gap: var(--spaceS);
 }
 
 li {

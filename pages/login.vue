@@ -53,7 +53,7 @@ watchEffect(async () => {
         v-model="password" />
       <Button
         type="submit"
-        variant="primary"
+       
         :disabled="pending"
         >{{ pending ? '...' : 'Entrar' }}</Button
       >

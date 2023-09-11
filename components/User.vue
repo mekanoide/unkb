@@ -30,7 +30,7 @@ const role = getRoleNameById(props.data.role_id)
 <style scoped>
 .User {
   display: flex;
-  gap: var(--spaceS);
+  gap: var(--spaceXS);
   align-items: center;
 }
 

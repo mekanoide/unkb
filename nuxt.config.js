@@ -4,7 +4,8 @@ export default defineNuxtConfig({
   app: {
     head: {
       title: 'UNKB',
-      meta: [{ name: 'robots', content: 'none' }]
+      meta: [{ name: 'robots', content: 'none' }],
+      link: [{ rel: 'icon', type: 'image/svg', href: '/favicon.svg' }]
     }
   },
   runtimeConfig: {

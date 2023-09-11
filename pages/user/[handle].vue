@@ -50,18 +50,67 @@ const { data: connections, refresh: refreshConnections } = await useFetch(
   `/api/v1/connections/${selectedUser.value.id}`
 )
 
-const { data: connected, error: connectedError } = useAsyncData(
-  'connected',
-  () => areWeConnected(selectedUser.value.id),
-  {
-    lazy: true
-  }
-)
+/* Fetch users status */
+const { data: connectionStatus, refresh: connectionStatusRefresh } =
+  await useFetch(`/api/v1/connections/status/${selectedUser.value.id}`)
 
 const handleDeleteConnection = async (id) => {
   await deleteConnection(selectedUser.id)
   refreshConnections()
 }
+
+const handleSendConnectionRequest = async (id) => {
+  await useFetch('/api/v1/connections/requests/create', {
+    method: 'post',
+    body: {
+      id: id
+    }
+  })
+  connectionStatusRefresh()
+}
+
+const handleCancelConnectionRequest = async (id) => {
+  await useFetch('/api/v1/connections/requests/cancel', {
+    method: 'post',
+    body: {
+      id: id
+    }
+  })
+  connectionStatusRefresh()
+}
+
+const handleAcceptRequest = async (id) => {
+  await useFetch('/api/v1/connections/requests/accept', {
+    method: 'post',
+    body: {
+      id: id
+    }
+  })
+  connectionStatusRefresh()
+}
+
+const handleRejectRequest = async (id) => {
+  await useFetch('/api/v1/connections/requests/reject', {
+    method: 'post',
+    body: {
+      id: id
+    }
+  })
+  connectionStatusRefresh()
+}
+
+const statusDescription = computed(() => {
+  switch (connectionStatus.value) {
+    case 'not_connected':
+      return 'No es un contacto'
+    case 'connected':
+      return 'Es un contacto'
+    case 'requested':
+      return 'Has solicitado conectar'
+    case 'received':
+      return 'Quiere conectar contigo'
+  }
+})
 </script>
 
 <template>
@@ -73,24 +122,43 @@ const handleDeleteConnection = async (id) => {
       {{ selectedUser.bio }}
     </p>
   </header>
-  <div
-    class="status"
-    v-if="selectedUser && user.id !== selectedUser.id">
+  <p class="status" v-if="connectionStatus !== 'myself'">{{ statusDescription }}</p>
+  <div class="actions">
     <Button
-      v-if="connected"
-      @click="handleDeleteConnection(selectedUser.id)"
-      >Cortar</Button
-    >
+      v-if="connectionStatus === 'connected'"
+      size="small"
+      @click="handleDeleteConnection(selectedUser.id)">
+      Cortar conexión
+    </Button>
     <Button
-      variant="primary"
-      v-else
-      @click="sendConnectionRequest(selectedUser.id)"
+      v-if="connectionStatus === 'requested'"
+      size="small"
+      @click="handleCancelConnectionRequest(selectedUser.id)">
+      Cancelar solicitud
+    </Button>
+    <div v-if="connectionStatus === 'received'">
+      <Button
+        size="small"
+        @click="handleAcceptRequest(selectedUser.id)">
+        Aceptar conexión
+      </Button>
+      <Button
+        size="small"
+        variant="secondary"
+        @click="handleRejectRequest(selectedUser.id)">
+        Rechazar
+      </Button>
+    </div>
+    <Button
+      v-if="connectionStatus === 'not_connected'"
+      @click="handleSendConnectionRequest(selectedUser.id)"
       >Pedir conexión</Button
     >
-  </div>
-  <div v-else>
-    <!-- TODO: Finish edit profile modal  -->
-    <Button @click="editProfile">Editar perfil</Button>
+    <Button
+      v-if="connectionStatus === 'myself'"
+      @click="editProfile"
+      >Editar perfil</Button
+    >
   </div>
   <TabMenu>
     <Tab
@@ -103,7 +171,7 @@ const handleDeleteConnection = async (id) => {
       value="connections"
       :selected="tab === 'connections'"
       @click="tab = 'connections'">
-      Lazos
+      Conexiones
     </Tab>
     <Tab
       v-if="selectedUser && user.id === selectedUser.id"
@@ -146,11 +214,10 @@ header {
   border-radius: var(--corner);
 }
 .bio {
-  margin-top: var(--spaceS);
+  margin-top: var(--spaceM);
 }
 
 .status {
-  padding-top: var(--spaceM);
 }
 
 h1 {

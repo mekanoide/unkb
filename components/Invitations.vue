@@ -70,7 +70,7 @@ const handleCancelInvitation = async (email) => {
     <div>
       <Button
         v-if="hasInvitationsLeft"
-        variant="primary"
+       
         @click="openNewInvitation">
         Nueva invitación
       </Button>
@@ -103,7 +103,7 @@ const handleCancelInvitation = async (email) => {
         placeholder="fulanit@ejemplo.com" />
       <footer>
         <Button
-          variant="primary"
+         
           type="submit"
           >Invitar</Button
         >

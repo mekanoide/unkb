@@ -1,10 +1,14 @@
 <script setup>
 import { useConnectionsStore } from '@/stores/connections'
 const store = useConnectionsStore()
-const { fetchConnectionRequests, acceptConnection } = store
 
 const handleAcceptConnection = async (id) => {
-  await acceptConnection(id)
+  await useFetch('/api/v1/connections/requests/accept', {
+    method: 'post',
+    body: {
+      id: id
+    }
+  })
   refresh()
 }
 

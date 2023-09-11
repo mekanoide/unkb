@@ -27,18 +27,25 @@ const props = defineProps({
   font-size: var(--fontS);
   border-radius: var(--corner);
   transition: var(--transition);
+  position: relative;
 }
 
 span {
   display: none;
-}
-
-.Badge:hover {
-  background-color: var(--colorText);
-  color: var(--colorBackground);
+  transition: var(--transition);
 }
 
 .Badge:hover span {
-  display: inline;
+  display: block;
+  position: absolute;
+  top: 2rem;
+  translate: -1rem;
+  background-color: var(--colorText);
+  border: 2px solid var(--colorBackground);
+  color: var(--colorBackground);
+  padding: var(--spaceXS) var(--spaceS);
+  border-radius: var(--corner);
+  text-transform: uppercase;
+  box-shadow: var(--shadowLayer);
 }
 </style>

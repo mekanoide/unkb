@@ -101,7 +101,7 @@ watch(
         v-model="password" />
       <Button
         type="submit"
-        variant="primary"
+       
         size="large"
         >Entrar</Button
       >

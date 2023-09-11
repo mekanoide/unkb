@@ -27,23 +27,10 @@ export const useConnectionsStore = defineStore('connections', () => {
 
   /* Request connection */
   const sendConnectionRequest = async (id) => {
-    const { data } = await client.from('connection_requests').upsert({
-      target_id: id,
-      user_id: user.value.id
-    })
-    return data
   }
 
   /* Accept connection */
   const acceptConnection = async (id) => {
-    const { error } = await client
-      .from('connection_requests')
-      .update({ accepted: true })
-      .eq('user_id', id)
-      .eq('target_id', user.value.id)
-    if (error) {
-      console.log('Error!!!', error)
-    }
   }
 
   /* Fetch connection requests */

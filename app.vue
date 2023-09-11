@@ -19,4 +19,5 @@ nuxtApp.hook('page:finish', () => {
     <Loading v-if="loading" />
     <NuxtPage />
   </NuxtLayout>
+  <Notification />
 </template>

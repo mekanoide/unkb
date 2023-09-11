@@ -2,7 +2,7 @@
 const searchQuery = ref('')
 const emit = defineEmits(['submit'])
 
-const handleInput = () => {
+const handleSearch = () => {
   if (searchQuery.value.length > 0) {
     emit('submit', searchQuery.value)
   }
@@ -13,12 +13,12 @@ const handleInput = () => {
   <div class="SearchField">
     <form
       action="search"
-      @submit.prevent="emit('submit', searchQuery)">
+      @submit.prevent="handleSearch">
       <input
         type="search"
         v-model="searchQuery"
         placeholder="Buscar usuarios"
-        @input="handleInput" />
+        @input="handleSearch" />
       <Button
         type="submit"
         class="search-button"

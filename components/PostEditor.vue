@@ -65,7 +65,7 @@ const computedRows = computed(() => {
       <div class="actions">
         <Button
           type="submit"
-          variant="primary"
+         
           :disabled="postContent.length === 0"
           >Enviar</Button
         >
