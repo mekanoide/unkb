@@ -15,24 +15,15 @@ const route = useRoute()
 const { showPopover } = storeToRefs(store)
 const { postBeingEdited } = storeToRefs(postStore)
 const { togglePopover } = store
-const { fetchPost, fetchReplies, createReply, startPostEdition, deletePost } = postStore
+const { createReply, startPostEdition, deletePost } = postStore
 
-const {
-  data: post,
-  pending: postPending,
-  error: postError
-} = useAsyncData('post', async () => await fetchPost(route.params.id), {
-  lazy: true
-})
+const { data: post, refresh: refreshPost } = await useFetch(
+  `/api/v1/posts/${route.params.id}`
+)
 
-const {
-  data: replies,
-  pending: repliesPending,
-  error: repliesError,
-  refresh: repliesRefresh
-} = useAsyncData('replies', async () => await fetchReplies(route.params.id), {
-  lazy: true
-})
+const { data: replies, refresh: repliesRefresh } = await useFetch(
+  `/api/v1/replies/${route.params.id}`
+)
 
 const handleEdit = () => {
   startPostEdition(post.value.id, post.value.content)
@@ -87,7 +78,9 @@ const date = computed(() => formatDate(post.value.created_at))
           </Dropdown>
         </div>
       </header>
-      <PostContent v-if="post" :content="post.content" />
+      <PostContent
+        v-if="post"
+        :content="post.content" />
       <time :datetime="date">{{ date }}</time>
     </div>
     <PostEditor

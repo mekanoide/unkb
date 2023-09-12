@@ -69,36 +69,17 @@ const handleSavePost = async (id) => {
   })
 }
 
-const getLink = async () => {
-  const linkRegex = /(https?:\/\/[^ ]*)/
-  const stringToCheck = props.post.content
-  console.log('String to check', stringToCheck)
-  const match = stringToCheck.match(linkRegex)
-  if (match) {
-    const url = match[1]
-    const { data } = await useFetch('/api/v1/links/metadata', {
-      method: 'put',
-      body: {
-        url: url
-      }
-    })
-    console.log('datos devueltos', data.value)
-    return data.value
-  }
-}
-
 const replyCount = await fetchReplyCount(props.post.id)
 
 /* Get content height in order to whether truncate it or not */
 
 onMounted(() => {
-  link.value = getLink(props.post.content)
   truncate.value = contentElement.value.clientHeight > 666
 })
 </script>
 
 <template>
-  <li>
+  <li class="Post">
     <header>
       <User :data="post.users" />
       <Button
@@ -133,10 +114,9 @@ onMounted(() => {
       v-if="truncate"
       :expanded="expanded"
       @click="toggleExpanded" />
-      {{ link }}
     <LinkPreview
-      v-if="link"
-      :data="link" />
+      v-if="post.link"
+      :data="post.link" />
     <footer>
       <div
         v-if="!reply"
@@ -168,6 +148,11 @@ onMounted(() => {
 </template>
 
 <style scoped>
+.Post {
+  display: grid;
+  gap: var(--spaceM);
+}
+
 .author {
   font-weight: bold;
 }
@@ -192,7 +177,7 @@ header {
 .actions {
   display: flex;
   align-items: center;
-  justify-content: start;
+  justify-content: flex-start;
   gap: var(--spaceS);
 }
 

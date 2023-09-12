@@ -4,14 +4,12 @@ export default defineEventHandler(async (event) => {
   const user = await serverSupabaseUser(event)
   const client = await serverSupabaseClient(event)
 
-  const { user_id } = event.context.params
-  const { data, error } = await client
-    .from('connections')
-    .select('*, connection:users!friend_id(*)')
-    .eq('user_id', user_id)
+  const { post_id } = event.context.params
 
-  if (error) {
-    console.log('Error!!!', error)
-  }
+  const { data } = await client
+    .from('replies')
+    .select('*, users(*)')
+    .eq('post_id', post_id)
+    .order('created_at', { ascending: true })
   return data
 })
