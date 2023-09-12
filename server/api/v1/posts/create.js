@@ -29,6 +29,11 @@ export default defineEventHandler(async (event) => {
     }
   }
 
+  const getLinksFromPost = async (txt) => {
+    const mentionRegex = /@([a-z0-9_]+)/g
+    const matches = txt.match(mentionRegex)
+  }
+
   const { data: postData, error } = await client
     .from('posts')
     .upsert({

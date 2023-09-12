@@ -62,10 +62,16 @@ const parseContent = async (txt) => {
   modContent.value = processedContent
 }
 
+const getLinks = async (txt) => {
+  /* TODO: It needs to capture links and try to fetch their metadata */
+  return something
+}
+
 parseContent(props.content)
 
 watch(content, async (newContent) => {
   parseContent(newContent)
+  getLinks(newContent)
 })
 </script>
 

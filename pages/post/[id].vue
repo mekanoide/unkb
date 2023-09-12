@@ -15,7 +15,7 @@ const route = useRoute()
 const { showPopover } = storeToRefs(store)
 const { postBeingEdited } = storeToRefs(postStore)
 const { togglePopover } = store
-const { fetchPost, fetchReplies, createReply } = postStore
+const { fetchPost, fetchReplies, createReply, startPostEdition, deletePost } = postStore
 
 const {
   data: post,
@@ -33,6 +33,17 @@ const {
 } = useAsyncData('replies', async () => await fetchReplies(route.params.id), {
   lazy: true
 })
+
+const handleEdit = () => {
+  startPostEdition(post.value.id, post.value.content)
+  showPopover.value = null
+}
+
+const handleDelete = async () => {
+  await deletePost(props.post.id)
+  emit('deleted')
+  showPopover.value = null
+}
 
 const handleReply = async () => {
   await createReply(route.params.id)

@@ -109,12 +109,12 @@ article h3 {
 }
 article :is(ul, ol) {
   padding-left: var(--spaceM);
-  margin-left: var(--spaceM);
+  margin-left: var(--spaceS);
   display: grid;
   gap: var(--spaceS);
 }
 article ul li {
-  list-style: disc;
+  list-style: square;
 }
 article ol li {
   list-style: decimal;

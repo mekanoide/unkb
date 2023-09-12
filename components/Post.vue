@@ -21,6 +21,7 @@ const emit = defineEmits(['deleted', 'edited'])
 const contentElement = ref(null)
 const truncate = ref(false)
 const expanded = ref(false)
+const link = ref(null)
 
 const { showPopover } = storeToRefs(store)
 
@@ -57,14 +58,33 @@ const toggleExpanded = () => {
   expanded.value = !expanded.value
 }
 
+/* TODO: maybe try on the list? */
+
 const handleSavePost = async (id) => {
-  console.log('vamo a salva el pos')
   await useFetch('/api/v1/bookmarks/posts/create', {
-    method: 'post',
+    method: 'put',
     body: {
       id: id
     }
   })
+}
+
+const getLink = async () => {
+  const linkRegex = /(https?:\/\/[^ ]*)/
+  const stringToCheck = props.post.content
+  console.log('String to check', stringToCheck)
+  const match = stringToCheck.match(linkRegex)
+  if (match) {
+    const url = match[1]
+    const { data } = await useFetch('/api/v1/links/metadata', {
+      method: 'put',
+      body: {
+        url: url
+      }
+    })
+    console.log('datos devueltos', data.value)
+    return data.value
+  }
 }
 
 const replyCount = await fetchReplyCount(props.post.id)
@@ -72,6 +92,7 @@ const replyCount = await fetchReplyCount(props.post.id)
 /* Get content height in order to whether truncate it or not */
 
 onMounted(() => {
+  link.value = getLink(props.post.content)
   truncate.value = contentElement.value.clientHeight > 666
 })
 </script>
@@ -100,24 +121,29 @@ onMounted(() => {
         </Menu>
       </Dropdown>
     </header>
-    <div v-if="post.reply_to">En respuesta a <User :data="postAuthor" /></div>
-      <div
-        class="content"
-        :class="{ truncate: truncate && !expanded }"
-        role="link"
-        ref="contentElement"
-        @click.prevent="linkPost(post.id)">
-        <PostContent :content="post.content" />
-      </div>
+    <div
+      class="content"
+      :class="{ truncate: truncate && !expanded }"
+      role="link"
+      ref="contentElement"
+      @click.prevent="linkPost(post.id)">
+      <PostContent :content="post.content" />
+    </div>
     <Truncate
       v-if="truncate"
       :expanded="expanded"
       @click="toggleExpanded" />
+      {{ link }}
+    <LinkPreview
+      v-if="link"
+      :data="link" />
     <footer>
       <div
         v-if="!reply"
         class="actions">
-        <NuxtLink class="link-reply" :to="`/post/${post.id}#write-reply`">
+        <NuxtLink
+          class="link-reply"
+          :to="`/post/${post.id}#write-reply`">
           <Icon
             name="ph:chat-bold"
             size="1.5rem" />
