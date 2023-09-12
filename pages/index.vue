@@ -10,17 +10,20 @@ const postStore = usePostStore()
 
 const { postBeingEdited } = storeToRefs(postStore)
 
-const { data: postsFromConnections, refresh } = await useFetch('/api/v1/posts/followed')
+const { data: postsFromConnections, refresh } = await useFetch(
+  '/api/v1/posts/followed'
+)
 </script>
 
 <template>
   <CreatePost @posted="refresh" />
   <ul v-if="postsFromConnections && postsFromConnections.length > 0">
-    <Post
-      v-for="post in postsFromConnections"
-      :post="post"
-      :key="post.id"
-      @deleted="refresh" />
+    <li v-for="post in postsFromConnections">
+      <Post
+        :post="post"
+        :key="post.id"
+        @deleted="refresh" />
+    </li>
   </ul>
   <EmptyState
     v-else

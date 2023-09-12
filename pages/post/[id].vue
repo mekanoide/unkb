@@ -21,7 +21,7 @@ const { data: post, refresh: refreshPost } = await useFetch(
   `/api/v1/posts/${route.params.id}`
 )
 
-const { data: replies, refresh: repliesRefresh } = await useFetch(
+const { data: replies, refresh: refreshReplies } = await useFetch(
   `/api/v1/replies/${route.params.id}`
 )
 
@@ -49,59 +49,29 @@ const date = computed(() => formatDate(post.value.created_at))
 </script>
 
 <template>
-  <div class="Post">
-    <div class="post">
-      <header>
-        <User
-          v-if="post"
-          :data="post.users"
-          size="large" />
-        <div class="actions">
-          <Button
-            variant="ghost"
-            size="small"
-            @click.stop="togglePopover(post.id)">
-            <Icon
-              name="ph:dots-three-bold"
-              size="1.5rem" />
-          </Button>
-          <Dropdown
-            class="menu"
-            v-if="showPopover === post.id">
-            <Menu v-if="isOwner">
-              <MenuItem @click="handleEdit">Editar</MenuItem>
-              <MenuItem @click="handleDelete">Eliminar</MenuItem>
-            </Menu>
-            <Menu v-else>
-              <MenuItem>Denunciar</MenuItem>
-            </Menu>
-          </Dropdown>
-        </div>
-      </header>
-      <PostContent
-        v-if="post"
-        :content="post.content" />
-      <time :datetime="date">{{ date }}</time>
-    </div>
-    <PostEditor
-      id="write-reply"
-      :rows="2"
-      @post="handleReply"
-      placeholder="Escribe una respuesta" />
-    <ul v-if="replies && replies.length > 0">
+  <Post
+    :post="post"
+    :key="post.id"
+    single />
+  <PostEditor
+    id="write-reply"
+    :rows="2"
+    @post="handleReply"
+    placeholder="Escribe una respuesta" />
+  <ul v-if="replies && replies.length > 0">
+    <li v-for="reply in replies">
       <Reply
-        v-for="reply in replies"
         :data="reply"
         :key="reply.id"
         @deleted="repliesRefresh" />
-    </ul>
-    <EmptyState
-      v-else
-      message="No hay respuestas" />
-    <EditPost
-      v-if="postBeingEdited"
-      @edited="repliesRefresh" />
-  </div>
+    </li>
+  </ul>
+  <EmptyState
+    v-else
+    message="No hay respuestas" />
+  <EditPost
+    v-if="postBeingEdited"
+    @edited="repliesRefresh" />
 </template>
 
 <style scoped>

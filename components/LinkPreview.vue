@@ -14,7 +14,7 @@ const props = defineProps({
       <h2>{{ data.title }}</h2>
       <p>{{ data.description }}</p>
     </div>
-    <Icon name="ph:arrow-circle-right-bold" size="2rem" />
+    <Icon name="ph:arrow-circle-right" size="2.5rem" />
   </a>
 </template>
 

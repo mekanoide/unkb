@@ -6,6 +6,7 @@ export default defineNuxtConfig({
       title: 'UNKB',
       meta: [
         { name: 'robots', content: 'none' },
+        { property: 'og:site_name', content: 'UNKB' },
         { property: 'og:title', content: 'UNKB' },
         { property: 'og:type', content: 'website' },
         { property: 'og:locale', content: 'es_ES' },

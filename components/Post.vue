@@ -12,7 +12,7 @@ const props = defineProps({
     type: Object,
     required: true
   },
-  reply: {
+  single: {
     type: Boolean
   }
 })
@@ -21,17 +21,12 @@ const emit = defineEmits(['deleted', 'edited'])
 const contentElement = ref(null)
 const truncate = ref(false)
 const expanded = ref(false)
-const link = ref(null)
 
 const { showPopover } = storeToRefs(store)
 
 const { togglePopover } = store
 const { startPostEdition, deletePost, fetchPostAuthor, fetchReplyCount } =
   postStore
-
-const postAuthor = props.post.reply_to
-  ? await fetchPostAuthor(props.post.reply_to)
-  : null
 
 const isOwner = computed(() => {
   return props.post.author_id === user.value.id
@@ -69,17 +64,25 @@ const handleSavePost = async (id) => {
   })
 }
 
+const handleLinkPost = (id) => {
+  if (!props.single) {
+    linkPost(id)
+  }
+}
+
 const replyCount = await fetchReplyCount(props.post.id)
 
 /* Get content height in order to whether truncate it or not */
 
 onMounted(() => {
-  truncate.value = contentElement.value.clientHeight > 666
+  if (!props.single) {
+    truncate.value = contentElement.value.clientHeight > 666
+  }
 })
 </script>
 
 <template>
-  <li class="Post">
+  <div class="Post">
     <header>
       <User :data="post.users" />
       <Button
@@ -104,10 +107,10 @@ onMounted(() => {
     </header>
     <div
       class="content"
-      :class="{ truncate: truncate && !expanded }"
+      :class="{ truncate: truncate && !expanded, single: single }"
       role="link"
       ref="contentElement"
-      @click.prevent="linkPost(post.id)">
+      @click.prevent="handleLinkPost(post.id)">
       <PostContent :content="post.content" />
     </div>
     <Truncate
@@ -119,7 +122,7 @@ onMounted(() => {
       :data="post.link" />
     <footer>
       <div
-        v-if="!reply"
+        v-if="!single"
         class="actions">
         <NuxtLink
           class="link-reply"
@@ -144,7 +147,7 @@ onMounted(() => {
         <small v-if="post.edited"> - editado</small>
       </div>
     </footer>
-  </li>
+  </div>
 </template>
 
 <style scoped>
@@ -166,11 +169,14 @@ header {
 
 .content {
   max-width: 100%;
-  cursor: pointer;
   position: relative;
 }
 
-.content:hover::before {
+.content:not(.single) {
+  cursor: pointer;
+}
+
+.content:not(.single):hover::before {
   position: absolute;
   inset: 0 -1rem;
   content: '';

@@ -45,7 +45,9 @@ export default defineEventHandler(async (event) => {
       const title =
         $('meta[property=og:title]').attr('content') || $('title').text()
       const description =
-        $('description').text() || $('meta[name=description]').attr('content')
+        $('description').text() ||
+        $('meta[name=description]').attr('content') ||
+        $('meta[property=og:description]').attr('content')
 
       const metadata = {
         url: url,
