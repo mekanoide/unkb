@@ -41,11 +41,11 @@ const { data: me, error } = await useAsyncData(() => fetchOwnUser())
         to="/search" />
       <NavigationItem
         label="Actividad"
-        icon="ph:activity-bold"
+        icon="ph:heartbeat-bold"
         to="/activity" />
       <NavigationItem
         label="Biblioteca"
-        icon="ph:books-bold"
+        icon="ph:bookmarks-simple-bold"
         to="/bookmarks" />
       <!-- 
         Ponemos un v-if porque `me` puede ser `null` si cuando se
@@ -55,7 +55,7 @@ const { data: me, error } = await useAsyncData(() => fetchOwnUser())
       <NavigationItem
         v-if="me"
         label="Perfil"
-        icon="ph:user-bold"
+        icon="ph:person-arms-spread-bold"
         :to="`/user/${me.handle}`" />
     </nav>
     <div class="menu-wrapper">

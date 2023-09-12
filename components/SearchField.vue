@@ -24,7 +24,7 @@ const handleSearch = () => {
         class="search-button"
         variant="square">
         <Icon
-          name="carbon:search"
+          name="ph:magnifying-glass-bold"
           size="1.5rem" />
       </Button>
     </form>

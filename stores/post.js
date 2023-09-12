@@ -19,13 +19,10 @@ export const usePostStore = defineStore('post', () => {
   }
 
   /* Fetch posts from followed users */
-  const fetchPostsFromConnections = async () => {
-
-  }
+  const fetchPostsFromConnections = async () => {}
 
   /* Fetch posts from user */
-  const fetchPostsFromUser = async (id) => {
-  }
+  const fetchPostsFromUser = async (id) => {}
 
   /* fetch replies */
   const fetchReplyCount = async (id) => {
@@ -41,26 +38,18 @@ export const usePostStore = defineStore('post', () => {
       .order('created_at', { ascending: true })
     return data
   }
-  const getMentionsFromPost = async (txt) => {
+
+  const getMentionsFromPost = (txt) => {
     const mentionRegex = /@([a-z0-9_]+)/g
     const matches = txt.match(mentionRegex)
     const mentions = ref([])
 
     if (matches) {
       for (const match of matches) {
-        const username = match.substring(1) // Remove the @
-        const { data: userData } = await client
-          .from('users')
-          .select('id, handle')
-          .eq('handle', username)
-          .single()
-
-        if (userData) {
-          mentions.value.push(userData)
-        }
+        const handle = match.substring(1) // Remove the @
+        mentions.value.push(handle)
       }
     }
-    console.log('Menciones a devolver', mentions.value)
     if (mentions.value.length > 0) {
       return mentions.value
     }
@@ -85,7 +74,7 @@ export const usePostStore = defineStore('post', () => {
       }
     })
     postContent.value = ''
-/*     const { data: postData, error } = await client
+    /*     const { data: postData, error } = await client
       .from('posts')
       .upsert({
         author_id: user.value.id,

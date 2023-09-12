@@ -1,3 +1,4 @@
+import * as cheerio from 'cheerio'
 import { serverSupabaseUser, serverSupabaseClient } from '#supabase/server'
 
 export default defineEventHandler(async (event) => {
@@ -9,7 +10,7 @@ export default defineEventHandler(async (event) => {
     const mentionRegex = /@([a-z0-9_]+)/g
     const matches = txt.match(mentionRegex)
     const mentions = ref([])
-  
+
     if (matches) {
       for (const match of matches) {
         const username = match.substring(1) // Remove the @
@@ -18,7 +19,7 @@ export default defineEventHandler(async (event) => {
           .select('id, handle')
           .eq('handle', username)
           .single()
-  
+
         if (userData) {
           mentions.value.push(userData)
         }
@@ -29,17 +30,44 @@ export default defineEventHandler(async (event) => {
     }
   }
 
+  const getLinks = async (txt) => {
+    const linkRegex = /(https?:\/\/[^ ]*)/
+    const stringToCheck = txt
+    const matches = stringToCheck.match(linkRegex)
+    if (matches) {
+      const url = matches[1]
+
+      const html = await $fetch(url)
+
+      const $ = cheerio.load(html)
+
+      const site_name = $('meta[property=og:site_name]').attr('content')
+      const title =
+        $('meta[property=og:title]').attr('content') || $('title').text()
+      const description =
+        $('description').text() || $('meta[name=description]').attr('content')
+
+      const metadata = {
+        url: url,
+        site_name: site_name,
+        title: title,
+        description: description
+      }
+      return metadata
+    }
+  }
+
+  const link = await getLinks(body.content)
+
   const { data: postData, error } = await client
     .from('posts')
     .upsert({
       author_id: user.id,
       content: body.content,
-      created_at: new Date()
+      created_at: new Date(),
+      link: link
     })
     .select()
-  if (error) {
-    console.log('Error!!!', error)
-  }
 
   const mentions = await getMentionsFromPost(body.content)
   if (mentions) {

@@ -38,7 +38,7 @@ span {
 .Badge:hover span {
   display: block;
   position: absolute;
-  top: 2rem;
+  left: 3rem;
   translate: -1rem;
   background-color: var(--colorText);
   border: 2px solid var(--colorBackground);
@@ -46,6 +46,5 @@ span {
   padding: var(--spaceXS) var(--spaceS);
   border-radius: var(--corner);
   text-transform: uppercase;
-  box-shadow: var(--shadowLayer);
 }
 </style>

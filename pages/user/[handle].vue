@@ -42,7 +42,7 @@ const { data: selectedUser, pending: selectedUserPending } = await useFetch(
 console.log('selected user ', selectedUser.value)
 
 const { data: userPosts, refresh: refreshPosts } = await useFetch(
-  `/api/v1/posts/${selectedUser.value.id}`
+  `/api/v1/posts/from/${selectedUser.value.id}`
 )
 
 /* Fetch user connections */
