@@ -3,11 +3,12 @@
   --colorLight: hsl(var(--hue) 100% 66%);
   --colorShadeLight: hsl(var(--hue) 60% 40%);
   --colorShadeDark: hsl(var(--hue) 60% 26%);
-  --colorDark: hsl(var(--hue) 0% 0%);
+  --colorDark: hsl(var(--hue) 0% 2%);
   
   --colorBackground: var(--colorLight);
   --colorText: var(--colorDark);
   --colorNegative: coral;
+  
 
   /* Syntax */
   --colorSyntaxKeyword: hsl(24 100% 72%);

@@ -167,6 +167,14 @@ header {
 .content {
   max-width: 100%;
   cursor: pointer;
+  position: relative;
+}
+
+.content:hover::before {
+  position: absolute;
+  inset: 0 -1rem;
+  content: '';
+  border-left: 8px solid var(--colorText);
 }
 
 .content.truncate {
