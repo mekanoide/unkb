@@ -6,15 +6,15 @@ export default defineEventHandler(async (event) => {
 
   const { data: myself } = await client
     .from('users')
-    .select('id, roles()')
+    .select('id, role_id, roles()')
     .eq('id', user.id)
     .single()
-
+    console.log('Yo mismo', myself)
   const { data } = await client
     .from('roles')
     .select()
     .eq('id', myself.role_id)
     .single()
-  console.log(data)
+  console.log('Mi rol', data)
   return data
 })

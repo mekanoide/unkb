@@ -1,37 +1,28 @@
 <script setup>
 import { useConnectionsStore } from '@/stores/connections'
-import { useMainStore } from '@/stores/main'
-import { useFetch } from '@vueuse/core'
+import { useInvitationsStore } from '@/stores/invitations'
 
-const connectionStore = useConnectionsStore()
-const mainStore = useMainStore()
+const connectionsStore = useConnectionsStore()
+const invitationsStore = useInvitationsStore()
 
-const { createInvitation, cancelInvitation, fetchInvitations } = connectionStore
-const { fetchOwnUser, fetchRole } = mainStore
+const { cancelInvitation, fetchInvitations } = invitationsStore
 
 const showingNewInvitation = ref(false)
 const email = ref('')
 
 const { data: role, pending: pendingRole } = await useFetch('/api/v1/user/role')
-const {
-  data: invitations,
-  pending: pendingInvitations,
-  refresh: refreshInvitations
-} = await useFetch('/api/v1/auth/invitations')
 
-console.log('Invitaciones', invitations.value)
+const {
+      data:invitations,
+      pending: pendingInvitations,
+      refresh: refreshInvitations
+    } = await useFetch('/api/v1/invitations')
 
 const numInvitations = computed(() => {
-  if (pendingInvitations) {
-    return 0
-  }
   return invitations.value.length
 })
 
 const numInvitationsLeft = computed(() => {
-  if (pendingRole || pendingInvitations) {
-    return 0
-  }
   return role.value.max_invitations - numInvitations.value
 })
 
@@ -45,7 +36,7 @@ const openNewInvitation = async () => {
 
 const handleCreateInvitation = async () => {
   /* await createInvitation(email.value) */
-  const { data, error } = await useFetch('/api/v1/auth/invitations/create', {
+  const { data, error } = await useFetch('/api/v1/invitations/create', {
     method: 'post',
     body: {
       email: email.value
@@ -80,8 +71,7 @@ const handleCancelInvitation = async (email) => {
     <ul v-if="invitations">
       <li
         class="invitation"
-        v-for="invitation in invitations"
-        :key="invitation.id">
+        v-for="invitation in invitations">
         <span>{{ invitation.target_email }}</span>
         <Button
           size="small"

@@ -30,6 +30,10 @@ export default defineNuxtConfig({
     'nuxt-icon',
     'nuxt-security'
   ],
+  imports: {
+    dirs: ['stores']
+  },
+  pinia: { autoImports: ['defineStore', 'acceptHMRUpdate'] },
   robots: {
     UserAgent: '*',
     Disallow: '*'

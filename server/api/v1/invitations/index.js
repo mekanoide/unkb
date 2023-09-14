@@ -8,5 +8,6 @@ export default defineEventHandler(async (event) => {
     .from('invitations')
     .select()
     .eq('inviter_id', user.id)
+    .order('created_at', { ascending: false })
   return data
 })

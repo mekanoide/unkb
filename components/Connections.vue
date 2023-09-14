@@ -17,6 +17,7 @@ const user = useSupabaseUser()
 </script>
 
 <template>
+  <Search />
   <Requests v-if="user.id === id" />
   <ul v-if="data && data.length > 0">
     <Connection

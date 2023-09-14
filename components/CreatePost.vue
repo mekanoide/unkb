@@ -2,7 +2,7 @@
   <PostEditor
     :pending="pending"
     @post="handlePost"
-    minRows="1" />
+    :minRows="2" />
 </template>
 
 <script setup>

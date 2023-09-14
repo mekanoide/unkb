@@ -28,17 +28,11 @@ const { data: me, error } = await useAsyncData(() => fetchOwnUser())
 <template>
   <header>
     <Logo class="logo" />
-    <Search class="search" />
     <nav>
       <NavigationItem
         label="Chorreo"
         icon="ph:house-bold"
         to="/" />
-      <NavigationItem
-        class="search-button"
-        label="Search"
-        icon="ph:magnifying-glass-bold"
-        to="/search" />
       <NavigationItem
         label="Actividad"
         icon="ph:heartbeat-bold"
@@ -136,10 +130,6 @@ nav {
   color: var(--colorBackground);
 }
 
-.search-button {
-  display: none;
-}
-
 @media screen and (max-width: 1024px) {
   header {
     position: fixed;
@@ -156,13 +146,9 @@ nav {
     grid-auto-flow: column;
     margin-right: var(--spaceS);
   }
-  .search-button {
-    display: grid;
-  }
   .manifesto-button {
     display: none;
   }
-  .search,
   .logo,
   .actions {
     display: none;
