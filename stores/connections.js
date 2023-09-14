@@ -49,11 +49,6 @@ export const useConnectionsStore = defineStore('connections', () => {
 
   /* Fetch invitations */
   const fetchInvitations = async () => {
-    const { data } = await client
-      .from('invitations')
-      .select()
-      .eq('inviter_id', user.value.id)
-    return data
   }
 
   const fetchInviter = async (id) => {

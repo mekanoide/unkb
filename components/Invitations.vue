@@ -1,6 +1,7 @@
 <script setup>
 import { useConnectionsStore } from '@/stores/connections'
 import { useMainStore } from '@/stores/main'
+import { useFetch } from '@vueuse/core'
 
 const connectionStore = useConnectionsStore()
 const mainStore = useMainStore()
@@ -8,28 +9,27 @@ const mainStore = useMainStore()
 const { createInvitation, cancelInvitation, fetchInvitations } = connectionStore
 const { fetchOwnUser, fetchRole } = mainStore
 
-const user = useSupabaseUser()
-const client = useSupabaseClient()
-
 const showingNewInvitation = ref(false)
 const email = ref('')
 
-const { data: role, pending: rolePending } = useAsyncData(() => fetchRole())
+const { data: role, pending: pendingRole } = await useFetch('/api/v1/user/role')
 const {
   data: invitations,
-  pending: invitationsPending,
-  refresh
-} = useAsyncData(() => fetchInvitations())
+  pending: pendingInvitations,
+  refresh: refreshInvitations
+} = await useFetch('/api/v1/auth/invitations')
+
+console.log('Invitaciones', invitations.value)
 
 const numInvitations = computed(() => {
-  if (invitationsPending.value) {
+  if (pendingInvitations) {
     return 0
   }
   return invitations.value.length
 })
 
 const numInvitationsLeft = computed(() => {
-  if (rolePending.value || invitationsPending.value) {
+  if (pendingRole || pendingInvitations) {
     return 0
   }
   return role.value.max_invitations - numInvitations.value
@@ -52,12 +52,12 @@ const handleCreateInvitation = async () => {
     }
   })
   showingNewInvitation.value = false
-  refresh()
+  refreshInvitations()
 }
 
 const handleCancelInvitation = async (email) => {
   await cancelInvitation(email)
-  refresh()
+  refreshInvitations()
 }
 </script>
 
@@ -70,7 +70,6 @@ const handleCancelInvitation = async (email) => {
     <div>
       <Button
         v-if="hasInvitationsLeft"
-       
         @click="openNewInvitation">
         Nueva invitación
       </Button>
@@ -102,11 +101,7 @@ const handleCancelInvitation = async (email) => {
         label="Correo del invitado"
         placeholder="fulanit@ejemplo.com" />
       <footer>
-        <Button
-         
-          type="submit"
-          >Invitar</Button
-        >
+        <Button type="submit">Invitar</Button>
         <Button @click="showingNewInvitation = false">Cancelar</Button>
       </footer>
     </form>

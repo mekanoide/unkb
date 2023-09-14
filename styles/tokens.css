@@ -38,8 +38,8 @@
   --gradientFaded: repeating-linear-gradient(-45deg, transparent, transparent 2px, var(--colorText) 2px, var(--colorText) 4px);
   --gradientWork: repeating-linear-gradient(-45deg, transparent, transparent 8px, var(--colorText) 8px, var(--colorText) 16px);
 
-  --corner: 0.75rem;
-  --cornerButton: 0.75rem;
+  --corner: 0.675rem;
+  --cornerButton: 0.675rem;
 
   --shadowLayer: var(--spaceS) var(--spaceS) 0 var(--colorText);
 

@@ -81,6 +81,14 @@ li:not(article *) {
   max-width: 100%;
 }
 
+li:not(article *):first-child {
+  padding-top: 0;
+}
+
+li:not(article *):last-child {
+  padding-bottom: 0;
+}
+
 li + li:not(article *) {
   border-top: 2px dashed var(--colorText);
 }

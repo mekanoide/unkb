@@ -74,29 +74,6 @@ export const usePostStore = defineStore('post', () => {
       }
     })
     postContent.value = ''
-    /*     const { data: postData, error } = await client
-      .from('posts')
-      .upsert({
-        author_id: user.value.id,
-        content: postContent.value,
-        created_at: new Date()
-      })
-      .select()
-    if (error) {
-      console.log('Error!!!', error)
-    }
-
-    const mentions = await getMentionsFromPost(postContent.value)
-    if (mentions) {
-      for (const mention of mentions) {
-        const { data: mentionData } = await client.from('mentions').upsert({
-          user_id: mention.id,
-          post_id: postData.id
-        })
-      }
-    }
-    postContent.value = ''
-    return postData */
   }
 
   /* Create new reply to post */
@@ -131,36 +108,16 @@ export const usePostStore = defineStore('post', () => {
 
   /* Finish post edition and update post */
   const finishPostEdition = async (type) => {
-    if (type === 'reply') {
-      const { data, error } = await client
-        .from('replies')
-        .update({
-          content: postContent.value,
-          edited: true
-        })
-        .eq('id', postBeingEdited.value)
-        .select()
-      if (error) {
-        console.log('Error!!!', error)
+    const { data, error } = await useFetch('/api/v1/posts/edit', {
+      method: 'post',
+      body: {
+        type: type,
+        post_id: postBeingEdited.value,
+        content: postContent.value
       }
-      postContent.value = ''
-      postBeingEdited.value = null
-      return data
-    }
-
-    const { data, error } = await client
-      .from('posts')
-      .update({
-        content: postContent.value,
-        edited: true
-      })
-      .eq('id', postBeingEdited.value)
-    if (error) {
-      console.log('Error!!!', error)
-    }
+    })
     postContent.value = ''
     postBeingEdited.value = null
-    return data
   }
 
   const deletePost = async (id) => {

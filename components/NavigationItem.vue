@@ -35,16 +35,16 @@ a {
   border-radius: var(--corner);
   text-transform: uppercase;
   font-weight: bold;
+  position: relative;
 }
 
 a:hover {
-  background-color: var(--colorText);
-  color: var(--colorBackground);
+
 }
 
 a.router-link-active {
   background-color: var(--colorText);
-  color: var(--colorBackground);
+  color: var(--colorBackground);  
 }
 
 @media screen and (max-width: 1024px) {

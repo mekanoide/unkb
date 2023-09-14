@@ -47,11 +47,6 @@ const { data: me, error } = await useAsyncData(() => fetchOwnUser())
         label="Biblioteca"
         icon="ph:bookmarks-simple-bold"
         to="/bookmarks" />
-      <!-- 
-        Ponemos un v-if porque `me` puede ser `null` si cuando se
-        resuelve fetchOwnUser es `null` o porque todavía no ha terminado
-        de cargar los recursos. 
-      -->
       <NavigationItem
         v-if="me"
         label="Perfil"
@@ -95,7 +90,7 @@ const { data: me, error } = await useAsyncData(() => fetchOwnUser())
 header {
   position: sticky;
   z-index: 1;
-  top: var(--spaceM);
+  top: var(--spaceL);
   display: grid;
   gap: var(--spaceL);
 }

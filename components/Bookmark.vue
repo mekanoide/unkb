@@ -8,5 +8,16 @@ const props = defineProps({
 </script>
 
 <template>
-  <li>{{ data }}</li>
+  <div class="Bookmark">
+    <div>{{ data.author.users.handle }}</div>
+    <PostContent :content="data.content.content" />
+  </div>
 </template>
+
+<style scoped>
+.Bookmark {
+  padding: var(--spaceM);
+  border-radius: var(--corner);
+  border: 2px solid currentColor;
+}
+</style>

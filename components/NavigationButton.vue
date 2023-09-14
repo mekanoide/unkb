@@ -1,5 +1,17 @@
+<script setup>
+const props = defineProps({
+  variant: {
+    type: String
+  }
+})
+</script>
+
 <template>
-  <button type="button"><slot><!-- optional fallback --></slot></button>
+  <button
+    type="button"
+    :class="[variant]">
+    <slot><!-- optional fallback --></slot>
+  </button>
 </template>
 
 <style scoped>
@@ -17,8 +29,13 @@ button {
   font-weight: bold;
 }
 
+button.primary {
+  background-color: var(--colorText);
+  color: var(--colorBackground);
+}
+
 button:hover {
-    background-color: var(--colorText);
-    color: var(--colorBackground);
-  }
+  background-color: var(--colorText);
+  color: var(--colorBackground);
+}
 </style>

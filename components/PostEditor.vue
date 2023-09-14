@@ -19,6 +19,9 @@ const props = defineProps({
   },
   size: {
     type: String
+  },
+  pending: {
+    type: Boolean
   }
 })
 
@@ -49,7 +52,9 @@ const computedRows = computed(() => {
 </script>
 
 <template>
-  <form @submit.prevent="handleSubmit" ref="post">
+  <form
+    @submit.prevent="handleSubmit"
+    ref="post">
     <textarea
       v-model="postContent"
       columns="50"
@@ -65,12 +70,13 @@ const computedRows = computed(() => {
       <div class="actions">
         <Button
           type="submit"
-         
-          :disabled="postContent.length === 0"
-          >Enviar</Button
-        >
+          :disabled="postContent.length === 0 || pending">
+          <Spinner v-if="pending" />
+          <span v-else>Enviar</span>
+        </Button>
         <Button
           v-if="cancellable"
+          :disabled="pending"
           @click="emit('cancel')"
           >Cancelar</Button
         >

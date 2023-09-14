@@ -1,5 +1,5 @@
 <template>
-  <NuxtLink to="/">
+  <NuxtLink to="/" aria-label="Inicio">
     <span>{{ config.public.appName }}</span>
     <span>{{ config.public.appName }}</span>
   </NuxtLink>
@@ -14,7 +14,8 @@ a {
   font-family: var(--fontHeadline);
   text-transform: uppercase;
   font-weight: bold;
-  font-size: 3rem;
+  font-size: 2.5rem;
+  line-height: 1;
   display: grid;
 }
 
@@ -23,11 +24,11 @@ span {
   grid-row: 1;
 }
 
-span:nth-child(2) {
+span:nth-child(1) {
   background: var(--gradientFaded);
   background-clip: text;
   -webkit-text-fill-color: transparent;
   rotate: -6deg;
-  translate: 0.25rem 0.5rem;
+  z-index: -1;
 }
 </style>

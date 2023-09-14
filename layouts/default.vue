@@ -14,7 +14,7 @@
 .PAGE {
   max-width: var(--maxWidthBody);
   margin: auto;
-  padding: var(--spaceM);
+  padding: var(--spaceL) var(--spaceM);
   display: grid;
   grid-template-columns: 1fr 3fr;
   gap: var(--spaceL);
@@ -22,7 +22,6 @@
 }
 
 main {
-  padding: 6.25rem 0 var(--spaceL);
   display: grid;
   gap: var(--spaceM);
 }

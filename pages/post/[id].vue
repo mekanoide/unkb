@@ -13,8 +13,7 @@ const postStore = usePostStore()
 const route = useRoute()
 
 const { showPopover } = storeToRefs(store)
-const { postBeingEdited } = storeToRefs(postStore)
-const { togglePopover } = store
+const { postBeingEditedId } = storeToRefs(postStore)
 const { createReply, startPostEdition, deletePost } = postStore
 
 const { data: post, refresh: refreshPost } = await useFetch(
@@ -40,12 +39,6 @@ const handleReply = async () => {
   await createReply(route.params.id)
   repliesRefresh()
 }
-
-const isOwner = computed(() => {
-  return post.value.author_id === user.value.id
-})
-
-const date = computed(() => formatDate(post.value.created_at))
 </script>
 
 <template>
@@ -70,26 +63,8 @@ const date = computed(() => formatDate(post.value.created_at))
     v-else
     message="No hay respuestas" />
   <EditPost
-    v-if="postBeingEdited"
+    v-if="postBeingEditedId"
     @edited="repliesRefresh" />
 </template>
 
-<style scoped>
-header {
-  display: flex;
-  gap: var(--spaceS);
-  align-items: center;
-  justify-content: space-between;
-  position: relative;
-}
-
-.Post {
-  display: grid;
-  gap: var(--spaceL);
-}
-
-.menu {
-  right: 0;
-  top: 3rem;
-}
-</style>
+<style scoped></style>

@@ -3,14 +3,11 @@ definePageMeta({
   middleware: ['auth']
 })
 
-import { useMainStore } from '@/stores/main'
 import { usePostStore } from '@/stores/post'
 import { useConnectionsStore } from '@/stores/connections'
-import { storeToRefs } from 'pinia'
 
 /* composables */
 
-const mainStore = useMainStore()
 const postStore = usePostStore()
 const connectionsStore = useConnectionsStore()
 const route = useRoute()
@@ -20,14 +17,8 @@ const user = useSupabaseUser()
 
 const tab = ref('content')
 
-const { fetchUserByHandle } = mainStore
-const { postBeingEdited, fetchPostsFromUser } = postStore
-const {
-  fetchConnections,
-  areWeConnected,
-  deleteConnection,
-  sendConnectionRequest
-} = connectionsStore
+const { postBeingEditedId } = postStore
+const { deleteConnection } = connectionsStore
 
 const editProfile = () => {
   console.log('Edit profile')
@@ -122,7 +113,11 @@ const statusDescription = computed(() => {
       {{ selectedUser.bio }}
     </p>
   </header>
-  <p class="status" v-if="connectionStatus !== 'myself'">{{ statusDescription }}</p>
+  <p
+    class="status"
+    v-if="connectionStatus !== 'myself'">
+    {{ statusDescription }}
+  </p>
   <div class="actions">
     <Button
       v-if="connectionStatus === 'connected'"
@@ -165,7 +160,7 @@ const statusDescription = computed(() => {
       value="content"
       :selected="tab === 'content'"
       @click="tab = 'content'">
-      Contenido
+      Publicaciones
     </Tab>
     <Tab
       value="connections"
@@ -181,7 +176,6 @@ const statusDescription = computed(() => {
       Invitaciones
     </Tab>
   </TabMenu>
-  <!-- TODO: for the moment it's just for me to invite people -->
   <div
     v-if="tab === 'content'"
     class="posts">
@@ -189,7 +183,7 @@ const statusDescription = computed(() => {
       <Post
         v-for="post in userPosts"
         :post="post"
-        @deleted="postsRefresh" />
+        @deleted="refreshPosts" />
     </ul>
     <EmptyState
       v-else
@@ -202,8 +196,8 @@ const statusDescription = computed(() => {
     @changed="connectionsRefresh" />
   <Invitations v-else-if="tab === 'invitations'" />
   <EditPost
-    v-if="postBeingEdited"
-    @edited="postsRefresh" />
+    v-if="postBeingEditedId"
+    @edited="refreshPosts" />
 </template>
 
 <style scoped>
