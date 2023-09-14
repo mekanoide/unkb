@@ -2,21 +2,21 @@
 import { useConnectionsStore } from '@/stores/connections'
 import { useInvitationsStore } from '@/stores/invitations'
 
-const connectionsStore = useConnectionsStore()
+const config = useRuntimeConfig()
+
 const invitationsStore = useInvitationsStore()
 
 const { cancelInvitation, fetchInvitations } = invitationsStore
 
 const showingNewInvitation = ref(false)
 const email = ref('')
+const copied = ref(false)
 
 const { data: role, pending: pendingRole } = await useFetch('/api/v1/user/role')
 
-const {
-      data:invitations,
-      pending: pendingInvitations,
-      refresh: refreshInvitations
-    } = await useFetch('/api/v1/invitations')
+const { data: invitations, refresh: refreshInvitations } = await useFetch(
+  '/api/v1/invitations'
+)
 
 const numInvitations = computed(() => {
   return invitations.value.length
@@ -28,6 +28,14 @@ const numInvitationsLeft = computed(() => {
 
 const hasInvitationsLeft = computed(() => {
   return numInvitationsLeft.value > 0
+})
+
+const pendingInvitations = computed(() => {
+  return invitations.value.filter((item) => item.used === false)
+})
+
+const usedInvitations = computed(() => {
+  return invitations.value.filter((item) => item.used === true)
 })
 
 const openNewInvitation = async () => {
@@ -50,6 +58,14 @@ const handleCancelInvitation = async (email) => {
   await cancelInvitation(email)
   refreshInvitations()
 }
+
+const copyLink = (txt) => {
+  navigator.clipboard.writeText(txt)
+  copied.value = true
+  setTimeout(() => {
+    copied.value = false
+  }, 3000)
+}
 </script>
 
 <template>
@@ -66,19 +82,45 @@ const handleCancelInvitation = async (email) => {
       </Button>
     </div>
   </section>
-  <section>
-    <h3>Invitaciones enviadas</h3>
-    <ul v-if="invitations">
+
+  <section v-if="pendingInvitations">
+    <h3>Invitaciones pendientes</h3>
+    <ul>
+      <li
+        class="pending"
+        v-for="invitation in pendingInvitations">
+        <div>
+          <span>{{ invitation.target_email }}</span>
+        </div>
+        <div class="actions">
+          <div
+            class="invitation-link"
+            @click="
+              copyLink(`https://unkb.netlify.com/register/${invitation.token}`)
+            ">
+            {{ `https://unkb.netlify.com/register/${invitation.token}` }}
+            <Transition name="fade">
+              <div
+                v-if="copied"
+                class="copied">
+                Enlace copiado al portapapeles!
+              </div>
+            </Transition>
+          </div>
+          <Button @click="handleCancelInvitation(invitation.target_email)">
+            Cancelar
+          </Button>
+        </div>
+      </li>
+    </ul>
+  </section>
+  <section v-if="usedInvitations">
+    <h3>Invitaciones usadas</h3>
+    <ul>
       <li
         class="invitation"
-        v-for="invitation in invitations">
-        <span>{{ invitation.target_email }}</span>
-        <Button
-          size="small"
-          v-if="!invitation.used"
-          @click="handleCancelInvitation(invitation.target_email)"
-          >Cancelar</Button
-        >
+        v-for="invitation in usedInvitations">
+        {{ invitation.target_email }}
       </li>
     </ul>
   </section>
@@ -92,7 +134,11 @@ const handleCancelInvitation = async (email) => {
         placeholder="fulanit@ejemplo.com" />
       <footer>
         <Button type="submit">Invitar</Button>
-        <Button @click="showingNewInvitation = false">Cancelar</Button>
+        <Button
+          variant="secondary"
+          @click="showingNewInvitation = false"
+          >Cancelar</Button
+        >
       </footer>
     </form>
   </Modal>
@@ -120,6 +166,31 @@ footer {
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: center;
+}
+
+.actions {
+  margin-top: var(--spaceS);
+  display: grid;
+  gap: var(--spaceS);
+  grid-template-columns: 1fr auto;
+}
+
+.invitation-link {
+  /* width: max-content; */
+  border: 2px solid currentColor;
+  padding: var(--spaceS);
+  border-radius: var(--corner);
+  cursor: pointer;
+  position: relative;
+}
+
+.copied { 
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  background-color: var(--colorText);
+  color: var(--colorBackground);
 }
 
 section + section {

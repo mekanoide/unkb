@@ -4,15 +4,11 @@ export default defineEventHandler(async (event) => {
   const user = await serverSupabaseUser(event)
   const client = await serverSupabaseClient(event)
 
-  const { data: myself } = await client
-    .from('users')
-    .select('id, role_id, roles()')
-    .eq('id', user.id)
-    .single()
   const { data } = await client
-    .from('roles')
+    .from('invitations')
     .select()
-    .eq('id', myself.role_id)
-    .single()
+    .eq('inviter_id', user.id)
+    .eq('used', false)
+    .order('created_at', { ascending: false })
   return data
 })

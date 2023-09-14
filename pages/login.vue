@@ -58,10 +58,6 @@ watchEffect(async () => {
         >{{ pending ? '...' : 'Entrar' }}</Button
       >
     </form>
-    <p>
-      Tienes una invitación?
-      <NuxtLink to="/register">Regístrate aquí!</NuxtLink>
-    </p>
   </div>
 </template>
 
