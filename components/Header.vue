@@ -31,7 +31,7 @@ const { data: me, error } = await useAsyncData(() => fetchOwnUser())
     <nav>
       <NavigationItem
         label="Chorreo"
-        icon="ph:house-bold"
+        icon="ph:globe-hemisphere-east-bold"
         to="/" />
       <NavigationItem
         label="Actividad"
@@ -44,7 +44,7 @@ const { data: me, error } = await useAsyncData(() => fetchOwnUser())
       <NavigationItem
         v-if="me"
         label="Perfil"
-        icon="ph:person-arms-spread-bold"
+        icon="ph:person-simple-bold"
         :to="`/user/${me.handle}`" />
     </nav>
     <div class="menu-wrapper">

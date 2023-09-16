@@ -3,54 +3,48 @@ definePageMeta({
   layout: 'clear'
 })
 
-import { useAuthStore } from '@/stores/auth'
-const authStore = useAuthStore()
-
-const client = useSupabaseClient()
 const user = useSupabaseUser()
 
-const { register } = authStore
+const route = useRoute()
 
 const handle = ref('')
 const email = ref('')
 const password = ref('')
 
 const nameError = ref(null)
-const error = ref(null)
+
+const { data: invitation, error: errorInvitation } = await useFetch(
+  `/api/v1/invitations/get/${route.params.token}`
+)
+email.value = invitation.value.target_email
 
 const validateName = async () => {
-  const namePattern = /^[a-z0-9_]+$/
-  if (!namePattern.test(handle.value)) {
-    return
+  const { data } = await useFetch('/api/v1/auth/check-handle', {
+    method: 'post',
+    body: {
+      handle: handle
+    }
+  })
+  if (data.value) {
+    nameError.value = data.value
   }
-  const { data } = await client
-    .from('users')
-    .select('handle')
-    .eq('handle', handle.value)
-    .maybeSingle()
-
-  if (data) {
-    nameError.value = 'Lo siento, el nombre ya está pillado.'
-    return
-  }
-  nameError.value = null
 }
 
 const handleRegistry = async () => {
-  const { data: invitation, error: invitationError } = await client
-    .from('invitations')
-    .select()
-    .eq('target_email', email.value)
-    .eq('used', false)
-    .maybeSingle()
-
-  await register(
-    handle.value,
-    email.value,
-    password.value,
-    invitation.inviter_id
-  )
+  const { data } = await useFetch('/api/v1/auth/register', {
+    method: 'post',
+    body: {
+      email: email,
+      password: password,
+      handle: handle,
+      token: route.params.token
+    }
+  })
 }
+
+const valid = computed(() => {
+  return !nameError && !passwordError
+})
 
 watch(
   user,
@@ -70,41 +64,35 @@ watch(
     <h1>Ya estás dentro, aquí no hay nada que ver</h1>
     <NuxtLink to="/">Ve a la página de Inicio</NuxtLink>
   </div>
-  <div v-else-if="error">
-    <h1>{{ error }}</h1>
+  <div v-else-if="errorInvitation">
+    <h1>{{ errorInvitation }}</h1>
   </div>
   <div
     v-else
     class="Register">
-    <h1>Registro</h1>
+    <h1>¡Hola!</h1>
     <p>
-      Puedes unirte si tu correo está en la lista de invitaciones.
-      <br />
-      Usa este privilegio con responsabilidad.
+      Tienes la fortuna de haber sido invitada/o a <strong>UNKB</strong>. Usa
+      este privilegio con responsabilidad.
     </p>
     <form @submit.prevent="handleRegistry">
       <TextField
         label="Nombre"
-        instructions="El nombre debe estar en minúsculas y contener solo caracteres alfanuméricos y guión bajo."
         :error="nameError"
         :maxlength="32"
-        placeholder="Algo en plan 'persona_tipo_666'"
+        placeholder="Caracteres alfanuméricos y guión bajo"
         v-model="handle"
         @blur="validateName" />
       <TextField
         label="Correo electrónico"
         type="email"
-        v-model="email" />
+        :modelValue="email"
+        disabled />
       <TextField
         label="Contraseña"
         type="password"
         v-model="password" />
-      <Button
-        type="submit"
-       
-        size="large"
-        >Entrar</Button
-      >
+      <Button type="submit" :disabled="!valid">Entrar</Button>
     </form>
     <p>Ya tienes cuenta? <NuxtLink to="/login">Accede aquí</NuxtLink>.</p>
   </div>

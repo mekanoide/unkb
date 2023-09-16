@@ -15,7 +15,7 @@ const props = defineProps({
     type: Boolean
   },
   error: {
-    type: String
+    type: [String, false]
   },
   instructions: {
     type: String
@@ -35,8 +35,7 @@ const emit = defineEmits(['update:modelValue', 'blur'])
       :value="modelValue"
       :placeholder="$attrs.placeholder"
       :disabled="disabled"
-      @input="emit('update:modelValue', $event.target.value)"
-    />
+      @input="emit('update:modelValue', $event.target.value)" />
     <input
       v-else
       name="textfield"
@@ -47,10 +46,9 @@ const emit = defineEmits(['update:modelValue', 'blur'])
       :disabled="disabled"
       :invalid="error !== null"
       @input="emit('update:modelValue', $event.target.value)"
-      @blur="emit('blur')"
-    />
-    <small v-if="error">{{ error }}</small>
+      @blur="emit('blur')" />
     <small v-if="instructions">{{ instructions }}</small>
+    <small v-if="error">{{ error }}</small>
   </div>
 </template>
 

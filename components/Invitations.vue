@@ -66,6 +66,7 @@ const copyLink = (txt) => {
     copied.value = false
   }, 3000)
 }
+
 </script>
 
 <template>
@@ -96,9 +97,9 @@ const copyLink = (txt) => {
           <div
             class="invitation-link"
             @click="
-              copyLink(`https://unkb.netlify.com/register/${invitation.token}`)
+              copyLink(`${config.public.baseUrl}/register/${invitation.token}`)
             ">
-            {{ `https://unkb.netlify.com/register/${invitation.token}` }}
+            {{ `${config.public.baseUrl}/register/${invitation.token}` }}
             <Transition name="fade">
               <div
                 v-if="copied"

@@ -1,6 +1,6 @@
 <template>
   <NuxtLink to="/" aria-label="Inicio">
-    {{ config.public.appName }}
+    <span class="u">U</span><span class="n">N</span><span class="k">K</span><span class="b">B</span>
   </NuxtLink>
 </template>
 
@@ -13,8 +13,27 @@ a {
   font-family: var(--fontHeadline);
   text-transform: uppercase;
   font-weight: bold;
-  font-size: 4rem;
+  font-size: 3rem;
   line-height: 1;
-  rotate: -6deg;
+  display: flex;
+  align-items: center;
+}
+
+span {
+  display: inline-block;
+}
+
+.u {
+  font-size: 0.75em;
+  letter-spacing: -0.075em;
+}
+
+.n { 
+  letter-spacing: -0.12em;
+}
+.k {
+  font-size: 1.5em;
+  rotate: -10deg;
+  letter-spacing: -0.12em;
 }
 </style>

@@ -67,6 +67,10 @@ small {
   font-size: var(--fontS);
 }
 
+strong {
+  font-weight: bold;
+}
+
 ul:not(article *) {
   list-style-type: none;
   padding: 0;
@@ -223,6 +227,18 @@ input:is(
 textarea:invalid {
   border-color: var(--colorNegative);
 }
+
+input:is(
+    [type='text'],
+    [type='email'],
+    [type='password'],
+    [type='number'],
+    [type='search']
+  ):disabled,
+textarea:disabled {
+  border: 2px dotted currentColor;
+}
+
 
 button {
   cursor: pointer;
