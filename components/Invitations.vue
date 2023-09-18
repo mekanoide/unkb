@@ -65,7 +65,6 @@ const copyLink = (txt) => {
     copied.value = false
   }, 3000)
 }
-
 </script>
 
 <template>
@@ -107,7 +106,9 @@ const copyLink = (txt) => {
               </div>
             </Transition>
           </div>
-          <Button @click="handleCancelInvitation(invitation.target_email)">
+          <Button
+            variant="secondary"
+            @click="handleCancelInvitation(invitation.target_email)">
             Cancelar
           </Button>
         </div>
@@ -184,7 +185,7 @@ footer {
   position: relative;
 }
 
-.copied { 
+.copied {
   position: absolute;
   inset: 0;
   display: grid;

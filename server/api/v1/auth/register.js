@@ -5,14 +5,15 @@ export default defineEventHandler(async (event) => {
 
   const body = await readBody(event)
 
-  const { data: validInvitation, error } = await client
-    .from('invitations')
-    .select()
-    .eq('target_email', body.email)
-    .eq('token', body.token)
-    .eq('used', false)
-    .maybeSingle()
-
-  console.log('Es una invitación válida?', validInvitation)
-  return validInvitation
+  const { data, error } = await client.auth.signUp({
+    email: body.email,
+    password: body.password,
+    options: {
+      data: {
+        handle: body.handle.toLowerCase(),
+        parent_id: body.parent
+      }
+    }
+  })
+  return data
 })

@@ -1,13 +1,3 @@
-<template>
-  <button
-    :type="attrs.type || 'button'"
-    :class="[size, variant]"
-    :title="attrs.title"
-    :aria-label="attrs.title">
-    <slot />
-  </button>
-</template>
-
 <script setup>
 import { useAttrs } from 'vue'
 
@@ -25,10 +15,21 @@ const props = defineProps({
 const attrs = useAttrs()
 </script>
 
+<template>
+  <button
+    :type="attrs.type || 'button'"
+    :class="[size, variant]"
+    :title="attrs.title"
+    :aria-label="attrs.title">
+    <slot />
+  </button>
+</template>
+
 <style scoped>
 button {
   display: grid;
   grid-auto-flow: column;
+  justify-content: center;
   align-items: center;
   gap: var(--spaceS);
   border: 4px double currentColor;
