@@ -114,7 +114,7 @@ onMounted(() => {
           :to="`/post/${post.id}#write-reply`">
           <Icon
             name="ph:chat-bold"
-            size="1.5rem" />
+            size="1.25rem" />
           {{ replyCount }}
         </NuxtLink>
         <Button
@@ -123,7 +123,7 @@ onMounted(() => {
           @click="handleSavePost(post.id)">
           <Icon
             name="ph:bookmark-simple-bold"
-            size="1.5rem" />
+            size="1.25rem" />
         </Button>
       </div>
       <div class="actions">
@@ -134,7 +134,7 @@ onMounted(() => {
           @click="handleEdit">
           <Icon
             name="ph:pencil-simple-line-bold"
-            size="1.5rem" />
+            size="1.25rem" />
         </Button>
         <Button
           v-if="isOwner"
@@ -143,7 +143,7 @@ onMounted(() => {
           @click="handleDelete">
           <Icon
             name="ph:trash-simple-bold"
-            size="1.5rem" />
+            size="1.25rem" />
         </Button>
         <Button
           v-if="!isOwner"
@@ -151,7 +151,7 @@ onMounted(() => {
           title="Denunciar publicación">
           <Icon
             name="ph:flag-pennant-bold"
-            size="1.5rem" />
+            size="1.25rem" />
         </Button>
       </div>
     </footer>

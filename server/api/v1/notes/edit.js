@@ -43,8 +43,7 @@ export default defineEventHandler(async (event) => {
   const { data } = await client
     .from('notes')
     .update({
-      content: body.content,
-      edited: true
+      content: body.content
     })
     .eq('id', body.id)
 

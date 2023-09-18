@@ -10,7 +10,7 @@ const props = defineProps({
 <template>
   <a :href="data.url" target="_blank" class="LinkPreview">
     <div class="metadata">
-      <p>{{ data.site_name }}</p>
+      <p v-if="data.site_name">{{ data.site_name }}</p>
       <h2>{{ data.title }}</h2>
       <p>{{ data.description }}</p>
     </div>

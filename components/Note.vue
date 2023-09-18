@@ -61,7 +61,7 @@ const handleLinkPost = (id) => {
       <Button variant="ghost">
         <Icon
           name="ph:paper-plane-right-bold"
-          size="1.5rem" />
+          size="1.25rem" />
           Publicar
     </Button>
       <div class="actions">
@@ -72,7 +72,7 @@ const handleLinkPost = (id) => {
           @click="handleEdition">
           <Icon
             name="ph:pencil-simple-line-bold"
-            size="1.5rem" />
+            size="1.25rem" />
         </Button>
         <Button
           v-if="isOwner"
@@ -81,7 +81,7 @@ const handleLinkPost = (id) => {
           @click="handleDelete">
           <Icon
             name="ph:trash-simple-bold"
-            size="1.5rem" />
+            size="1.25rem" />
         </Button>
       </div>
     </footer>

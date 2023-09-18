@@ -38,7 +38,7 @@ const handleSubmit = () => {
 }
 
 const wordCount = computed(() => {
-  if (content.value !== null) {
+  if (content.value) {
     return `${content.value.length}/1024`
   }
 })
@@ -77,7 +77,7 @@ const computedRows = computed(() => {
           type="submit"
           :disabled="!content || pending">
           <Spinner v-if="pending" />
-          <span v-else>Enviar</span>
+          <span v-else>Terminar</span>
         </Button>
         <Button
           v-if="cancellable"

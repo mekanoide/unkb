@@ -4,15 +4,21 @@ definePageMeta({
 })
 
 import { storeToRefs } from 'pinia'
-import { usePostStore } from '@/stores/post'
+import { useEditionStore } from '@/stores/edition'
 
-const postStore = usePostStore()
+const editionStore = useEditionStore()
 
-const { postBeingEdited } = storeToRefs(postStore)
+const { edit } = storeToRefs(editionStore)
 
 const { data: postsFromConnections, refresh } = await useFetch(
   '/api/v1/posts/followed'
 )
+
+watch(edit, (newValue) => {
+  if (newValue) {
+    refresh()
+  }
+})
 </script>
 
 <template>
@@ -28,7 +34,4 @@ const { data: postsFromConnections, refresh } = await useFetch(
   <EmptyState
     v-else
     message="Aún no hay nada publicado" />
-  <EditPost
-    v-if="postBeingEdited"
-    @edited="refresh" />
 </template>
