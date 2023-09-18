@@ -62,9 +62,6 @@ const handleReply = async () => {
   <EmptyState
     v-else
     message="No hay respuestas" />
-  <EditPost
-    v-if="postBeingEditedId"
-    @edited="repliesRefresh" />
 </template>
 
 <style scoped></style>

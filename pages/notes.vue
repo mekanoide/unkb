@@ -1,7 +1,12 @@
 <script setup>
+import { storeToRefs } from 'pinia'
+import { useEditionStore } from '@/stores/edition'
+const editionStore = useEditionStore()
+
 const config = useRuntimeConfig()
 const tab = ref('saved')
 
+const { editionOK } = storeToRefs(editionStore)
 const { data: notes, refresh: refreshNotes } = await useFetch('/api/v1/notes')
 
 const postNote = async (content) => {
@@ -13,6 +18,13 @@ const postNote = async (content) => {
   })
   refreshNotes()
 }
+
+watch(editionOK, async (newValue) => {
+  if (newValue) {
+    refreshNotes()
+    editionOK.value = false
+  }
+})
 </script>
 
 <template>

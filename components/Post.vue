@@ -34,7 +34,7 @@ const isOwner = computed(() => {
   return props.post.author_id === user.value.id
 })
 
-const date = computed(() => formatDate(props.post.created_at))
+const date = computed(() => formatFormalDate(props.post.created_at))
 
 const linkPost = (id) => {
   router.push(`/post/${id}`)

@@ -13,11 +13,6 @@ const password = ref('')
 
 const nameError = ref(null)
 
-const { data: invitation, error: errorInvitation } = await useFetch(
-  `/api/v1/invitations/get/${route.params.token}`
-)
-email.value = invitation.value.target_email
-
 const validateName = async () => {
   const { data } = await useFetch('/api/v1/auth/check-handle', {
     method: 'post',
@@ -86,8 +81,7 @@ watch(
       <TextField
         label="Correo electrónico"
         type="email"
-        :modelValue="email"
-        disabled />
+        v-model="email" />
       <TextField
         label="Contraseña"
         type="password"

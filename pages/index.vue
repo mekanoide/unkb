@@ -8,15 +8,16 @@ import { useEditionStore } from '@/stores/edition'
 
 const editionStore = useEditionStore()
 
-const { edit } = storeToRefs(editionStore)
+const { editionOK } = storeToRefs(editionStore)
 
 const { data: postsFromConnections, refresh } = await useFetch(
   '/api/v1/posts/followed'
 )
 
-watch(edit, (newValue) => {
+watch(editionOK, async (newValue) => {
   if (newValue) {
     refresh()
+    editionOK.value = false
   }
 })
 </script>

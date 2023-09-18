@@ -5,6 +5,7 @@ export const useEditionStore = defineStore('edition', () => {
   const user = useSupabaseUser()
 
   const edit = ref(null)
+  const editionOK = ref(false)
 
   /* Start post edition */
   const openEdition = (type, id, content) => {
@@ -21,29 +22,33 @@ export const useEditionStore = defineStore('edition', () => {
 
   /* Finish post edition and update post */
   const submitEdition = async (content) => {
-    if (edit.value.type === 'post') {
+    const id = edit.value.id
+    const type = edit.value.type
+    edit.value = null
+    console.log('edit', id)
+    if (type === 'post') {
       const { data, error } = await useFetch('/api/v1/posts/edit', {
         method: 'post',
         body: {
-          id: edit.value.id,
+          id: id,
           content: content
         }
       })
-    } else if (edit.value.type === 'note') {
+    } else if (type === 'note') {
       const { data, error } = await useFetch('/api/v1/notes/edit', {
         method: 'post',
         body: {
-          id: edit.value.id,
+          id: id,
           content: content
         }
       })
     }
-
-    edit.value = null
+    editionOK.value = true
   }
 
   return {
     edit,
+    editionOK,
     openEdition,
     cancelEdition,
     submitEdition
