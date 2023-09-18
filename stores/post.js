@@ -66,14 +66,13 @@ export const usePostStore = defineStore('post', () => {
   }
 
   /* Create new post */
-  const createPost = async () => {
+  const createPost = async (content) => {
     const { data, error } = await useFetch('/api/v1/posts/create', {
       method: 'post',
       body: {
-        content: postContent.value
+        content: content
       }
     })
-    postContent.value = ''
   }
 
   /* Create new reply to post */
@@ -93,31 +92,6 @@ export const usePostStore = defineStore('post', () => {
     }
     postContent.value = ''
     return postData
-  }
-
-  /* Start post edition */
-  const startPostEdition = (id, content) => {
-    postBeingEdited.value = id
-    postContent.value = content
-  }
-  /* Cancel post edition */
-  const cancelPostEdition = () => {
-    postBeingEdited.value = null
-    postContent.value = ''
-  }
-
-  /* Finish post edition and update post */
-  const finishPostEdition = async (type) => {
-    const { data, error } = await useFetch('/api/v1/posts/edit', {
-      method: 'post',
-      body: {
-        type: type,
-        post_id: postBeingEdited.value,
-        content: postContent.value
-      }
-    })
-    postContent.value = ''
-    postBeingEdited.value = null
   }
 
   const deletePost = async (id) => {
@@ -168,9 +142,6 @@ export const usePostStore = defineStore('post', () => {
     fetchReplies,
     fetchReplyCount,
     getMentionsFromPost,
-    startPostEdition,
-    cancelPostEdition,
-    finishPostEdition,
     startPostReply,
     createPost,
     createReply,

@@ -1,20 +1,15 @@
 <script setup>
-const props = defineProps({
-  reply: {
-    type: Boolean
-  }
-})
+import { storeToRefs} from 'pinia'
+import { useEditionStore } from '@/stores/edition'
+const editionStore = useEditionStore()
 
-import { usePostStore } from '@/stores/post'
-const store = usePostStore()
-
-const { finishPostEdition, cancelPostEdition } = store
+const { submitEdition, cancelEdition } = editionStore
+const { edit } = storeToRefs(editionStore)
 
 const emit = defineEmits(['edited'])
 
-const handlePost = async () => {
-  const type = props.reply ? 'reply' : ''
-  await finishPostEdition(type)
+const handlePost = async (content) => {
+  await submitEdition(content)
   emit('edited')
 }
 </script>
@@ -22,7 +17,12 @@ const handlePost = async () => {
 <template>
   <div class="EditPost">
     <div class="wrapper">
-      <PostEditor cancellable minRows="16" maxRows="16" @post="handlePost" @cancel="cancelPostEdition" />
+      <PostEditor
+        cancellable
+        :minRows="16"
+        :maxRows="16"
+        @submit="handlePost"
+        @cancel="cancelEdition" />
     </div>
   </div>
 </template>
@@ -30,8 +30,8 @@ const handlePost = async () => {
 <style scoped>
 .EditPost {
   position: fixed;
-  inset: 0;
   background-color: var(--colorBackground);
+  inset: 0;
   z-index: 100;
   display: grid;
   align-items: center;

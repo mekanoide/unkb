@@ -1,5 +1,9 @@
 <template>
-  <button :type="attrs.type || 'button'" :class="[ size, variant ]" :title="attrs.title">
+  <button
+    :type="attrs.type || 'button'"
+    :class="[size, variant]"
+    :title="attrs.title"
+    :aria-label="attrs.title">
     <slot />
   </button>
 </template>
@@ -25,7 +29,7 @@ const attrs = useAttrs()
 button {
   display: grid;
   grid-auto-flow: column;
-  place-content: center;
+  align-items: center;
   gap: var(--spaceS);
   border: 4px double currentColor;
   font-weight: 600;

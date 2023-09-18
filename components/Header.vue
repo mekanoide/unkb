@@ -30,15 +30,19 @@ const { data: me, error } = await useAsyncData(() => fetchOwnUser())
     <Logo class="logo" />
     <nav>
       <NavigationItem
-        label="Chorreo"
+        label="Sociedad"
         icon="ph:globe-hemisphere-east-bold"
         to="/" />
+      <NavigationItem
+        label="Notas"
+        icon="ph:note-blank-bold"
+        to="/notes" />
       <NavigationItem
         label="Actividad"
         icon="ph:heartbeat-bold"
         to="/activity" />
       <NavigationItem
-        label="Biblioteca"
+        label="Guardados"
         icon="ph:bookmarks-simple-bold"
         to="/bookmarks" />
       <NavigationItem

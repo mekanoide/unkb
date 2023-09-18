@@ -24,13 +24,10 @@ const editProfile = () => {
   console.log('Edit profile')
 }
 
-/* fetch data */
-
+/* Fetch data */
 const { data: selectedUser, pending: selectedUserPending } = await useFetch(
   `/api/v1/users/${route.params.handle}`
 )
-
-console.log('selected user ', selectedUser.value)
 
 const { data: userPosts, refresh: refreshPosts } = await useFetch(
   `/api/v1/posts/from/${selectedUser.value.id}`

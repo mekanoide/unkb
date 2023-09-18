@@ -1,12 +1,11 @@
 <script setup>
-import { useConnectionsStore } from '@/stores/connections'
 import { useInvitationsStore } from '@/stores/invitations'
 
 const config = useRuntimeConfig()
 
 const invitationsStore = useInvitationsStore()
 
-const { cancelInvitation, fetchInvitations } = invitationsStore
+const { cancelInvitation } = invitationsStore
 
 const showingNewInvitation = ref(false)
 const email = ref('')

@@ -1,10 +1,12 @@
 <script setup>
+import { useEditionStore } from '@/stores/edition'
 import { useMainStore } from '@/stores/main'
 import { usePostStore } from '@/stores/post'
 import { storeToRefs } from 'pinia'
 const router = useRouter()
 const user = useSupabaseUser()
 const store = useMainStore()
+const editionStore = useEditionStore()
 const postStore = usePostStore()
 
 const props = defineProps({
@@ -24,7 +26,7 @@ const expanded = ref(false)
 
 const { showPopover } = storeToRefs(store)
 
-const { togglePopover } = store
+const { openEdition } = editionStore
 const { startPostEdition, deletePost, fetchPostAuthor, fetchReplyCount } =
   postStore
 
@@ -39,8 +41,7 @@ const linkPost = (id) => {
 }
 
 const handleEdit = () => {
-  startPostEdition(props.post.id, props.post.content)
-  showPopover.value = null
+  openEdition('post', props.post.id, props.post.content)
 }
 
 const handleDelete = async () => {
@@ -85,25 +86,8 @@ onMounted(() => {
   <div class="Post">
     <header>
       <User :data="post.users" />
-      <Button
-        variant="ghost"
-        size="small"
-        @click.stop="togglePopover(post.id)">
-        <Icon
-          name="ph:dots-three-bold"
-          size="1.5rem" />
-      </Button>
-      <Dropdown
-        class="menu"
-        v-if="showPopover === post.id">
-        <Menu v-if="isOwner">
-          <MenuItem @click="handleEdit">Editar</MenuItem>
-          <MenuItem @click="handleDelete">Eliminar</MenuItem>
-        </Menu>
-        <Menu v-else>
-          <MenuItem>Denunciar</MenuItem>
-        </Menu>
-      </Dropdown>
+      • <time :datetime="date">{{ date }}</time>
+      <span v-if="post.edited"> • editado</span>
     </header>
     <div
       class="content"
@@ -126,6 +110,7 @@ onMounted(() => {
         class="actions">
         <NuxtLink
           class="link-reply"
+          title="Ver respuestas"
           :to="`/post/${post.id}#write-reply`">
           <Icon
             name="ph:chat-bold"
@@ -134,17 +119,40 @@ onMounted(() => {
         </NuxtLink>
         <Button
           variant="ghost"
+          title="Guardar publicación"
           @click="handleSavePost(post.id)">
           <Icon
             name="ph:bookmark-simple-bold"
             size="1.5rem" />
         </Button>
       </div>
-      <div>
-        <small>
-          <time :datetime="date">{{ date }}</time>
-        </small>
-        <small v-if="post.edited"> - editado</small>
+      <div class="actions">
+        <Button
+          v-if="isOwner"
+          variant="ghost"
+          title="Editar publicación"
+          @click="handleEdit">
+          <Icon
+            name="ph:pencil-simple-line-bold"
+            size="1.5rem" />
+        </Button>
+        <Button
+          v-if="isOwner"
+          variant="ghost"
+          title="Eliminar publicación"
+          @click="handleDelete">
+          <Icon
+            name="ph:trash-simple-bold"
+            size="1.5rem" />
+        </Button>
+        <Button
+          v-if="!isOwner"
+          variant="ghost"
+          title="Denunciar publicación">
+          <Icon
+            name="ph:flag-pennant-bold"
+            size="1.5rem" />
+        </Button>
       </div>
     </footer>
   </div>
@@ -161,10 +169,10 @@ onMounted(() => {
 }
 
 header {
-  display: grid;
-  grid-auto-flow: column;
-  grid-template-columns: 1fr auto;
-  position: relative;
+  display: flex;
+  gap: var(--spaceS);
+  justify-content: start;
+  align-items: center;
 }
 
 .content {

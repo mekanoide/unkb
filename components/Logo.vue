@@ -1,6 +1,7 @@
 <template>
   <NuxtLink to="/" aria-label="Inicio">
-    <span class="u">U</span><span class="n">N</span><span class="k">K</span><span class="b">B</span>
+    <div><span class="u">U</span><span class="n">N</span><span class="k">K</span><span class="b">B</span></div>
+    <div><span class="u">U</span><span class="n">N</span><span class="k">K</span><span class="b">B</span></div>
   </NuxtLink>
 </template>
 
@@ -15,12 +16,14 @@ a {
   font-weight: bold;
   font-size: 3rem;
   line-height: 1;
-  display: flex;
-  align-items: center;
+  display: grid;
 }
 
-span {
-  display: inline-block;
+div {
+  display: flex;
+  align-items: center;
+  grid-column: 1;
+  grid-row: 1;
 }
 
 .u {
@@ -35,5 +38,13 @@ span {
   font-size: 1.5em;
   rotate: -10deg;
   letter-spacing: -0.12em;
+}
+
+div:nth-child(2) {
+  rotate: -6deg;
+  margin-top: 0.5rem;
+  background: var(--gradientFaded);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 </style>

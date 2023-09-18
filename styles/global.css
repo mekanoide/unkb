@@ -285,11 +285,13 @@ button {
 .dark-mode {
   --colorBackground: var(--colorDark);
   --colorText: var(--colorLight);
+  --colorLayer: var(--colorLayerDark);
   --colorNeutral: var(--colorShadeDark);
 }
 
 .light-mode {
   --colorBackground: var(--colorLight);
   --colorText: var(--colorDark);
+  --colorLayer: var(--colorLayerLight);
   --colorNeutral: var(--colorShadeLight);
 }

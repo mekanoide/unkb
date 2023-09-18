@@ -1,11 +1,12 @@
 <script setup>
 import { storeToRefs } from 'pinia'
-import { usePostStore } from '@/stores/post'
+import { useEditionStore } from '@/stores/edition'
 import { onClickOutside } from '@vueuse/core'
-const store = usePostStore()
+const editionStore = useEditionStore()
 
-const { postContent } = storeToRefs(store)
 const focused = ref(false)
+
+const { edit } = storeToRefs(editionStore)
 
 const props = defineProps({
   cancellable: {
@@ -25,17 +26,21 @@ const props = defineProps({
   }
 })
 
+const content = ref(edit.value?.content ?? null)
 const post = ref(null)
 
-const emit = defineEmits(['post', 'cancel'])
+const emit = defineEmits(['submit', 'cancel'])
 
 const handleSubmit = () => {
-  emit('post')
+  emit('submit', content.value)
   focused.value = false
+  content.value = null
 }
 
 const wordCount = computed(() => {
-  return `${postContent.value.length}/1024`
+  if (content.value !== null) {
+    return `${content.value.length}/1024`
+  }
 })
 
 onClickOutside(post, (e) => {
@@ -56,7 +61,7 @@ const computedRows = computed(() => {
     @submit.prevent="handleSubmit"
     ref="post">
     <textarea
-      v-model="postContent"
+      v-model="content"
       columns="50"
       :rows="computedRows"
       maxlength="1024"
@@ -70,12 +75,13 @@ const computedRows = computed(() => {
       <div class="actions">
         <Button
           type="submit"
-          :disabled="postContent.length === 0 || pending">
+          :disabled="!content || pending">
           <Spinner v-if="pending" />
           <span v-else>Enviar</span>
         </Button>
         <Button
           v-if="cancellable"
+          variant="secondary"
           :disabled="pending"
           @click="emit('cancel')"
           >Cancelar</Button
