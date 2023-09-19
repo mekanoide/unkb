@@ -28,7 +28,7 @@ const isOwner = computed(() => {
   return props.data.author_id === user.value.id
 })
 
-const date = computed(() => formatDate(props.data.created_at))
+const date = computed(() => formatFormalDate(props.data.created_at))
 
 const handleEdit = () => {
   startPostEdition(props.data.id, props.data.content)

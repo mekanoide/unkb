@@ -1,8 +1,9 @@
 <script setup>
+import { usePostStore } from '@/stores/post'
 import { useEditionStore } from '@/stores/edition'
-const router = useRouter()
 const user = useSupabaseUser()
 const editionStore = useEditionStore()
+const postStore = usePostStore()
 
 const props = defineProps({
   data: {
@@ -14,6 +15,7 @@ const emit = defineEmits(['deleted', 'edited'])
 
 const contentElement = ref(null)
 
+const { deletePost } = postStore
 const { openEdition } = editionStore
 
 const isOwner = computed(() => {
@@ -22,24 +24,13 @@ const isOwner = computed(() => {
 
 const date = computed(() => formatFormalDate(props.data.created_at))
 
-const linkPost = (id) => {
-  router.push(`/post/${id}`)
-}
-
 const handleEdition = () => {
-  openEdition('note', props.data.id, props.data.content)
+  openEdition(props.data.id, props.data.content)
 }
 
 const handleDelete = async () => {
   await deletePost(props.data.id)
   emit('deleted')
-  showPopover.value = null
-}
-
-const handleLinkPost = (id) => {
-  if (!props.single) {
-    linkPost(id)
-  }
 }
 </script>
 
@@ -62,8 +53,8 @@ const handleLinkPost = (id) => {
         <Icon
           name="ph:paper-plane-right-bold"
           size="1.25rem" />
-          Publicar
-    </Button>
+        Publicar
+      </Button>
       <div class="actions">
         <Button
           v-if="isOwner"

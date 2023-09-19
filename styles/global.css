@@ -3,7 +3,7 @@ html {
   background-color: var(--colorBackground);
   color: var(--colorText);
   font-size: var(--fontBase);
-  line-height: 1.25;
+  line-height: 1.125;
   text-underline-offset: 2px;
   scroll-behavior: smooth;
   scrollbar-color: var(--colorText) transparent;
@@ -41,7 +41,7 @@ h3,
 h4 {
   font-family: var(--fontHeadline);
   font-weight: bold;
-  line-height: 1;
+  text-wrap: balance;
 }
 
 h1 {

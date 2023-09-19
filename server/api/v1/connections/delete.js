@@ -7,10 +7,6 @@ export default defineEventHandler(async (event) => {
   const body = await readBody(event)
   console.log('cuerpo!', body)
 
-  const shouldDelete = confirm('Quieres desconectar seguro?')
-  if (!shouldDelete) {
-    return
-  }
   const { error } = await client
     .from('connections')
     .delete()

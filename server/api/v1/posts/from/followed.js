@@ -16,6 +16,7 @@ export default defineEventHandler(async (event) => {
     .from('posts')
     .select('*, users(*)')
     .in('author_id', followedUserIds)
+    .neq('scope', 'private')
     .order('created_at', { ascending: false })
   return data
 })

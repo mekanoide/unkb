@@ -14,5 +14,6 @@ h2 {
   background: var(--gradientFaded);
   background-clip: text;
   -webkit-text-fill-color: transparent;
+  text-align: center;
 }
 </style>

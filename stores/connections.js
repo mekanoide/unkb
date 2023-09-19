@@ -44,7 +44,19 @@ export const useConnectionsStore = defineStore('connections', () => {
 
   /*  Delete connection */
   const deleteConnection = async (id) => {
-
+    const shouldDelete = confirm('Quieres desconectar seguro?')
+    if (!shouldDelete) {
+      return
+    }
+    await useFetch('/api/v1/connections/delete', {
+      method: 'delete',
+      body: {
+        id: id
+      }
+    })
+    if (error) {
+      console.log('Error!!!', error)
+    }
   }
 
   /* Fetch invitations */

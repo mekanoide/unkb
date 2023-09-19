@@ -8,13 +8,18 @@ const props = defineProps({
 </script>
 
 <template>
-  <a :href="data.url" target="_blank" class="LinkPreview">
+  <a
+    :href="data.url"
+    target="_blank"
+    class="LinkPreview">
     <div class="metadata">
       <p v-if="data.site_name">{{ data.site_name }}</p>
       <h2>{{ data.title }}</h2>
-      <p>{{ data.description }}</p>
+      <p v-html="data.description"></p>
     </div>
-    <Icon name="ph:arrow-circle-right" size="2.5rem" />
+    <Icon
+      name="ph:arrow-circle-right"
+      size="2.5rem" />
   </a>
 </template>
 

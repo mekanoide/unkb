@@ -24,8 +24,6 @@ const contentElement = ref(null)
 const truncate = ref(false)
 const expanded = ref(false)
 
-const { showPopover } = storeToRefs(store)
-
 const { openEdition } = editionStore
 const { startPostEdition, deletePost, fetchPostAuthor, fetchReplyCount } =
   postStore
@@ -41,13 +39,17 @@ const linkPost = (id) => {
 }
 
 const handleEdit = () => {
-  openEdition('post', props.post.id, props.post.content)
+  openEdition(props.post.id, props.post.content)
 }
 
 const handleDelete = async () => {
-  await deletePost(props.post.id)
+  await useFetch('/api/v1/posts/delete', {
+    method: 'delete',
+    body: {
+      id: props.post.id
+    }
+  })
   emit('deleted')
-  showPopover.value = null
 }
 
 const toggleExpanded = () => {
@@ -171,7 +173,7 @@ onMounted(() => {
 header {
   display: flex;
   gap: var(--spaceS);
-  justify-content: start;
+  justify-content: flex-start;
   align-items: center;
 }
 

@@ -17,12 +17,7 @@ const props = defineProps({
 const emit = defineEmits(['deleted'])
 
 const handleDelete = async () => {
-  await useFetch('/api/v1/connections/delete', {
-    method: 'post',
-    body: {
-      id: props.data.id
-    }
-  })
+  await deleteConnection(props.data.id)
   emit('deleted')
 }
 </script>

@@ -118,24 +118,20 @@ const statusDescription = computed(() => {
   <div class="actions">
     <Button
       v-if="connectionStatus === 'connected'"
-      size="small"
       @click="handleDeleteConnection(selectedUser.id)">
       Cortar conexión
     </Button>
     <Button
       v-if="connectionStatus === 'requested'"
-      size="small"
       @click="handleCancelConnectionRequest(selectedUser.id)">
       Cancelar solicitud
     </Button>
     <div v-if="connectionStatus === 'received'">
       <Button
-        size="small"
         @click="handleAcceptRequest(selectedUser.id)">
         Aceptar conexión
       </Button>
       <Button
-        size="small"
         variant="secondary"
         @click="handleRejectRequest(selectedUser.id)">
         Rechazar

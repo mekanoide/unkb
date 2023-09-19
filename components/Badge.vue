@@ -11,28 +11,18 @@ const props = defineProps({
   <span
     v-if="data.id !== 4"
     class="Badge">
-    {{ data.name }}
+    <Icon
+      name="ph:pentagram-bold"
+      size="0.75rem" />
   </span>
 </template>
 
 <style scoped>
 .Badge {
-  padding: var(--spaceXXS) var(--spaceXS) var(--spaceXXS) var(--spaceXS);
-  background-color: var(--colorText);
-  color: var(--colorBackground);
-  font-weight: bold;
-  display: flex;
-  gap: var(--spaceXS);
-  align-items: center;
   font-size: var(--fontS);
   border-radius: var(--corner);
   transition: var(--transition);
   text-transform: uppercase;
   position: relative;
-}
-
-span {
-  display: none;
-  transition: var(--transition);
 }
 </style>

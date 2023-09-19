@@ -99,7 +99,12 @@ export const usePostStore = defineStore('post', () => {
     if (!shouldDelete) {
       return
     }
-    const { error } = await client.from('posts').delete().eq('id', id)
+    await useFetch('/api/v1/posts/delete', {
+      method: 'delete',
+      body: {
+        id: props.data.id
+      }
+    })
     if (error) {
       console.log('Error!!!', error)
     }

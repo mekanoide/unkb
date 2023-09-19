@@ -4,11 +4,11 @@ export default defineEventHandler(async (event) => {
   const user = await serverSupabaseUser(event)
   const client = await serverSupabaseClient(event)
 
-  const { data } = await client
-    .from('posts')
-    .select()
-    .eq('author_id', user.id)
-    .eq('scope', 'private')
-    .order('created_at', { ascending: false })
-  return data
+  const body = await readBody(event)
+  console.log('cuerpo!', body)
+
+  const { error } = await client.from('posts').delete().eq('id', body.id)
+  if (error) {
+    return error
+  }
 })

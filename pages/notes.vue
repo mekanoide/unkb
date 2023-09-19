@@ -10,10 +10,11 @@ const { editionOK } = storeToRefs(editionStore)
 const { data: notes, refresh: refreshNotes } = await useFetch('/api/v1/notes')
 
 const postNote = async (content) => {
-  const { data } = await useFetch('/api/v1/notes/create', {
+  const { data } = await useFetch('/api/v1/posts/create', {
     method: 'post',
     body: {
-      content: content
+      content: content,
+      scope: 'private'
     }
   })
   refreshNotes()
@@ -36,10 +37,14 @@ watch(editionOK, async (newValue) => {
     <li
       v-for="note in notes"
       :key="note.id">
-      <Note :data="note" />
+      <Note
+        :data="note"
+        @deleted="refreshNotes" />
     </li>
   </ul>
-  <EmptyState v-else message="No has anotado nada aún" />
+  <EmptyState
+    v-else
+    message="No has anotado nada aún" />
 </template>
 
 <style scoped></style>

@@ -68,14 +68,17 @@ export default defineEventHandler(async (event) => {
 
   const link = await getLinks(body.content)
 
+  const payload = {
+    author_id: user.id,
+    content: body.content,
+    created_at: new Date(),
+    link: link,
+    scope: body.scope 
+  }
+  console.log('payload', payload)
   const { data } = await client
     .from('posts')
-    .upsert({
-      author_id: user.id,
-      content: body.content,
-      created_at: new Date(),
-      link: link
-    })
+    .upsert(payload)
     .select()
 
   const mentions = await getMentionsFromPost(body.content)

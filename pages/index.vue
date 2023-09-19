@@ -11,7 +11,7 @@ const editionStore = useEditionStore()
 const { editionOK } = storeToRefs(editionStore)
 
 const { data: postsFromConnections, refresh } = await useFetch(
-  '/api/v1/posts/followed'
+  '/api/v1/posts/from/followed'
 )
 
 watch(editionOK, async (newValue) => {
@@ -25,10 +25,9 @@ watch(editionOK, async (newValue) => {
 <template>
   <CreatePost @posted="refresh" />
   <ul v-if="postsFromConnections && postsFromConnections.length > 0">
-    <li v-for="post in postsFromConnections">
+    <li v-for="post in postsFromConnections" :key="post.id">
       <Post
         :post="post"
-        :key="post.id"
         @deleted="refresh" />
     </li>
   </ul>
