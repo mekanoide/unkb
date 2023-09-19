@@ -28,8 +28,8 @@ const handleEdition = () => {
   openEdition(props.data.id, props.data.content)
 }
 
-const handleDelete = async () => {
-  await deletePost(props.data.id)
+const handleDelete = () => {
+  deletePost(props.data.id)
   emit('deleted')
 }
 </script>

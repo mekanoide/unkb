@@ -33,7 +33,7 @@ watch(editionOK, async (newValue) => {
   <PostEditor
     placeholder="Escribe solo para ti..."
     @submit="postNote" />
-  <ul v-if="notes">
+  <ul v-if="notes && notes.length > 0">
     <li
       v-for="note in notes"
       :key="note.id">

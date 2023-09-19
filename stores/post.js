@@ -95,14 +95,14 @@ export const usePostStore = defineStore('post', () => {
   }
 
   const deletePost = async (id) => {
-    const shouldDelete = confirm('De verdad quieres eliminar esta publicación?')
+    const shouldDelete = confirm('De verdad quieres eliminar esto?')
     if (!shouldDelete) {
       return
     }
-    await useFetch('/api/v1/posts/delete', {
+    const { error } = await useFetch('/api/v1/posts/delete', {
       method: 'delete',
       body: {
-        id: props.data.id
+        id: id
       }
     })
     if (error) {
