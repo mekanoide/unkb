@@ -36,6 +36,7 @@ main {
   }
   main {
     padding-top: 0;
+    padding-bottom: var(--spaceXL);
   }
   .logo-mobile {
     display: grid;
