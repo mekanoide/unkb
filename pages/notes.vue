@@ -47,4 +47,5 @@ watch(editionOK, async (newValue) => {
     message="No has anotado nada aún" />
 </template>
 
-<style scoped></style>
+<style scoped>
+</style>

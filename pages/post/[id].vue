@@ -3,18 +3,16 @@ definePageMeta({
   middleware: ['auth']
 })
 
-const user = useSupabaseUser()
-
 import { storeToRefs } from 'pinia'
 import { useMainStore } from '@/stores/main'
 import { usePostStore } from '@/stores/post'
-const store = useMainStore()
+import { useEditionStore } from '@/stores/edition'
 const postStore = usePostStore()
+const editionStore = useEditionStore()
 const route = useRoute()
 
-const { showPopover } = storeToRefs(store)
-const { postBeingEditedId } = storeToRefs(postStore)
-const { createReply, startPostEdition, deletePost } = postStore
+const { editionOK } = storeToRefs(editionStore)
+const { createReply } = postStore
 
 const { data: post, refresh: refreshPost } = await useFetch(
   `/api/v1/posts/${route.params.id}`
@@ -24,21 +22,17 @@ const { data: replies, refresh: refreshReplies } = await useFetch(
   `/api/v1/replies/${route.params.id}`
 )
 
-const handleEdit = () => {
-  startPostEdition(post.value.id, post.value.content)
-  showPopover.value = null
-}
-
-const handleDelete = async () => {
-  await deletePost(props.post.id)
-  emit('deleted')
-  showPopover.value = null
-}
-
 const handleReply = async () => {
   await createReply(route.params.id)
-  repliesRefresh()
+  refreshReplies()
 }
+
+watch(editionOK, async (newValue) => {
+  if (newValue) {
+    refreshPost()
+    editionOK.value = false
+  }
+})
 </script>
 
 <template>

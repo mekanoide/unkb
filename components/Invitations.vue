@@ -9,7 +9,7 @@ const { cancelInvitation } = invitationsStore
 
 const showingNewInvitation = ref(false)
 const email = ref('')
-const copied = ref(false)
+const copied = ref(null)
 
 const { data: role, pending: pendingRole } = await useFetch('/api/v1/user/role')
 
@@ -58,11 +58,11 @@ const handleCancelInvitation = async (email) => {
   refreshInvitations()
 }
 
-const copyLink = (txt) => {
+const copyLink = (id, txt) => {
   navigator.clipboard.writeText(txt)
-  copied.value = true
+  copied.value = id
   setTimeout(() => {
-    copied.value = false
+    copied.value = null
   }, 3000)
 }
 </script>
@@ -95,12 +95,12 @@ const copyLink = (txt) => {
           <div
             class="invitation-link"
             @click="
-              copyLink(`${config.public.baseUrl}/register/${invitation.token}`)
+              copyLink(invitation.id, `${config.public.baseUrl}/register/${invitation.token}`)
             ">
             {{ `${config.public.baseUrl}/register/${invitation.token}` }}
             <Transition name="fade">
               <div
-                v-if="copied"
+                v-if="copied === invitation.id"
                 class="copied">
                 Enlace copiado al portapapeles!
               </div>

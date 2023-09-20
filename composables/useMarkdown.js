@@ -1,12 +1,19 @@
 import MarkdownIt from 'markdown-it'
+import markdownItSub from 'markdown-it-sub'
+import markdownItSuper from 'markdown-it-sup'
+import markdownItMark from 'markdown-it-mark'
 import mditHljs from 'markdown-it-highlightjs'
 
 const md = new MarkdownIt({
   html: false,
   breaks: true,
   linkify: true,
-  highlights: true
+  highlights: true,
+  typographer: true
 })
+md.use(markdownItSub)
+md.use(markdownItSuper)
+md.use(markdownItMark)
 md.use(mditHljs, {
   inline: true,
   auto: true,

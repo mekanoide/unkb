@@ -110,6 +110,32 @@ article strong {
 article em {
   font-style: italic;
 }
+
+article sub {
+  font-size: 0.75em;
+  vertical-align: sub;
+}
+
+article hr {
+  border-top: 2px solid var(--colorText);
+  width: 12rem;
+  margin: auto;
+}
+
+article mark {
+  background-color: var(--colorText);
+  color: var(--colorBackground);
+  padding: var(--spaceXXS) var(--spaceXS);
+}
+
+article sup {
+  font-size: 0.75em;
+  vertical-align: super;
+}
+
+article s {
+  text-decoration: line-through;
+}
 article h1 {
   font-size: 2em;
 }
@@ -120,11 +146,20 @@ article h3 {
   font-size: 1.25em;
 }
 article :is(ul, ol) {
-  padding-left: var(--spaceM);
+  padding-left: var(--spaceS);
   margin-left: var(--spaceS);
   display: grid;
   gap: var(--spaceS);
 }
+
+article :is(ul, ol) :is(ul, ol) {
+  padding-top: var(--spaceS);
+}
+
+article ul ul li {
+  list-style: disc;
+}
+
 article ul li {
   list-style: square;
 }
@@ -238,7 +273,6 @@ input:is(
 textarea:disabled {
   border: 2px dotted currentColor;
 }
-
 
 button {
   cursor: pointer;

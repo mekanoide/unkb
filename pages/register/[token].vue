@@ -11,7 +11,8 @@ const handle = ref('')
 const email = ref('')
 const password = ref('')
 
-const nameError = ref(null)
+const nameError = ref(true)
+const emailError = ref(true)
 
 const { data: invitation, error: errorInvitation } = await useFetch(
   `/api/v1/invitations/get/${route.params.token}`
@@ -26,6 +27,16 @@ const validateName = async () => {
   })
   if (data.value) {
     nameError.value = data.value
+  } else {
+    nameError.value = null
+  }
+}
+
+const validateEmail = async () => {
+  if (email.value !== invitation.value.target_email) {
+    emailError.value = 'El correo electrónico no coincide con la invitación'
+  } else {
+    emailError.value = null
   }
 }
 
@@ -59,6 +70,7 @@ watch(
 </script>
 
 <template>
+  {{ invitation }}
   <div v-if="user">
     <h1>Ya estás dentro, aquí no hay nada que ver</h1>
     <NuxtLink to="/">Ve a la página de Inicio</NuxtLink>
@@ -81,13 +93,15 @@ watch(
         @blur="validateName" />
       <TextField
         label="Correo electrónico"
+        :error="emailError"
         type="email"
-        v-model="email" />
+        v-model="email"
+        @blur="validateEmail" />
       <TextField
         label="Contraseña"
         type="password"
         v-model="password" />
-      <Button type="submit">Entrar</Button>
+      <Button type="submit" :disabled="nameError || emailError">Entrar</Button>
     </form>
     <p>Ya tienes cuenta? <NuxtLink to="/login">Accede aquí</NuxtLink>.</p>
   </div>
