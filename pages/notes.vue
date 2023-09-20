@@ -39,7 +39,8 @@ watch(editionOK, async (newValue) => {
       :key="note.id">
       <Note
         :data="note"
-        @deleted="refreshNotes" />
+        @deleted="refreshNotes"
+        @published="refreshNotes" />
     </li>
   </ul>
   <EmptyState
@@ -47,5 +48,4 @@ watch(editionOK, async (newValue) => {
     message="No has anotado nada aún" />
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>

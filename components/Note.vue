@@ -11,7 +11,7 @@ const props = defineProps({
     required: true
   }
 })
-const emit = defineEmits(['deleted', 'edited'])
+const emit = defineEmits(['deleted', 'edited', 'published'])
 
 const contentElement = ref(null)
 
@@ -23,6 +23,18 @@ const isOwner = computed(() => {
 })
 
 const date = computed(() => formatFormalDate(props.data.created_at))
+
+const handlePublish = async () => {
+  const shouldPublish = confirm('¿Seguro que quieres publicar esta nota?')
+  if (!shouldPublish) return
+  await useFetch('api/v1/notes/publish', {
+    method: 'POST',
+    body: {
+      id: props.data.id
+    }
+  })
+  emit('published')
+}
 
 const handleEdition = () => {
   openEdition(props.data.id, props.data.content)
@@ -49,7 +61,7 @@ const handleDelete = () => {
       v-if="data.link"
       :data="data.link" />
     <footer>
-      <Button variant="ghost">
+      <Button variant="ghost" @click="handlePublish">
         <Icon
           name="ph:paper-plane-right-bold"
           size="1.25rem" />

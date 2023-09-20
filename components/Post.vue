@@ -43,6 +43,8 @@ const handleEdit = () => {
 }
 
 const handleDelete = async () => {
+  const shouldDelete = confirm('¿Estás seguro de eliminar esta publicación?')
+  if (!shouldDelete) return
   await useFetch('/api/v1/posts/delete', {
     method: 'delete',
     body: {
