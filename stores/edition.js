@@ -14,7 +14,6 @@ export const useEditionStore = defineStore('edition', () => {
       content: content,
       type: type
     }
-    console.log('Edit', edit.value)
   }
   /* Cancel post edition */
   const cancelEdition = () => {

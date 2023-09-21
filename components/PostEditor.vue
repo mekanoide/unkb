@@ -12,7 +12,7 @@ const props = defineProps({
   cancellable: {
     type: Boolean
   },
-  notes: {
+  note: {
     type: Boolean
   },
   minRows: {
@@ -77,7 +77,7 @@ const computedRows = computed(() => {
     </textarea>
     <footer>
       <div class="actions">
-        <Button v-if="notes" type="submit">Terminar</Button>
+        <Button v-if="note" type="submit">Terminar</Button>
         <ButtonPublish v-else :disabled="!content || pending" v-model="scope" />
         <Button
           v-if="cancellable"
