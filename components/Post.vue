@@ -38,7 +38,7 @@ const linkPost = (id) => {
 }
 
 const handleEdit = () => {
-  openEdition(props.post.id, props.post.content)
+  openEdition(props.post.id, props.post.content, 'post', props.post.scope)
 }
 
 const handleDelete = async () => {
@@ -199,8 +199,8 @@ header {
   position: absolute;
   inset: 0 -1.5rem;
   content: '';
-  border-left: 8px solid var(--colorAccent);
-  border-right: 8px solid var(--colorAccent);
+  border-left: 6px solid var(--colorAccent);
+  border-right: 6px solid var(--colorAccent);
 }
 
 .content.truncate {

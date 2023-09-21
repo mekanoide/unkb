@@ -69,6 +69,7 @@ export default defineEventHandler(async (event) => {
     .from('posts')
     .update({
       content: body.content,
+      scope: body.scope,
       edited: true
     })
     .eq('id', body.id)

@@ -45,6 +45,7 @@ const role = getRoleNameById(props.data.role_id)
 }
 
 .User:hover {
-  color: var(--colorAccent);
+  text-decoration: underline;
+  text-decoration-color: var(--colorAccent);
 }
 </style>

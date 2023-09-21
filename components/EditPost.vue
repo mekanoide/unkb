@@ -8,8 +8,8 @@ const { edit } = storeToRefs(editionStore)
 
 const emit = defineEmits(['edited'])
 
-const handlePost = async (content) => {
-  await submitEdition(content)
+const handlePost = async (content, scope) => {
+  await submitEdition(content, scope)
   emit('edited')
 }
 </script>

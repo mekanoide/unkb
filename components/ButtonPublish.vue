@@ -14,19 +14,16 @@ const props = defineProps({
 
 const emit = defineEmits(['update:modelValue'])
 
-const { showPopover } = storeToRefs(mainStore)
+const model = toRef(props, 'modelValue')
+const showScopeMenu = ref(false)
 
 const handleOpenScope = () => {
-  if (showPopover.value === 'scope') {
-    showPopover.value = null
-  } else {
-    showPopover.value = 'scope'
-  }
+  showScopeMenu.value = true
 }
 
 const selectScope = (scope) => {
   emit('update:modelValue', scope)
-  showPopover.value = null
+  showScopeMenu.value = false
 }
 
 const scopeIcon = computed(() => {
@@ -42,7 +39,7 @@ const scopeIcon = computed(() => {
   }
 })
 
-watch(props.modelValue, (newValue) => {
+watch(model.value, (newValue) => {
   console.log('New value', newValue)
 })
 </script>
@@ -68,7 +65,8 @@ watch(props.modelValue, (newValue) => {
     </div>
     <Dropdown
       class="menu-scope"
-      v-if="showPopover === 'scope'">
+      v-if="showScopeMenu"
+      @close="showScopeMenu = false">
       <Menu>
         <MenuItem
           :active="modelValue === 'public'"
@@ -132,10 +130,8 @@ button:hover {
 }
 
 .menu-scope {
-  position: absolute;
   top: 0;
   left: calc(100% + var(--spaceXS));
-  z-index: 1;
 }
 
 .button-publish {

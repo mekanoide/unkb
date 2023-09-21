@@ -1,10 +1,5 @@
 <script setup>
-import { useMainStore } from '@/stores/main'
-
 import { onClickOutside } from '@vueuse/core'
-
-const store = useMainStore()
-const { showPopover } = storeToRefs(store)
 
 const props = defineProps({
   title: {
@@ -15,11 +10,13 @@ const props = defineProps({
   }
 })
 
+const emit = defineEmits(['close'])
+
 const dropdown = ref(null)
 
 onClickOutside(dropdown, (e) => {
   e.stopPropagation()
-  showPopover.value = null
+  emit('close')
 })
 </script>
 
@@ -72,9 +69,9 @@ header {
   .DropdownMenu {
     min-width: 4rem;
     position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
     top: auto !important;
     box-shadow: none;
     border: none;

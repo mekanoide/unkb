@@ -62,7 +62,8 @@ const { data: me, error } = await useAsyncData(() => fetchOwnUser())
       </button>
       <Dropdown
         v-if="showPopover === 'main-menu'"
-        class="menu">
+        class="menu"
+        @close="showPopover = null">
         <NavigationItem
           class="manifesto-button"
           label="Manifiesto"

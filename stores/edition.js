@@ -8,12 +8,14 @@ export const useEditionStore = defineStore('edition', () => {
   const editionOK = ref(false)
 
   /* Start post edition */
-  const openEdition = (id, content, type) => {
+  const openEdition = (id, content, type, scope) => {
     edit.value = {
       id: id,
       content: content,
-      type: type
+      type: type,
+      scope: scope
     }
+    console.log('Edit', edit.value)
   }
   /* Cancel post edition */
   const cancelEdition = () => {
@@ -21,13 +23,14 @@ export const useEditionStore = defineStore('edition', () => {
   }
 
   /* Finish post edition and update post */
-  const submitEdition = async (content) => {
+  const submitEdition = async (content, scope) => {
     const id = edit.value.id
     edit.value = null
     const { data, error } = await useFetch('/api/v1/posts/edit', {
       method: 'post',
       body: {
         id: id,
+        scope: scope,
         content: content
       }
     })

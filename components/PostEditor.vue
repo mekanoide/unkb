@@ -31,7 +31,7 @@ const props = defineProps({
 
 const content = ref(edit.value?.content ?? null)
 const post = ref(null)
-const scope = ref('connections')
+const scope = ref(edit.value?.scope || 'connections')
 
 const emit = defineEmits(['submit', 'cancel'])
 
@@ -61,6 +61,7 @@ const computedRows = computed(() => {
 </script>
 
 <template>
+  {{ scope }}
   <form
     @submit.prevent="handleSubmit"
     ref="post">

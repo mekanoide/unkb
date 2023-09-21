@@ -39,17 +39,15 @@ button {
   text-transform: uppercase;
 }
 
-button:hover {
-  background-color: var(--colorAccent);
-}
 button:not(.secondary, .ghost, .square) {
+  border: none;
   background-color: var(--colorText);
-  border-color: var(--colorText);
   color: var(--colorBackground);
 }
 
-button:not(.secondary, .ghost, .square):hover {
-  border: 4px double currentColor;
+button:hover {
+  background-color: var(--colorAccent);
+  color: var(--colorDark);
 }
 
 button.critical {

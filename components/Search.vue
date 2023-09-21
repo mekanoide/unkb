@@ -41,7 +41,8 @@ const handleCancelConnectionRequest = async (id) => {
     <div class="results-wrapper">
       <Dropdown
         class="results"
-        v-if="showPopover === 'search-results'">
+        v-if="showPopover === 'search-results'"
+        @close="showPopover = null">
         <ul v-if="searchResults.length > 0">
           <li
             v-for="result in searchResults"

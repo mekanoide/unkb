@@ -37,7 +37,7 @@ const handlePublish = async () => {
 }
 
 const handleEdition = () => {
-  openEdition(props.data.id, props.data.content, 'note')
+  openEdition(props.data.id, props.data.content, 'note', 'private')
 }
 
 const handleDelete = () => {
