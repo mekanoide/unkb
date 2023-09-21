@@ -1,6 +1,6 @@
 <script setup>
 import { useMainStore } from '@/stores/main'
-import { storeToRefs } from 'pinia'
+
 const mainStore = useMainStore()
 
 const { notifications } = storeToRefs

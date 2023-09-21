@@ -40,8 +40,7 @@ button {
 }
 
 button:hover {
-  color: var(--colorBackground);
-  background-color: var(--colorText);
+  background-color: var(--colorAccent);
 }
 button:not(.secondary, .ghost, .square) {
   background-color: var(--colorText);
@@ -93,8 +92,8 @@ button.ghost:not(.small, .large) {
 
 button.ghost:hover,
 button.square:hover {
-  background-color: var(--colorText);
-  color: var(--colorBackground);
+  color: var(--colorDark);
+  background-color: var(--colorAccent);
 }
 
 button:disabled {

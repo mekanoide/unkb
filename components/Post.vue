@@ -2,7 +2,6 @@
 import { useEditionStore } from '@/stores/edition'
 import { useMainStore } from '@/stores/main'
 import { usePostStore } from '@/stores/post'
-import { storeToRefs } from 'pinia'
 const router = useRouter()
 const user = useSupabaseUser()
 const store = useMainStore()
@@ -188,11 +187,20 @@ header {
   cursor: pointer;
 }
 
+.content:not(.single)::before {
+  position: absolute;
+  inset: 0 -1.5rem;
+  content: '';
+  transition: var(--transition);
+  border-left: 0px solid var(--colorAccent);
+  border-right: 0px solid var(--colorAccent);
+}
 .content:not(.single):hover::before {
   position: absolute;
-  inset: 0 -1rem;
+  inset: 0 -1.5rem;
   content: '';
-  border-left: 8px solid var(--colorText);
+  border-left: 8px solid var(--colorAccent);
+  border-right: 8px solid var(--colorAccent);
 }
 
 .content.truncate {
@@ -228,7 +236,7 @@ footer {
 }
 
 .link-reply:hover {
-  background-color: var(--colorText);
-  color: var(--colorBackground);
+  background-color: var(--colorAccent);
+  color: var(--colorDark);
 }
 </style>

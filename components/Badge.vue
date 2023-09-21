@@ -21,7 +21,6 @@ const props = defineProps({
 .Badge {
   font-size: var(--fontS);
   border-radius: var(--corner);
-  transition: var(--transition);
   text-transform: uppercase;
   position: relative;
 }

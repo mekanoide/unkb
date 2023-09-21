@@ -39,4 +39,13 @@ const props = defineProps({
   display: grid;
   gap: var(--spaceS);
 }
+
+.LinkPreview:hover {
+  color: var(--colorAccent);
+}
+
+.dark-mode .LinkPreview:hover {
+  background-color: var(--colorAccent);
+  color: var(--colorDark);
+}
 </style>

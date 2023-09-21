@@ -1,5 +1,5 @@
 <script setup>
-import { storeToRefs } from 'pinia'
+
 import { useEditionStore } from '@/stores/edition'
 import { onClickOutside } from '@vueuse/core'
 const editionStore = useEditionStore()

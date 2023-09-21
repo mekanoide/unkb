@@ -35,7 +35,7 @@ button.primary {
 }
 
 button:hover {
-  background-color: var(--colorText);
-  color: var(--colorBackground);
+  background-color: var(--colorAccent);
+  color: var(--colorDark);
 }
 </style>

@@ -33,7 +33,7 @@ export default defineNuxtConfig({
   imports: {
     dirs: ['stores']
   },
-  pinia: { autoImports: ['defineStore', 'acceptHMRUpdate'] },
+  pinia: { autoImports: ['defineStore', 'acceptHMRUpdate', 'storeToRefs'] },
   robots: {
     UserAgent: '*',
     Disallow: '*'

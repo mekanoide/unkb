@@ -1,5 +1,5 @@
 <script setup>
-import { storeToRefs } from 'pinia'
+
 import { useMainStore } from '@/stores/main'
 const store = useMainStore()
 
@@ -130,8 +130,8 @@ nav {
 }
 
 .button-menu:hover {
-  background-color: var(--colorText);
-  color: var(--colorBackground);
+  background-color: var(--colorAccent);
+  color: var(--colorDark);
 }
 
 @media screen and (max-width: 1024px) {

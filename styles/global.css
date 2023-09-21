@@ -54,6 +54,9 @@ h3 {
   font-size: var(--fontL);
 }
 
+a {
+  transition: var(--transition);
+}
 code {
   font-family: var(--fontMono);
   overflow: auto;

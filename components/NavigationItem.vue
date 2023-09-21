@@ -39,12 +39,13 @@ a {
 }
 
 a:hover {
-
+  color: var(--colorDark);
+  background-color: var(--colorAccent);
 }
 
 a.router-link-active {
-  background-color: var(--colorText);
-  color: var(--colorBackground);  
+  background-color: var(--colorAccent);
+  color: var(--colorDark);
 }
 
 @media screen and (max-width: 1024px) {

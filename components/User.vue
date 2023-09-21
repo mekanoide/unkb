@@ -43,4 +43,8 @@ const role = getRoleNameById(props.data.role_id)
 .User.large {
   font-size: var(--fontL);
 }
+
+.User:hover {
+  color: var(--colorAccent);
+}
 </style>

@@ -1,5 +1,4 @@
 <script setup>
-import { storeToRefs } from 'pinia'
 import { useEditionStore } from '@/stores/edition'
 
 const editionStore = useEditionStore()
@@ -24,6 +23,8 @@ nuxtApp.hook('page:finish', () => {
   <NuxtLayout>
     <Loading v-if="loading" />
     <NuxtPage />
-    <EditPost v-if="edit" :data="edit" />
+    <EditPost
+      v-if="edit"
+      :data="edit" />
   </NuxtLayout>
 </template>

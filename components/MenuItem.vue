@@ -25,10 +25,13 @@ const emit = defineEmits(['click'])
   border-radius: var(--corner);
   transition: var(--transition);
   white-space: nowrap;
+  background-color: transparent;
+  color: var(--colorText);
 }
+
 .MenuItem:hover,
 .MenuItem.active {
-  color: var(--colorBackground);
-  background-color: var(--colorText);
+  background-color: var(--colorAccent);
+  color: var(--colorDark);
 }
 </style>

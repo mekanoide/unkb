@@ -3,7 +3,7 @@ definePageMeta({
   middleware: ['auth']
 })
 
-import { storeToRefs } from 'pinia'
+
 import { useMainStore } from '@/stores/main'
 import { usePostStore } from '@/stores/post'
 import { useEditionStore } from '@/stores/edition'

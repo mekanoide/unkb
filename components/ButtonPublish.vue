@@ -1,5 +1,5 @@
 <script setup>
-import { storeToRefs } from 'pinia'
+
 import { useMainStore } from '@/stores/main'
 const mainStore = useMainStore()
 const props = defineProps({
@@ -114,13 +114,21 @@ watch(props.modelValue, (newValue) => {
 .ButtonPublish {
   display: grid;
   grid-auto-flow: column;
-  gap: var(--spaceXS);
   align-items: stretch;
   justify-content: start;
   height: 3rem;
+}
+
+button {
   background-color: var(--colorText);
   color: var(--colorBackground);
   border-radius: var(--cornerButton);
+  transition: var(--transition);
+}
+
+button:hover {
+  background-color: var(--colorAccent);
+  color: var(--colorDark)
 }
 
 .menu-scope {

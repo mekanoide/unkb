@@ -51,9 +51,16 @@ div {
 .background {
   rotate: -6deg;
   margin-top: 0.5rem;
+  z-index: 1;
+}
+
+.background :is(.u, .n) {
   background: var(--gradientFaded);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  z-index: 1;
+}
+
+.background :is(.k, .b) {
+  color: transparent;
 }
 </style>

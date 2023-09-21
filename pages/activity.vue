@@ -1,5 +1,5 @@
 <script setup>
-import { storeToRefs } from 'pinia'
+
 import { useActivityStore } from '@/stores/activity'
 
 const activityStore = useActivityStore()

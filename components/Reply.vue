@@ -1,7 +1,7 @@
 <script setup>
 import { useMainStore } from '@/stores/main'
 import { usePostStore } from '@/stores/post'
-import { storeToRefs } from 'pinia'
+
 const user = useSupabaseUser()
 const store = useMainStore()
 const postStore = usePostStore()
