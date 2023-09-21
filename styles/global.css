@@ -116,10 +116,12 @@ article sub {
   vertical-align: sub;
 }
 
-article hr {
-  border-top: 2px solid var(--colorText);
-  width: 12rem;
-  margin: auto;
+article hr::after {
+  display: block;
+  content: '***';
+  text-align: center;
+  padding: var(--spaceM) 0;
+
 }
 
 article mark {

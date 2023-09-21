@@ -7,9 +7,9 @@ const pending = ref(false)
 
 const emit = defineEmits(['posted'])
 
-const handlePost = async (content) => {
+const handlePost = async (content, scope) => {
   pending.value = true
-  await createPost(content)
+  await createPost(content, scope)
   emit('posted')
   pending.value = false
 }

@@ -58,6 +58,5 @@ article {
   display: grid;
   gap: 1em;
   overflow-wrap: anywhere;
-  white-space: balance;
 }
 </style>

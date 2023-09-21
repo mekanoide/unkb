@@ -1,7 +1,7 @@
 <template>
   <NuxtLink to="/" aria-label="Inicio">
-    <div><span class="u">U</span><span class="n">N</span><span class="k">K</span><span class="b">B</span></div>
-    <div><span class="u">U</span><span class="n">N</span><span class="k">K</span><span class="b">B</span></div>
+    <div class="background"><span class="u">U</span><span class="n">N</span><span class="k">K</span><span class="b">B</span></div>
+    <div class="foreground"><span class="u">U</span><span class="n">N</span><span class="k">K</span><span class="b">B</span></div>
   </NuxtLink>
 </template>
 
@@ -40,11 +40,20 @@ div {
   letter-spacing: -0.12em;
 }
 
-div:nth-child(2) {
+.foreground {
+  z-index: 2;  
+}
+.foreground :is(.k, .n) {
+  background-color: var(--colorText);
+  color: var(--colorBackground);
+}
+
+.background {
   rotate: -6deg;
   margin-top: 0.5rem;
   background: var(--gradientFaded);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  z-index: 1;
 }
 </style>

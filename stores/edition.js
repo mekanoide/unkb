@@ -8,11 +8,13 @@ export const useEditionStore = defineStore('edition', () => {
   const editionOK = ref(false)
 
   /* Start post edition */
-  const openEdition = (id, content) => {
+  const openEdition = (id, content, type) => {
     edit.value = {
       id: id,
-      content: content
+      content: content,
+      type: type
     }
+    console.log('Edit', edit.value)
   }
   /* Cancel post edition */
   const cancelEdition = () => {

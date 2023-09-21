@@ -97,7 +97,7 @@ nav {
   display: grid;
   align-content: start;
   grid-auto-flow: row;
-  gap: var(--spaceS);
+  gap: var(--spaceXS);
 }
 
 .user-menu {

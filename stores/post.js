@@ -66,11 +66,12 @@ export const usePostStore = defineStore('post', () => {
   }
 
   /* Create new post */
-  const createPost = async (content) => {
+  const createPost = async (content, scope) => {
     const { data, error } = await useFetch('/api/v1/posts/create', {
       method: 'post',
       body: {
-        content: content
+        content: content,
+        scope: scope
       }
     })
   }

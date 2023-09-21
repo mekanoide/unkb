@@ -7,5 +7,6 @@
 <style scoped>
 ul {
   display: grid;
+  gap: var(--spaceXS);
 }
 </style>

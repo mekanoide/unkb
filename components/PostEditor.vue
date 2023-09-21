@@ -12,6 +12,9 @@ const props = defineProps({
   cancellable: {
     type: Boolean
   },
+  notes: {
+    type: Boolean
+  },
   minRows: {
     type: Number
   },
@@ -28,11 +31,12 @@ const props = defineProps({
 
 const content = ref(edit.value?.content ?? null)
 const post = ref(null)
+const scope = ref('connections')
 
 const emit = defineEmits(['submit', 'cancel'])
 
 const handleSubmit = () => {
-  emit('submit', content.value)
+  emit('submit', content.value, scope.value)
   focused.value = false
   content.value = null
 }
@@ -73,12 +77,8 @@ const computedRows = computed(() => {
     </textarea>
     <footer>
       <div class="actions">
-        <Button
-          type="submit"
-          :disabled="!content || pending">
-          <Spinner v-if="pending" />
-          <span v-else>Terminar</span>
-        </Button>
+        <Button v-if="notes" type="submit">Terminar</Button>
+        <ButtonPublish v-else :disabled="!content || pending" v-model="scope" />
         <Button
           v-if="cancellable"
           variant="secondary"

@@ -31,7 +31,7 @@
   --fontBase: clamp(14px, calc(14px + 0.5vmin), 20px);
   --fontS: 0.75rem;
   --fontL: 1.25rem;
-  --fontXL: clamp(1.5rem, calc(1.5rem + 1vw), 3rem);
+  --fontXL: clamp(2rem, calc(1.5rem + 2vw), 6rem);
 
   --fontHeadline: 'Work Sans', Arial, Helvetica, sans-serif;
   --fontBody: 'Inconsolata', monospace;

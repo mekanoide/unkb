@@ -10,7 +10,7 @@ const props = defineProps(['message'])
 h2 {
   padding: var(--spaceXL) 0;
   font-size: var(--fontXL);
-  font-weight: 700;
+  font-weight: bold;
   background: var(--gradientFaded);
   background-clip: text;
   -webkit-text-fill-color: transparent;
