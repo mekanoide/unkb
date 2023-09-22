@@ -22,8 +22,8 @@ const { data: replies, refresh: refreshReplies } = await useFetch(
   `/api/v1/replies/${route.params.id}`
 )
 
-const handleReply = async () => {
-  await createReply(route.params.id)
+const handleReply = async (id, content) => {
+  await createReply(route.params.id, content, null)
   refreshReplies()
 }
 
@@ -52,7 +52,8 @@ useHead({
   <PostEditor
     id="write-reply"
     :rows="2"
-    @post="handleReply"
+    type="reply"
+    @posted="refreshReplies"
     placeholder="Escribe una respuesta" />
   <ul v-if="replies && replies.length > 0">
     <li v-for="reply in replies">

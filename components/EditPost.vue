@@ -18,10 +18,10 @@ const handlePost = async (content, scope) => {
   <div class="EditPost">
     <div class="wrapper">
       <PostEditor
-        cancellable
+        edition
         :minRows="16"
         :maxRows="16"
-        :note="edit.type === 'note'"
+        :type="edit.type"
         @submit="handlePost"
         @cancel="cancelEdition" />
     </div>

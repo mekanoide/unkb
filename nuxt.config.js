@@ -11,7 +11,7 @@ export default defineNuxtConfig({
         { property: 'og:type', content: 'website' },
         { property: 'og:locale', content: 'es_ES' },
         { property: 'og:image', content: '/og.png' },
-        { property: 'og:description', content: 'Esto es una red social' }
+        { property: 'og:description', content: 'Esto no es una red social.' }
       ],
       link: [{ rel: 'icon', type: 'image/svg', href: '/favicon.svg' }]
     }

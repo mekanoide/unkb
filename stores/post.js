@@ -1,3 +1,4 @@
+import { useFetch } from 'nuxt/app'
 import { defineStore } from 'pinia'
 
 export const usePostStore = defineStore('post', () => {
@@ -65,6 +66,12 @@ export const usePostStore = defineStore('post', () => {
     return data.users
   }
 
+  /* Submit post */
+
+  const submitPost = async (id, content) => {
+    
+  }
+
   /* Create new post */
   const createPost = async (content, scope) => {
     const { data, error } = await useFetch('/api/v1/posts/create', {
@@ -77,8 +84,15 @@ export const usePostStore = defineStore('post', () => {
   }
 
   /* Create new reply to post */
-  const createReply = async (id) => {
-    const { data: postData, error: postError } = await client
+  const createReply = async (id, content) => {
+    const { data, error } = await useFetch('/api/v1/posts/reply', {
+      method: 'post',
+      body: {
+        postId: id,
+        content: content
+      }
+    })
+/*     const { data: postData, error: postError } = await client
       .from('replies')
       .upsert({
         author_id: user.value.id,
@@ -92,7 +106,7 @@ export const usePostStore = defineStore('post', () => {
       console.log('Error!!!', postError)
     }
     postContent.value = ''
-    return postData
+    return postData */
   }
 
   const deletePost = async (id) => {

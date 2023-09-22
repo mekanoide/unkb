@@ -3,15 +3,13 @@ import { useEditionStore } from '@/stores/edition'
 import { onClickOutside } from '@vueuse/core'
 const editionStore = useEditionStore()
 
-const focused = ref(false)
-
-const { edit } = storeToRefs(editionStore)
-
 const props = defineProps({
-  cancellable: {
-    type: Boolean
+  postType: {
+    type: String,
+    required: false,
+    default: 'post'
   },
-  note: {
+  edition: {
     type: Boolean
   },
   minRows: {
@@ -28,16 +26,23 @@ const props = defineProps({
   }
 })
 
+const { edit } = storeToRefs(editionStore)
+const focused = ref(false)
 const content = ref(edit.value?.content ?? null)
 const post = ref(null)
 const scope = ref(edit.value?.scope || 'connections')
 
 const emit = defineEmits(['submit', 'cancel'])
 
-const handleSubmit = () => {
-  emit('submit', content.value, scope.value)
+const handleSubmit = async () => {
+  const options = {
+    scope: scope.value,
+    post_id: edit.value?.id
+  }
+  await submitPost(type, content.value, options)
   focused.value = false
   content.value = null
+  edit.value = null
 }
 
 const wordCount = computed(() => {
@@ -76,17 +81,17 @@ const computedRows = computed(() => {
     </textarea>
     <footer>
       <div class="actions">
-        <Button
-          v-if="note"
-          type="submit"
-          >Terminar</Button
-        >
         <ButtonPublish
-          v-else
+          v-if="postType === 'post'"
           :disabled="!content || pending"
           v-model="scope" />
         <Button
-          v-if="cancellable"
+          v-else
+          type="submit">
+          Enviar
+        </Button>
+        <Button
+          v-if="edition"
           variant="secondary"
           :disabled="pending"
           @click="emit('cancel')"

@@ -35,10 +35,12 @@ const scopeIcon = computed(() => {
       return 'ph:medal-bold'
     case 'fire':
       return 'ph:fire-bold'
+    case 'private':
+      return 'ph:note-bold'
   }
 })
 
-watch(model.value, (newValue) => {
+watch(model, (newValue) => {
   console.log('New value', newValue)
 })
 </script>
@@ -98,6 +100,14 @@ watch(model.value, (newValue) => {
             name="ph:fire-bold"
             size="1.5rem" />
           Círculo de fuego
+        </MenuItem>
+        <MenuItem
+          :active="modelValue === 'private'"
+          @click="selectScope('private')">
+          <Icon
+            name="ph:note-bold"
+            size="1.5rem" />
+          Privado (nota)
         </MenuItem>
       </Menu>
     </Dropdown>
