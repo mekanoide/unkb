@@ -1,5 +1,4 @@
 <script setup>
-
 import { useMainStore } from '@/stores/main'
 const mainStore = useMainStore()
 const props = defineProps({
@@ -126,7 +125,7 @@ button {
 
 button:hover {
   background-color: var(--colorAccent);
-  color: var(--colorDark)
+  color: var(--colorDark);
 }
 
 .menu-scope {

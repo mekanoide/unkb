@@ -1,5 +1,4 @@
 <script setup>
-
 import { useEditionStore } from '@/stores/edition'
 import { onClickOutside } from '@vueuse/core'
 const editionStore = useEditionStore()
@@ -61,7 +60,6 @@ const computedRows = computed(() => {
 </script>
 
 <template>
-  {{ scope }}
   <form
     @submit.prevent="handleSubmit"
     ref="post">
@@ -78,8 +76,15 @@ const computedRows = computed(() => {
     </textarea>
     <footer>
       <div class="actions">
-        <Button v-if="note" type="submit">Terminar</Button>
-        <ButtonPublish v-else :disabled="!content || pending" v-model="scope" />
+        <Button
+          v-if="note"
+          type="submit"
+          >Terminar</Button
+        >
+        <ButtonPublish
+          v-else
+          :disabled="!content || pending"
+          v-model="scope" />
         <Button
           v-if="cancellable"
           variant="secondary"
