@@ -3,10 +3,10 @@ definePageMeta({
   middleware: ['auth']
 })
 
-
-import { useMainStore } from '@/stores/main'
 import { usePostStore } from '@/stores/post'
 import { useEditionStore } from '@/stores/edition'
+
+const head = useHead()
 const postStore = usePostStore()
 const editionStore = useEditionStore()
 const route = useRoute()
@@ -32,6 +32,15 @@ watch(editionOK, async (newValue) => {
     refreshPost()
     editionOK.value = false
   }
+})
+
+useHead({
+  meta: [
+    {
+      name: 'description',
+      content: post.value?.content
+    }
+  ]
 })
 </script>
 
