@@ -9,17 +9,6 @@ const tab = ref('saved')
 const { editionOK } = storeToRefs(editionStore)
 const { data: notes, refresh: refreshNotes } = await useFetch('/api/v1/notes')
 
-const postNote = async (content) => {
-  const { data } = await useFetch('/api/v1/posts/create', {
-    method: 'post',
-    body: {
-      content: content,
-      scope: 'private'
-    }
-  })
-  refreshNotes()
-}
-
 watch(editionOK, async (newValue) => {
   if (newValue) {
     refreshNotes()
@@ -32,8 +21,8 @@ watch(editionOK, async (newValue) => {
   <h1>Notas</h1>
   <PostEditor
     placeholder="Escribe solo para ti..."
-    type="note"
-    @submit="postNote" />
+    postType="note"
+    @posted="refreshNotes" />
   <ul v-if="notes && notes.length > 0">
     <li
       v-for="note in notes"

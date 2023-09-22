@@ -68,8 +68,12 @@ export const usePostStore = defineStore('post', () => {
 
   /* Submit post */
 
-  const submitPost = async (id, content) => {
-    
+  const submitPost = async (type, content, options) => {
+    if (type !== 'reply') {
+      createPost(content, options.scope)
+    } else if (type === 'reply') {
+      createReply(options.id, content)
+    }
   }
 
   /* Create new post */
@@ -85,14 +89,15 @@ export const usePostStore = defineStore('post', () => {
 
   /* Create new reply to post */
   const createReply = async (id, content) => {
+    console.log('createReply', id, content)
     const { data, error } = await useFetch('/api/v1/posts/reply', {
       method: 'post',
       body: {
-        postId: id,
+        post_id: id,
         content: content
       }
     })
-/*     const { data: postData, error: postError } = await client
+    /*     const { data: postData, error: postError } = await client
       .from('replies')
       .upsert({
         author_id: user.value.id,
@@ -163,6 +168,7 @@ export const usePostStore = defineStore('post', () => {
     fetchReplyCount,
     getMentionsFromPost,
     startPostReply,
+    submitPost,
     createPost,
     createReply,
     cancelPostReply,

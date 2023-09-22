@@ -1,7 +1,9 @@
 <script setup>
 import { useEditionStore } from '@/stores/edition'
+import { usePostStore } from '@/stores/post'
 import { onClickOutside } from '@vueuse/core'
 const editionStore = useEditionStore()
+const postStore = usePostStore()
 
 const props = defineProps({
   postType: {
@@ -26,23 +28,34 @@ const props = defineProps({
   }
 })
 
+const { submitPost, editPost } = postStore
 const { edit } = storeToRefs(editionStore)
 const focused = ref(false)
 const content = ref(edit.value?.content ?? null)
 const post = ref(null)
-const scope = ref(edit.value?.scope || 'connections')
 
-const emit = defineEmits(['submit', 'cancel'])
+const defaultScope = computed(() => {
+  if (props.edition) {
+    return edit.value.scope
+  }
+  if (props.postType === 'note') {
+    return 'private'
+  } else {
+    return 'connections'
+  }
+})
+
+const scope = ref(defaultScope)
+
+const emit = defineEmits(['post', 'cancel'])
 
 const handleSubmit = async () => {
-  const options = {
-    scope: scope.value,
-    post_id: edit.value?.id
+  if (props.edition) {
+    edit.value = null
   }
-  await submitPost(type, content.value, options)
+  emit('post', content.value, scope.value)
   focused.value = false
   content.value = null
-  edit.value = null
 }
 
 const wordCount = computed(() => {

@@ -6,7 +6,6 @@ definePageMeta({
 import { usePostStore } from '@/stores/post'
 import { useEditionStore } from '@/stores/edition'
 
-const head = useHead()
 const postStore = usePostStore()
 const editionStore = useEditionStore()
 const route = useRoute()
@@ -22,8 +21,8 @@ const { data: replies, refresh: refreshReplies } = await useFetch(
   `/api/v1/replies/${route.params.id}`
 )
 
-const handleReply = async (id, content) => {
-  await createReply(route.params.id, content, null)
+const handleReply = async (content, scope) => {
+  await createReply(route.params.id, content)
   refreshReplies()
 }
 
@@ -52,8 +51,8 @@ useHead({
   <PostEditor
     id="write-reply"
     :rows="2"
-    type="reply"
-    @posted="refreshReplies"
+    postType="reply"
+    @post="handleReply"
     placeholder="Escribe una respuesta" />
   <ul v-if="replies && replies.length > 0">
     <li v-for="reply in replies">
