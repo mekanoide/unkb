@@ -8,7 +8,6 @@ const props = defineProps({
 </script>
 
 <template>
-  <img :src="data.image_url" alt="image" />
   <a
     :href="data.url"
     target="_blank"
