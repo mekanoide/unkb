@@ -40,6 +40,6 @@ a:hover {
 }
 
 a[aria-selected=true] {
-  border-bottom: 6px solid var(--colorText);
+  border-bottom: 6px solid var(--colorAccent);
 }
 </style>

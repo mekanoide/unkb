@@ -21,7 +21,7 @@ const handlePost = async (content, scope) => {
         cancellable
         :minRows="16"
         :maxRows="16"
-        :note="edit?.type === 'note'"
+        :note="edit.type === 'note'"
         @submit="handlePost"
         @cancel="cancelEdition" />
     </div>
