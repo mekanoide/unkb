@@ -88,13 +88,14 @@ export const usePostStore = defineStore('post', () => {
   }
 
   /* Create new reply to post */
-  const createReply = async (id, content) => {
+  const createReply = async (id, content, parent = null) => {
     console.log('createReply', id, content)
     const { data, error } = await useFetch('/api/v1/posts/reply', {
       method: 'post',
       body: {
         post_id: id,
-        content: content
+        content: content,
+        parent_id: parent
       }
     })
     /*     const { data: postData, error: postError } = await client

@@ -1,15 +1,18 @@
 <script setup>
-import { useMainStore } from '@/stores/main'
 import { usePostStore } from '@/stores/post'
+import { useEditionStore } from '@/stores/edition'
 
 const user = useSupabaseUser()
-const store = useMainStore()
 const postStore = usePostStore()
+const editionStore = useEditionStore()
 
 const props = defineProps({
   data: {
     type: Object,
     required: true
+  },
+  child: {
+    type: Boolean
   }
 })
 const emit = defineEmits(['deleted', 'edited'])
@@ -17,12 +20,10 @@ const emit = defineEmits(['deleted', 'edited'])
 const contentElement = ref(null)
 const truncate = ref(false)
 const expanded = ref(false)
+const reply = ref(false)
 
-const { showPopover } = storeToRefs(store)
-
-const { togglePopover } = store
-const { startPostEdition, deleteReply, fetchPostAuthor, fetchReplyCount } =
-  postStore
+const { deleteReply, fetchReplyCount, createReply } = postStore
+const { openEdition } = editionStore
 
 const isOwner = computed(() => {
   return props.data.author_id === user.value.id
@@ -31,13 +32,17 @@ const isOwner = computed(() => {
 const date = computed(() => formatFormalDate(props.data.created_at))
 
 const handleEdit = () => {
-  startPostEdition(props.data.id, props.data.content)
-  showPopover.value = null
+  openEdition(props.data.id, props.data.content, 'reply', null)
+}
+
+const handleReply = async (content, scope) => {
+  console.log('handleReply', content, scope)
+  await createReply(props.data.post_id, content, props.data.id)
+  refreshReplies()
 }
 
 const handleDelete = async () => {
   await deleteReply(props.data.id)
-  showPopover.value = null
   emit('deleted')
 }
 
@@ -45,8 +50,8 @@ const toggleExpanded = () => {
   expanded.value = !expanded.value
 }
 
-const startReply = () => {
-  
+const toggleReply = () => {
+  reply.value = !reply.value
 }
 
 const replyCount = await fetchReplyCount(props.data.id)
@@ -58,19 +63,13 @@ onMounted(() => {
 </script>
 
 <template>
-  <li>
+  <li
+    class="Reply"
+    :class="{ child: child }">
     <header>
       <User :data="data.users" />
-      <div class="actions">
-        <Button
-          variant="ghost"
-          size="small"
-          @click.stop="togglePopover(data.id)">
-          <Icon
-            name="ph:dots-three-bold"
-            size="1.5rem" />
-        </Button>
-      </div>
+      • <time :datetime="date">{{ date }}</time>
+      <span v-if="data.edited"> • editado</span>
     </header>
     <div
       class="content"
@@ -83,38 +82,75 @@ onMounted(() => {
       :expanded="expanded"
       @click="toggleExpanded" />
     <footer>
-      <Button variant="ghost" @click="startReply">Responder</Button>
-      <div>
-        <small>
-          <time :datetime="date">{{ date }}</time>
-        </small>
-        <small v-if="data.edited"> - editado</small>
+      <Button
+        variant="text"
+        size="small"
+        @click="toggleReply">
+        Responder
+      </Button>
+      <div class="actions">
+        <Button
+          v-if="isOwner"
+          variant="ghost"
+          title="Editar publicación"
+          @click="handleEdit">
+          <Icon
+            name="ph:pencil-simple-line-bold"
+            size="1.25rem" />
+        </Button>
+        <Button
+          v-if="isOwner"
+          variant="ghost"
+          title="Eliminar publicación"
+          @click="handleDelete">
+          <Icon
+            name="ph:trash-simple-bold"
+            size="1.25rem" />
+        </Button>
+        <Button
+          v-if="!isOwner"
+          variant="ghost"
+          title="Denunciar publicación">
+          <Icon
+            name="ph:flag-pennant-bold"
+            size="1.25rem" />
+        </Button>
       </div>
     </footer>
-    <Dropdown
-      class="menu"
-      v-if="showPopover === data.id">
-      <Menu v-if="isOwner">
-        <MenuItem @click="handleEdit">Editar</MenuItem>
-        <MenuItem @click="handleDelete">Eliminar</MenuItem>
-      </Menu>
-      <Menu v-else>
-        <MenuItem>Denunciar</MenuItem>
-      </Menu>
-    </Dropdown>
+    <PostEditor
+      v-if="reply"
+      postType="reply"
+      cancel
+      @post="handleReply"
+      @cancel="reply = false" />
+    <Reply
+      child
+      v-for="reply in data.children"
+      :data="reply"
+      :key="reply.id" />
   </li>
 </template>
 
 <style scoped>
+.Reply {
+  display: grid;
+  gap: var(--spaceS);
+}
+
+.Reply.child {
+  padding-left: var(--spaceM);
+  border-left: 2px solid var(--colorText);
+}
+
 .author {
   font-weight: bold;
 }
 
 header {
-  display: grid;
-  grid-auto-flow: column;
-  grid-template-columns: 1fr auto;
-  position: relative;
+  display: flex;
+  gap: var(--spaceS);
+  justify-content: flex-start;
+  align-items: center;
 }
 
 .content {
@@ -136,5 +172,18 @@ header {
 .menu {
   top: 3.5rem;
   right: 0;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--spaceS);
+}
+
+footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 </style>

@@ -11,6 +11,9 @@ const props = defineProps({
     required: false,
     default: 'post'
   },
+  cancel: {
+    type: Boolean
+  },
   edition: {
     type: Boolean
   },
@@ -104,7 +107,7 @@ const computedRows = computed(() => {
           Enviar
         </Button>
         <Button
-          v-if="edition"
+          v-if="cancel"
           variant="secondary"
           :disabled="pending"
           @click="emit('cancel')"

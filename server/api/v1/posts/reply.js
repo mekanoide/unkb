@@ -72,6 +72,7 @@ export default defineEventHandler(async (event) => {
     author_id: user.id,
     post_id: body.post_id,
     content: body.content,
+    parent_id: body.parent_id,
     created_at: new Date(),
     link: link
   }

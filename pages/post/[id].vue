@@ -21,7 +21,26 @@ const { data: replies, refresh: refreshReplies } = await useFetch(
   `/api/v1/replies/${route.params.id}`
 )
 
-const handleReply = async (content, scope) => {
+const buildTree = (responses, parent_id = null) => {
+  const tree = []
+  for (const response of responses) {
+    if (response.parent_id === parent_id) {
+      const children = buildTree(responses, response.id)
+      if (children.length) {
+        response.children = children
+      }
+      tree.push(response)
+    }
+  }
+  return tree
+}
+
+const repliesTree = computed(() => {
+  if (!replies.value) return null
+  return buildTree(replies.value)
+})
+
+const handleReply = async (content, scope, parent) => {
   await createReply(route.params.id, content)
   refreshReplies()
 }
@@ -55,11 +74,11 @@ useHead({
     @post="handleReply"
     placeholder="Escribe una respuesta" />
   <ul v-if="replies && replies.length > 0">
-    <li v-for="reply in replies">
+    <li v-for="reply in repliesTree">
       <Reply
         :data="reply"
         :key="reply.id"
-        @deleted="repliesRefresh" />
+        @deleted="refreshReplies" />
     </li>
   </ul>
   <EmptyState

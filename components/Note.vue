@@ -94,7 +94,7 @@ const handleDelete = () => {
 <style scoped>
 .Note {
   display: grid;
-  gap: var(--spaceM);
+  gap: var(--spaceS);
 }
 
 .content {

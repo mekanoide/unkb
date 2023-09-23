@@ -10,7 +10,7 @@ div {
   display: grid;
   place-content: center;
   animation: pulse 1s alternate infinite;
-  border-radius: 3rem;
+  border-radius: 1rem;
   pointer-events: none;
 }
 

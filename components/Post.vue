@@ -164,7 +164,7 @@ onMounted(() => {
 <style scoped>
 .Post {
   display: grid;
-  gap: var(--spaceM);
+  gap: var(--spaceS);
 }
 
 .author {

@@ -19,6 +19,7 @@ const handlePost = async (content, scope) => {
     <div class="wrapper">
       <PostEditor
         edition
+        cancel
         :minRows="16"
         :maxRows="16"
         :type="edit.type"

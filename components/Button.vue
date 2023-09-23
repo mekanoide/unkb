@@ -39,7 +39,7 @@ button {
   text-transform: uppercase;
 }
 
-button:not(.secondary, .ghost, .square) {
+button:not(.secondary, .ghost, .square, .text) {
   border: none;
   background-color: var(--colorText);
   color: var(--colorBackground);
@@ -69,6 +69,7 @@ button.large {
   padding: 0 var(--spaceL);
 }
 button.ghost,
+button.text,
 button.square {
   border: none;
 }
@@ -88,12 +89,21 @@ button.ghost:not(.small, .large) {
   padding: 0 var(--spaceS);
 }
 
+button.text {
+  padding: 0;
+}
+
 button.ghost:hover,
 button.square:hover {
   color: var(--colorDark);
   background-color: var(--colorAccent);
 }
 
+button.text:hover {
+  background-color: transparent;
+  text-decoration: underline;
+  text-decoration-color: var(--colorAccent);
+}
 button:disabled {
   opacity: 0.33;
   pointer-events: none;
