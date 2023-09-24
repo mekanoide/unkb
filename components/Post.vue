@@ -2,6 +2,7 @@
 import { useEditionStore } from '@/stores/edition'
 import { useMainStore } from '@/stores/main'
 import { usePostStore } from '@/stores/post'
+import Dropdown from './Dropdown.vue'
 const router = useRouter()
 const user = useSupabaseUser()
 const store = useMainStore()
@@ -23,6 +24,7 @@ const contentElement = ref(null)
 const truncate = ref(false)
 const expanded = ref(false)
 
+const { showPopover } = storeToRefs(store)
 const { openEdition } = editionStore
 const { startPostEdition, deletePost, fetchPostAuthor, fetchReplyCount } =
   postStore
@@ -39,6 +41,7 @@ const linkPost = (id) => {
 
 const handleEdit = () => {
   openEdition(props.post.id, props.post.content, 'post', props.post.scope)
+  showPopover.value = null
 }
 
 const handleDelete = async () => {
@@ -57,7 +60,13 @@ const toggleExpanded = () => {
   expanded.value = !expanded.value
 }
 
-/* TODO: maybe try on the list? */
+const toggleMenu = () => {
+  if (showPopover.value === props.post.id) {
+    showPopover.value = null
+  } else {
+    showPopover.value = props.post.id
+  }
+}
 
 const handleSavePost = async (id) => {
   await useFetch('/api/v1/bookmarks/posts/create', {
@@ -87,11 +96,40 @@ onMounted(() => {
 
 <template>
   <div class="Post">
-    <header>
-      <User :data="post.users" />
-      • <time :datetime="date">{{ date }}</time>
-      <span v-if="post.edited"> • editado</span>
-    </header>
+    <Header>
+      <div class="post-meta">
+        <User :data="post.users" />
+        • <time :datetime="date">{{ date }}</time>
+        <span v-if="post.edited"> • editado</span>
+      </div>
+      <Button
+        variant="ghost"
+        size="small"
+        @click="toggleMenu">
+        <Icon
+          name="ph:dots-three-bold"
+          size="1.5rem" />
+      </Button>
+      <Dropdown class="menu" v-if="showPopover === post.id" @close="showPopover = null">
+        <Menu>
+          <MenuItem
+            v-if="isOwner"
+            @click="handleEdit">
+            Editar
+          </MenuItem>
+          <MenuItem
+            v-if="isOwner"
+            @click="handleDelete">
+            Eliminar
+          </MenuItem>
+          <MenuItem
+            v-if="!isOwner"
+            @click="handleReport">
+            Denunciar
+          </MenuItem>
+        </Menu>
+      </Dropdown>
+    </Header>
     <div
       class="content"
       :class="{ truncate: truncate && !expanded, single: single }"
@@ -107,7 +145,7 @@ onMounted(() => {
     <LinkPreview
       v-if="post.link"
       :data="post.link" />
-    <footer>
+    <Footer>
       <div
         v-if="!single"
         class="actions">
@@ -129,35 +167,7 @@ onMounted(() => {
             size="1.25rem" />
         </Button>
       </div>
-      <div class="actions">
-        <Button
-          v-if="isOwner"
-          variant="ghost"
-          title="Editar publicación"
-          @click="handleEdit">
-          <Icon
-            name="ph:pencil-simple-line-bold"
-            size="1.25rem" />
-        </Button>
-        <Button
-          v-if="isOwner"
-          variant="ghost"
-          title="Eliminar publicación"
-          @click="handleDelete">
-          <Icon
-            name="ph:trash-simple-bold"
-            size="1.25rem" />
-        </Button>
-        <Button
-          v-if="!isOwner"
-          variant="ghost"
-          title="Denunciar publicación">
-          <Icon
-            name="ph:flag-pennant-bold"
-            size="1.25rem" />
-        </Button>
-      </div>
-    </footer>
+    </Footer>
   </div>
 </template>
 
@@ -171,11 +181,16 @@ onMounted(() => {
   font-weight: bold;
 }
 
-header {
+.post-meta {
   display: flex;
   gap: var(--spaceS);
   justify-content: flex-start;
   align-items: center;
+}
+
+.menu {
+  right: 0;
+  top: 1rem;
 }
 
 .content {

@@ -97,7 +97,7 @@ li:not(article *):last-child {
 }
 
 li + li:not(article *) {
-  border-top: 2px dashed var(--colorText);
+  border-top: 2px dotted var(--colorText);
 }
 
 /* Post content format */

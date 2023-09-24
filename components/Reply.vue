@@ -1,8 +1,11 @@
 <script setup>
+import { useMainStore } from '@/stores/main'
 import { usePostStore } from '@/stores/post'
 import { useEditionStore } from '@/stores/edition'
 
 const user = useSupabaseUser()
+
+const store = useMainStore()
 const postStore = usePostStore()
 const editionStore = useEditionStore()
 
@@ -20,8 +23,9 @@ const emit = defineEmits(['deleted', 'edited'])
 const contentElement = ref(null)
 const truncate = ref(false)
 const expanded = ref(false)
-const reply = ref(false)
+const showReply = ref(false)
 
+const { showPopover } = storeToRefs(store)
 const { deleteReply, fetchReplyCount, createReply } = postStore
 const { openEdition } = editionStore
 
@@ -51,7 +55,7 @@ const toggleExpanded = () => {
 }
 
 const toggleReply = () => {
-  reply.value = !reply.value
+  showReply.value = !showReply.value
 }
 
 const replyCount = await fetchReplyCount(props.data.id)
@@ -66,11 +70,43 @@ onMounted(() => {
   <li
     class="Reply"
     :class="{ child: child }">
-    <header>
-      <User :data="data.users" />
-      • <time :datetime="date">{{ date }}</time>
-      <span v-if="data.edited"> • editado</span>
-    </header>
+    <Header>
+      <div class="post-meta">
+        <User :data="data.users" />
+        • <time :datetime="date">{{ date }}</time>
+        <span v-if="data.edited"> • editado</span>
+      </div>
+      <Button
+        variant="ghost"
+        size="small"
+        @click="showPopover = data.id">
+        <Icon
+          name="ph:dots-three-bold"
+          size="1.5rem" />
+      </Button>
+      <Dropdown
+        v-if="showPopover === data.id"
+        class="menu"
+        @close="showPopover = null">
+        <Menu>
+          <MenuItem
+            v-if="isOwner"
+            @click="handleEdit">
+            Editar
+          </MenuItem>
+          <MenuItem
+            v-if="isOwner"
+            @click="handleDelete">
+            Eliminar
+          </MenuItem>
+          <MenuItem
+            v-if="!isOwner"
+            @click="handleReport">
+            Denunciar
+          </MenuItem>
+        </Menu>
+      </Dropdown>
+    </Header>
     <div
       class="content"
       :class="{ truncate: truncate && !expanded }"
@@ -81,48 +117,20 @@ onMounted(() => {
       v-if="truncate"
       :expanded="expanded"
       @click="toggleExpanded" />
-    <footer>
+    <Footer>
       <Button
         variant="text"
         size="small"
         @click="toggleReply">
         Responder
       </Button>
-      <div class="actions">
-        <Button
-          v-if="isOwner"
-          variant="ghost"
-          title="Editar publicación"
-          @click="handleEdit">
-          <Icon
-            name="ph:pencil-simple-line-bold"
-            size="1.25rem" />
-        </Button>
-        <Button
-          v-if="isOwner"
-          variant="ghost"
-          title="Eliminar publicación"
-          @click="handleDelete">
-          <Icon
-            name="ph:trash-simple-bold"
-            size="1.25rem" />
-        </Button>
-        <Button
-          v-if="!isOwner"
-          variant="ghost"
-          title="Denunciar publicación">
-          <Icon
-            name="ph:flag-pennant-bold"
-            size="1.25rem" />
-        </Button>
-      </div>
-    </footer>
+    </Footer>
     <PostEditor
-      v-if="reply"
+      v-if="showReply"
       postType="reply"
       cancel
       @post="handleReply"
-      @cancel="reply = false" />
+      @cancel="showReply = false" />
     <Reply
       child
       v-for="reply in data.children"
@@ -139,14 +147,18 @@ onMounted(() => {
 
 .Reply.child {
   padding-left: var(--spaceM);
-  border-left: 2px solid var(--colorText);
+  border-left: 2px dotted var(--colorText);
+}
+.menu {
+  top: 0rem;
+  right: 0;
 }
 
 .author {
   font-weight: bold;
 }
 
-header {
+.post-meta {
   display: flex;
   gap: var(--spaceS);
   justify-content: flex-start;

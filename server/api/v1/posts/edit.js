@@ -64,15 +64,24 @@ export default defineEventHandler(async (event) => {
   }
 
   const link = await getLinks(body.content)
-
-  const { data } = await client
-    .from('posts')
-    .update({
-      content: body.content,
-      scope: body.scope,
-      edited: true
-    })
-    .eq('id', body.id)
+  if (body.type === 'post') {
+    const { data } = await client
+      .from('posts')
+      .update({
+        content: body.content,
+        scope: body.scope,
+        edited: true
+      })
+      .eq('id', body.id)
+  } else if (body.type === 'reply') {
+    const { data } = await client
+      .from('replies')
+      .update({
+        content: body.content,
+        edited: true
+      })
+      .eq('id', body.id)
+  }
 
   const mentions = await getMentionsFromPost(body.content)
   if (mentions) {

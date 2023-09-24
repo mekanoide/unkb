@@ -1,10 +1,13 @@
 <script setup>
-import { storeToRefs} from 'pinia'
 import { useEditionStore } from '@/stores/edition'
+
 const editionStore = useEditionStore()
 
 const { submitEdition, cancelEdition } = editionStore
 const { edit } = storeToRefs(editionStore)
+
+const content = ref(edit.value?.content ?? null)
+const scope = ref(edit.value?.scope)
 
 const emit = defineEmits(['edited'])
 
@@ -17,14 +20,34 @@ const handlePost = async (content, scope) => {
 <template>
   <div class="EditPost">
     <div class="wrapper">
-      <PostEditor
-        edition
-        cancel
-        :minRows="16"
-        :maxRows="16"
-        :type="edit.type"
-        @submit="handlePost"
-        @cancel="cancelEdition" />
+      <form @submit.prevent="handlePost">
+        <textarea
+          cols="50"
+          rows="16"
+          v-model="content"></textarea>
+        <Footer>
+          <Actions>
+            <ButtonPublish
+              v-if="edit.type === 'post'"
+              type="submit"
+              :disabled="!content || pending"
+              v-model="scope" />
+            <Button
+              v-else
+              type="submit"
+              v-model="scope"
+              :disabled="pending">
+              Publicar
+            </Button>
+            <Button
+              variant="secondary"
+              @click="cancelEdition">
+              Cancelar
+            </Button>
+          </Actions>
+          <WordCount />
+        </Footer>
+      </form>
     </div>
   </div>
 </template>
@@ -44,5 +67,10 @@ const handlePost = async (content, scope) => {
   width: 100%;
   max-width: 800px;
   margin: auto;
+}
+
+form {
+  display: grid;
+  gap: var(--spaceS);
 }
 </style>

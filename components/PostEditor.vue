@@ -14,9 +14,6 @@ const props = defineProps({
   cancel: {
     type: Boolean
   },
-  edition: {
-    type: Boolean
-  },
   minRows: {
     type: Number
   },
@@ -38,14 +35,13 @@ const content = ref(edit.value?.content ?? null)
 const post = ref(null)
 
 const defaultScope = computed(() => {
-  if (props.edition) {
-    return edit.value.scope
+  if (props.postType === 'reply') {
+    return null
   }
   if (props.postType === 'note') {
     return 'private'
-  } else {
-    return 'connections'
   }
+  return 'connections'
 })
 
 const scope = ref(defaultScope)
@@ -95,8 +91,8 @@ const computedRows = computed(() => {
       :class="{ focus: focused }"
       @click="focused = true">
     </textarea>
-    <footer>
-      <div class="actions">
+    <Footer>
+      <Actions>
         <ButtonPublish
           v-if="postType === 'post'"
           :disabled="!content || pending"
@@ -113,9 +109,9 @@ const computedRows = computed(() => {
           @click="emit('cancel')"
           >Cancelar</Button
         >
-      </div>
+      </Actions>
       <span>{{ wordCount }}</span>
-    </footer>
+    </Footer>
   </form>
 </template>
 
@@ -130,20 +126,5 @@ textarea {
   width: 100%;
   font-size: var(--fontL);
   transition: var(--transition);
-}
-
-footer {
-  display: grid;
-  grid-auto-flow: column;
-  align-content: start;
-  justify-content: space-between;
-}
-
-.actions {
-  display: grid;
-  grid-auto-flow: column;
-  gap: var(--spaceS);
-  align-items: center;
-  justify-content: start;
 }
 </style>

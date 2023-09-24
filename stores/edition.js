@@ -25,13 +25,16 @@ export const useEditionStore = defineStore('edition', () => {
   /* Finish post edition and update post */
   const submitEdition = async (content, scope) => {
     const id = edit.value.id
+    const type = edit.value.type
     edit.value = null
+    console.log('Edit', id, content, scope, type)
     const { data, error } = await useFetch('/api/v1/posts/edit', {
       method: 'post',
       body: {
         id: id,
         scope: scope,
-        content: content
+        content: content,
+        type: type
       }
     })
     editionOK.value = true

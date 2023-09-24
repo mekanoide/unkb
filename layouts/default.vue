@@ -1,6 +1,6 @@
 <template>
   <div class="PAGE">
-    <Header />
+    <PageHeader />
     <main>
       <div class="logo-mobile">
         <Logo />
