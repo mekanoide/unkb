@@ -1,5 +1,3 @@
-import { defineStore } from 'pinia'
-
 export const useActivityStore = defineStore('activity', () => {
   const client = useSupabaseClient()
   const user = useSupabaseUser()

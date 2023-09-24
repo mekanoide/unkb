@@ -48,6 +48,7 @@ const handleReply = async (content, scope, parent) => {
 watch(editionOK, async (newValue) => {
   if (newValue) {
     refreshPost()
+    refreshReplies()
     editionOK.value = false
   }
 })
@@ -64,7 +65,7 @@ useHead({
 
 <template>
   <Post
-    :post="post"
+    :data="post"
     :key="post.id"
     single />
   <PostEditor

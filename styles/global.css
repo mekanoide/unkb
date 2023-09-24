@@ -97,7 +97,11 @@ li:not(article *):last-child {
 }
 
 li + li:not(article *) {
-  border-top: 2px dotted var(--colorText);
+/*   border-top: 2px dotted var(--colorText); */
+  background-image: repeating-linear-gradient(0deg, #333333, #333333 2px, transparent 2px, transparent 8px, #333333 8px), repeating-linear-gradient(90deg, #333333, #333333 2px, transparent 2px, transparent 8px, #333333 8px), repeating-linear-gradient(180deg, #333333, #333333 2px, transparent 2px, transparent 8px, #333333 8px), repeating-linear-gradient(270deg, #333333, #333333 2px, transparent 2px, transparent 8px, #333333 8px);
+  background-size: 0px 100%, 100% 2px, 0px 100% , 100% 0px;
+  background-position: 0 0, 0 0, 100% 0, 0 100%;
+  background-repeat: no-repeat;
 }
 
 /* Post content format */
@@ -188,6 +192,10 @@ article blockquote {
 }
 article a {
   text-decoration: underline;
+}
+
+article a:hover {
+  text-decoration-color: var(--colorAccent);
 }
 
 /* Syntax highlights */

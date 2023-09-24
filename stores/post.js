@@ -1,5 +1,4 @@
 import { useFetch } from 'nuxt/app'
-import { defineStore } from 'pinia'
 
 export const usePostStore = defineStore('post', () => {
   const client = useSupabaseClient()
@@ -78,6 +77,7 @@ export const usePostStore = defineStore('post', () => {
 
   /* Create new post */
   const createPost = async (content, scope) => {
+    console.log('createPost', content, scope)
     const { data, error } = await useFetch('/api/v1/posts/create', {
       method: 'post',
       body: {

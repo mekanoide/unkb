@@ -175,7 +175,7 @@ const statusDescription = computed(() => {
     <ul v-if="userPosts && userPosts.length > 0">
       <li v-for="post in userPosts">
         <Post
-          :post="post"
+          :data="post"
           @deleted="refreshPosts" />
       </li>
     </ul>
@@ -191,9 +191,6 @@ const statusDescription = computed(() => {
   <Invitations
     v-else-if="tab === 'invitations'"
     :data="invitations" />
-  <EditPost
-    v-if="postBeingEditedId"
-    @edited="refreshPosts" />
 </template>
 
 <style scoped>

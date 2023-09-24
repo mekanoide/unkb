@@ -1,5 +1,3 @@
-import { defineStore } from 'pinia'
-
 export const useConnectionsStore = defineStore('connections', () => {
   const client = useSupabaseClient()
   const user = useSupabaseUser()

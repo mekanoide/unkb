@@ -8,12 +8,11 @@ const { edit } = storeToRefs(editionStore)
 
 const content = ref(edit.value?.content ?? null)
 const scope = ref(edit.value?.scope)
+const pending = ref(false)
 
-const emit = defineEmits(['edited'])
-
-const handlePost = async (content, scope) => {
-  await submitEdition(content, scope)
-  emit('edited')
+const handlePost = async () => {
+  console.log('handlePost', content.value, scope.value)
+  await submitEdition(content.value, scope.value)
 }
 </script>
 
@@ -35,7 +34,6 @@ const handlePost = async (content, scope) => {
             <Button
               v-else
               type="submit"
-              v-model="scope"
               :disabled="pending">
               Publicar
             </Button>
@@ -45,7 +43,7 @@ const handlePost = async (content, scope) => {
               Cancelar
             </Button>
           </Actions>
-          <WordCount />
+          <WordCount :count="content.length" />
         </Footer>
       </form>
     </div>

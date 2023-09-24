@@ -1,8 +1,11 @@
 <script setup>
 import { useEditionStore } from '@/stores/edition'
+import { useTooltipStore } from '@/stores/tooltip'
 
+const tooltipStore = useTooltipStore()
 const editionStore = useEditionStore()
 const { edit } = storeToRefs(editionStore)
+const { tooltip } = storeToRefs(tooltipStore)
 
 const nuxtApp = useNuxtApp()
 const loading = ref(false)
@@ -26,5 +29,8 @@ nuxtApp.hook('page:finish', () => {
     <EditPost
       v-if="edit"
       :data="edit" />
+    <Tooltip
+      v-if="tooltip"
+      :data="tooltip.message" />
   </NuxtLayout>
 </template>

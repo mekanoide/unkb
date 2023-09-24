@@ -33,10 +33,9 @@ export default defineEventHandler(async (event) => {
   const link = await getLinks(body.content)
 
   const { data } = await client
-    .from('posts')
+    .from('replies')
     .update({
       content: body.content,
-      scope: body.scope,
       link: link,
       edited: true
     })

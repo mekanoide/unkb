@@ -27,7 +27,7 @@ watch(editionOK, async (newValue) => {
   <ul v-if="postsFromConnections && postsFromConnections.length > 0">
     <li v-for="post in postsFromConnections" :key="post.id">
       <Post
-        :post="post"
+        :data="post"
         @deleted="refresh" />
     </li>
   </ul>

@@ -1,8 +1,6 @@
 <script setup>
-import { useEditionStore } from '@/stores/edition'
 import { usePostStore } from '@/stores/post'
 import { onClickOutside } from '@vueuse/core'
-const editionStore = useEditionStore()
 const postStore = usePostStore()
 
 const props = defineProps({
@@ -28,10 +26,8 @@ const props = defineProps({
   }
 })
 
-const { submitPost, editPost } = postStore
-const { edit } = storeToRefs(editionStore)
 const focused = ref(false)
-const content = ref(edit.value?.content ?? null)
+const content = ref(null)
 const post = ref(null)
 
 const defaultScope = computed(() => {
@@ -49,9 +45,6 @@ const scope = ref(defaultScope)
 const emit = defineEmits(['post', 'cancel'])
 
 const handleSubmit = async () => {
-  if (props.edition) {
-    edit.value = null
-  }
   emit('post', content.value, scope.value)
   focused.value = false
   content.value = null
@@ -100,7 +93,7 @@ const computedRows = computed(() => {
         <Button
           v-else
           type="submit">
-          Enviar
+          Publicar
         </Button>
         <Button
           v-if="cancel"

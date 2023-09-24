@@ -1,13 +1,20 @@
 <script setup>
-
 import { useEditionStore } from '@/stores/edition'
+import { usePostStore } from '@/stores/post'
 const editionStore = useEditionStore()
+const postStore = usePostStore()
 
 const config = useRuntimeConfig()
 const tab = ref('saved')
 
+const { createPost } = postStore
 const { editionOK } = storeToRefs(editionStore)
 const { data: notes, refresh: refreshNotes } = await useFetch('/api/v1/notes')
+
+const handlePost = async (content, scope) => {
+  await createPost(content, scope)
+  refreshNotes()
+}
 
 watch(editionOK, async (newValue) => {
   if (newValue) {
@@ -22,6 +29,7 @@ watch(editionOK, async (newValue) => {
   <PostEditor
     placeholder="Escribe solo para ti..."
     postType="note"
+    @post="handlePost"
     @posted="refreshNotes" />
   <ul v-if="notes && notes.length > 0">
     <li

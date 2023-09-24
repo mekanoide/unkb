@@ -1,9 +1,13 @@
 <script setup>
+import { useMainStore } from '@/stores/main'
 import { usePostStore } from '@/stores/post'
 import { useEditionStore } from '@/stores/edition'
-const user = useSupabaseUser()
+
+const store = useMainStore()
 const editionStore = useEditionStore()
 const postStore = usePostStore()
+
+const user = useSupabaseUser()
 
 const props = defineProps({
   data: {
@@ -15,6 +19,7 @@ const emit = defineEmits(['deleted', 'edited', 'published'])
 
 const contentElement = ref(null)
 
+const { showPopover } = storeToRefs(store)
 const { deletePost } = postStore
 const { openEdition } = editionStore
 
@@ -36,21 +41,54 @@ const handlePublish = async () => {
   emit('published')
 }
 
+const toggleMenu = () => {
+  showPopover.value = showPopover.value === props.data.id ? null : props.data.id
+}
+
 const handleEdition = () => {
   openEdition(props.data.id, props.data.content, 'note', 'private')
 }
 
-const handleDelete = () => {
-  deletePost(props.data.id)
+const handleDelete = async () => {
+  await deletePost(props.data.id)
   emit('deleted')
 }
 </script>
 
 <template>
   <div class="Note">
-    <header>
-      <time :datetime="date">{{ date }}</time>
-    </header>
+    <Header>
+      <div class="post-meta">
+        <time :datetime="date">{{ date }}</time>
+      </div>
+      <Button
+        variant="ghost"
+        size="small"
+        @click="toggleMenu">
+        <Icon
+          name="ph:dots-three-bold"
+          size="1.5rem" />
+      </Button>
+      <Dropdown
+        class="menu"
+        v-if="showPopover === data.id"
+        @close="showPopover = null">
+        <Menu>
+          <MenuItem @click="handleEdition">
+            <Icon
+              name="ph:pencil-simple-line-bold"
+              size="1.25rem" />
+            Editar
+          </MenuItem>
+          <MenuItem @click="handleDelete">
+            <Icon
+              name="ph:trash-simple-bold"
+              size="1.25rem" />
+            Eliminar
+          </MenuItem>
+        </Menu>
+      </Dropdown>
+    </Header>
     <div
       class="content"
       role="link"
@@ -60,34 +98,16 @@ const handleDelete = () => {
     <LinkPreview
       v-if="data.link"
       :data="data.link" />
-    <footer>
-      <Button variant="ghost" @click="handlePublish">
+    <Footer>
+      <Button
+        variant="ghost"
+        @click="handlePublish">
         <Icon
           name="ph:paper-plane-right-bold"
           size="1.25rem" />
         Publicar
       </Button>
-      <div class="actions">
-        <Button
-          v-if="isOwner"
-          variant="ghost"
-          title="Editar nota"
-          @click="handleEdition">
-          <Icon
-            name="ph:pencil-simple-line-bold"
-            size="1.25rem" />
-        </Button>
-        <Button
-          v-if="isOwner"
-          variant="ghost"
-          title="Eliminar nota"
-          @click="handleDelete">
-          <Icon
-            name="ph:trash-simple-bold"
-            size="1.25rem" />
-        </Button>
-      </div>
-    </footer>
+    </Footer>
   </div>
 </template>
 
@@ -97,21 +117,13 @@ const handleDelete = () => {
   gap: var(--spaceS);
 }
 
+.menu {
+  right: 0;
+  top: 2rem;
+}
+
 .content {
   max-width: 100%;
   position: relative;
-}
-
-.actions {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: var(--spaceS);
-}
-
-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 }
 </style>

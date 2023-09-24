@@ -1,5 +1,3 @@
-import { defineStore } from 'pinia'
-
 export const useEditionStore = defineStore('edition', () => {
   const client = useSupabaseClient()
   const user = useSupabaseUser()
@@ -27,18 +25,32 @@ export const useEditionStore = defineStore('edition', () => {
     const id = edit.value.id
     const type = edit.value.type
     edit.value = null
-    console.log('Edit', id, content, scope, type)
-    const { data, error } = await useFetch('/api/v1/posts/edit', {
-      method: 'post',
-      body: {
-        id: id,
-        scope: scope,
-        content: content,
-        type: type
-      }
-    })
-    editionOK.value = true
-    return data
+
+    console.log('submit edition', id, content, scope, type)
+
+    if (type === 'post' || type === 'note') {
+      console.log('submit edition to API', id, content, scope)
+      const { data, error } = await useFetch('/api/v1/posts/edit', {
+        method: 'post',
+        body: {
+          id: id,
+          scope: scope,
+          content: content
+        }
+      })
+      editionOK.value = true
+      return data
+    } else if (type === 'reply') {
+      const { data, error } = await useFetch('/api/v1/replies/edit', {
+        method: 'post',
+        body: {
+          id: id,
+          content: content
+        }
+      })
+      editionOK.value = true
+      return data
+    }
   }
 
   return {

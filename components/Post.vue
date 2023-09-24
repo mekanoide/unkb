@@ -2,7 +2,7 @@
 import { useEditionStore } from '@/stores/edition'
 import { useMainStore } from '@/stores/main'
 import { usePostStore } from '@/stores/post'
-import Dropdown from './Dropdown.vue'
+
 const router = useRouter()
 const user = useSupabaseUser()
 const store = useMainStore()
@@ -10,7 +10,7 @@ const editionStore = useEditionStore()
 const postStore = usePostStore()
 
 const props = defineProps({
-  post: {
+  data: {
     type: Object,
     required: true
   },
@@ -18,7 +18,7 @@ const props = defineProps({
     type: Boolean
   }
 })
-const emit = defineEmits(['deleted', 'edited'])
+const emit = defineEmits(['deleted'])
 
 const contentElement = ref(null)
 const truncate = ref(false)
@@ -30,17 +30,17 @@ const { startPostEdition, deletePost, fetchPostAuthor, fetchReplyCount } =
   postStore
 
 const isOwner = computed(() => {
-  return props.post.author_id === user.value.id
+  return props.data.author_id === user.value.id
 })
 
-const date = computed(() => formatFormalDate(props.post.created_at))
+const date = computed(() => formatFormalDate(props.data.created_at))
 
 const linkPost = (id) => {
   router.push(`/post/${id}`)
 }
 
-const handleEdit = () => {
-  openEdition(props.post.id, props.post.content, 'post', props.post.scope)
+const handleEdition = () => {
+  openEdition(props.data.id, props.data.content, 'post', props.data.scope)
   showPopover.value = null
 }
 
@@ -50,7 +50,7 @@ const handleDelete = async () => {
   await useFetch('/api/v1/posts/delete', {
     method: 'delete',
     body: {
-      id: props.post.id
+      id: props.data.id
     }
   })
   emit('deleted')
@@ -61,10 +61,10 @@ const toggleExpanded = () => {
 }
 
 const toggleMenu = () => {
-  if (showPopover.value === props.post.id) {
+  if (showPopover.value === props.data.id) {
     showPopover.value = null
   } else {
-    showPopover.value = props.post.id
+    showPopover.value = props.data.id
   }
 }
 
@@ -83,7 +83,7 @@ const handleLinkPost = (id) => {
   }
 }
 
-const replyCount = await fetchReplyCount(props.post.id)
+const replyCount = await fetchReplyCount(props.data.id)
 
 /* Get content height in order to whether truncate it or not */
 
@@ -98,9 +98,9 @@ onMounted(() => {
   <div class="Post">
     <Header>
       <div class="post-meta">
-        <User :data="post.users" />
+        <User :data="data.users" />
         • <time :datetime="date">{{ date }}</time>
-        <span v-if="post.edited"> • editado</span>
+        <span v-if="data.edited"> • editado</span>
       </div>
       <Button
         variant="ghost"
@@ -110,11 +110,14 @@ onMounted(() => {
           name="ph:dots-three-bold"
           size="1.5rem" />
       </Button>
-      <Dropdown class="menu" v-if="showPopover === post.id" @close="showPopover = null">
+      <Dropdown
+        class="menu"
+        v-if="showPopover === data.id"
+        @close="showPopover = null">
         <Menu>
           <MenuItem
             v-if="isOwner"
-            @click="handleEdit">
+            @click="handleEdition">
             Editar
           </MenuItem>
           <MenuItem
@@ -135,16 +138,16 @@ onMounted(() => {
       :class="{ truncate: truncate && !expanded, single: single }"
       role="link"
       ref="contentElement"
-      @click.prevent="handleLinkPost(post.id)">
-      <PostContent :content="post.content" />
+      @click.prevent="handleLinkPost(data.id)">
+      <PostContent :content="data.content" />
     </div>
     <Truncate
       v-if="truncate"
       :expanded="expanded"
       @click="toggleExpanded" />
     <LinkPreview
-      v-if="post.link"
-      :data="post.link" />
+      v-if="data.link"
+      :data="data.link" />
     <Footer>
       <div
         v-if="!single"
@@ -152,21 +155,29 @@ onMounted(() => {
         <NuxtLink
           class="link-reply"
           title="Ver respuestas"
-          :to="`/post/${post.id}#write-reply`">
+          :to="`/post/${data.id}#write-reply`">
           <Icon
             name="ph:chat-bold"
-            size="1.25rem" />
+            size="1.5rem" />
           {{ replyCount }}
         </NuxtLink>
         <Button
           variant="ghost"
           title="Guardar publicación"
-          @click="handleSavePost(post.id)">
+          @click="handleSavePost(data.id)">
           <Icon
             name="ph:bookmark-simple-bold"
-            size="1.25rem" />
+            size="1.5rem" />
         </Button>
       </div>
+      <Button
+        v-if="data.scope === 'public'"
+        title="Compartir publicación"
+        variant="ghost">
+        <Icon
+          name="ph:share-network-bold"
+          size="1.5rem" />
+      </Button>
     </Footer>
   </div>
 </template>
@@ -190,7 +201,7 @@ onMounted(() => {
 
 .menu {
   right: 0;
-  top: 1rem;
+  top: 2rem;
 }
 
 .content {
@@ -204,18 +215,17 @@ onMounted(() => {
 
 .content:not(.single)::before {
   position: absolute;
-  inset: 0 -1.5rem;
+  inset: -1rem;
   content: '';
   transition: var(--transition);
-  border-left: 0px solid var(--colorAccent);
-  border-right: 0px solid var(--colorAccent);
+  border: 0px dotted var(--colorAccent);
 }
 .content:not(.single):hover::before {
   position: absolute;
-  inset: 0 -1.5rem;
+  inset: calc(var(--spaceXS) * -1) calc(var(--spaceS) * -1);
   content: '';
-  border-left: 6px solid var(--colorAccent);
-  border-right: 6px solid var(--colorAccent);
+  border: 2px dotted var(--colorAccent);
+  border-radius: var(--corner);
 }
 
 .content.truncate {
@@ -234,11 +244,6 @@ footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-.menu {
-  top: 3rem;
-  right: 0;
 }
 
 .link-reply {

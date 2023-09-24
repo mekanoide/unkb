@@ -35,7 +35,7 @@ const isOwner = computed(() => {
 
 const date = computed(() => formatFormalDate(props.data.created_at))
 
-const handleEdit = () => {
+const handleEdition = () => {
   openEdition(props.data.id, props.data.content, 'reply', null)
 }
 
@@ -91,17 +91,20 @@ onMounted(() => {
         <Menu>
           <MenuItem
             v-if="isOwner"
-            @click="handleEdit">
+            @click="handleEdition">
+            <Icon name="ph:pencil-simple-line-bold" size="1.25rem" />
             Editar
           </MenuItem>
           <MenuItem
             v-if="isOwner"
             @click="handleDelete">
+            <Icon name="ph:trash-simple-bold" size="1.25rem" />
             Eliminar
           </MenuItem>
           <MenuItem
             v-if="!isOwner"
             @click="handleReport">
+            <Icon name="ph:flag-pennant-bold" size="1.25rem" />
             Denunciar
           </MenuItem>
         </Menu>
@@ -150,7 +153,7 @@ onMounted(() => {
   border-left: 2px dotted var(--colorText);
 }
 .menu {
-  top: 0rem;
+  top: 2rem;
   right: 0;
 }
 
@@ -179,11 +182,6 @@ onMounted(() => {
   grid-auto-flow: column;
   align-items: center;
   gap: var(--spaceS);
-}
-
-.menu {
-  top: 3.5rem;
-  right: 0;
 }
 
 .actions {
