@@ -35,6 +35,9 @@ dependencies:
   markdown-it-sup:
     specifier: ^1.0.0
     version: 1.0.0
+  markdown-it-task-lists:
+    specifier: ^2.1.1
+    version: 2.1.1
 
 devDependencies:
   '@nuxt/devtools':
@@ -4378,6 +4381,10 @@ packages:
 
   /markdown-it-sup@1.0.0:
     resolution: {integrity: sha512-E32m0nV9iyhRR7CrhnzL5msqic7rL1juWre6TQNxsnApg7Uf+F97JOKxUijg5YwXz86lZ0mqfOnutoryyNdntQ==}
+    dev: false
+
+  /markdown-it-task-lists@2.1.1:
+    resolution: {integrity: sha512-TxFAc76Jnhb2OUu+n3yz9RMu4CwGfaT788br6HhEDlvWfdeJcLUsxk1Hgw2yJio0OXsxv7pyIPmvECY7bMbluA==}
     dev: false
 
   /markdown-it@13.0.1:

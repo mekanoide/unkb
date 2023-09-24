@@ -163,10 +163,10 @@ onMounted(() => {
         </NuxtLink>
         <Button
           variant="ghost"
-          title="Guardar publicación"
+          title="Guardar"
           @click="handleSavePost(data.id)">
           <Icon
-            name="ph:bookmark-simple-bold"
+            name="ph:star-bold"
             size="1.5rem" />
         </Button>
       </div>

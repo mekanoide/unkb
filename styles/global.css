@@ -26,6 +26,8 @@ html {
   border: 4px solid var(--colorBackground);
 }
 
+/* User selection */
+
 *::selection {
   background-color: var(--colorText);
   color: var(--colorBackground);
@@ -34,6 +36,8 @@ html {
 ::placeholder {
   color: var(--colorNeutral);
 }
+
+/* Global styles */
 
 h1,
 h2,
@@ -102,6 +106,26 @@ li + li:not(article *) {
   background-size: 0px 100%, 100% 2px, 0px 100% , 100% 0px;
   background-position: 0 0, 0 0, 100% 0, 0 100%;
   background-repeat: no-repeat;
+}
+
+input[type=checkbox] {
+  width: 1rem;
+  aspect-ratio: 1;
+  border: 2px solid var(--colorText);
+  position: relative;
+}
+
+input[type=checkbox]:checked {
+  background-color: var(--colorText);
+  color: var(--colorBackground);
+}
+
+input[type=checkbox]:checked::after {
+  content: '✔';
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
 }
 
 /* Post content format */
@@ -226,6 +250,22 @@ article a:hover {
 .hljs-string {
   color: var(--colorSyntaxString);
 }
+
+/* Task lists */
+
+.contains-task-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.task-list-item {
+  list-style: none;
+    position: relative;
+  width: 100%;
+  max-width: 100%;
+}
+
 
 /* Form elements */
 

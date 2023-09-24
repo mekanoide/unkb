@@ -76,6 +76,12 @@ const handleDelete = async () => {
         <Menu>
           <MenuItem @click="handleEdition">
             <Icon
+              name="ph:paper-plane-right-bold"
+              size="1.25rem" />
+            Publicar
+          </MenuItem>
+          <MenuItem @click="handleEdition">
+            <Icon
               name="ph:pencil-simple-line-bold"
               size="1.25rem" />
             Editar
@@ -98,16 +104,6 @@ const handleDelete = async () => {
     <LinkPreview
       v-if="data.link"
       :data="data.link" />
-    <Footer>
-      <Button
-        variant="ghost"
-        @click="handlePublish">
-        <Icon
-          name="ph:paper-plane-right-bold"
-          size="1.25rem" />
-        Publicar
-      </Button>
-    </Footer>
   </div>
 </template>
 

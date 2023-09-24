@@ -79,7 +79,7 @@ useHead({
       <Reply
         :data="reply"
         :key="reply.id"
-        @deleted="refreshReplies" />
+        @refresh="refreshReplies" />
     </li>
   </ul>
   <EmptyState

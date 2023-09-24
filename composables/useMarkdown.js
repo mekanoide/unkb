@@ -3,6 +3,7 @@ import markdownItSub from 'markdown-it-sub'
 import markdownItSuper from 'markdown-it-sup'
 import markdownItMark from 'markdown-it-mark'
 import markdownItEmoji from 'markdown-it-emoji'
+import markdownItTaskLists from 'markdown-it-task-lists'
 import mditHljs from 'markdown-it-highlightjs'
 
 const md = new MarkdownIt({
@@ -15,6 +16,7 @@ const md = new MarkdownIt({
 md.use(markdownItSub)
 md.use(markdownItSuper)
 md.use(markdownItMark)
+md.use(markdownItTaskLists)
 md.use(markdownItEmoji)
 md.use(mditHljs, {
   inline: true,

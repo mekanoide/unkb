@@ -18,7 +18,7 @@ const props = defineProps({
     type: Boolean
   }
 })
-const emit = defineEmits(['deleted', 'edited'])
+const emit = defineEmits(['refresh'])
 
 const contentElement = ref(null)
 const truncate = ref(false)
@@ -36,18 +36,20 @@ const isOwner = computed(() => {
 const date = computed(() => formatFormalDate(props.data.created_at))
 
 const handleEdition = () => {
+  showPopover.value = null
   openEdition(props.data.id, props.data.content, 'reply', null)
 }
 
 const handleReply = async (content, scope) => {
-  console.log('handleReply', content, scope)
   await createReply(props.data.post_id, content, props.data.id)
-  refreshReplies()
+  showReply.value = false
+  emit('refresh')
 }
 
 const handleDelete = async () => {
   await deleteReply(props.data.id)
-  emit('deleted')
+  showPopover.value = null
+  emit('refresh')
 }
 
 const toggleExpanded = () => {
@@ -92,19 +94,25 @@ onMounted(() => {
           <MenuItem
             v-if="isOwner"
             @click="handleEdition">
-            <Icon name="ph:pencil-simple-line-bold" size="1.25rem" />
+            <Icon
+              name="ph:pencil-simple-line-bold"
+              size="1.25rem" />
             Editar
           </MenuItem>
           <MenuItem
             v-if="isOwner"
             @click="handleDelete">
-            <Icon name="ph:trash-simple-bold" size="1.25rem" />
+            <Icon
+              name="ph:trash-simple-bold"
+              size="1.25rem" />
             Eliminar
           </MenuItem>
           <MenuItem
             v-if="!isOwner"
             @click="handleReport">
-            <Icon name="ph:flag-pennant-bold" size="1.25rem" />
+            <Icon
+              name="ph:flag-pennant-bold"
+              size="1.25rem" />
             Denunciar
           </MenuItem>
         </Menu>
@@ -134,11 +142,13 @@ onMounted(() => {
       cancel
       @post="handleReply"
       @cancel="showReply = false" />
-    <Reply
-      child
-      v-for="reply in data.children"
-      :data="reply"
-      :key="reply.id" />
+    <ul v-if="data.children && data.children.length > 0">
+      <Reply
+        child
+        v-for="reply in data.children"
+        :data="reply"
+        :key="reply.id" />
+    </ul>
   </li>
 </template>
 

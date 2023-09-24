@@ -67,6 +67,19 @@ const computedRows = computed(() => {
     return props.minRows || 2
   }
 })
+
+const insertSpaces = (e) => {
+  const { selectionStart, selectionEnd } = e.target
+  const spaces = '  '
+  const spacesLength = spaces.length
+  const spacesStart = selectionStart + spacesLength
+  const spacesEnd = selectionEnd + spacesLength
+  content.value =
+    content.value.substring(0, selectionStart) +
+    spaces +
+    content.value.substring(selectionEnd)
+  e.target.setSelectionRange(spacesStart, spacesEnd)
+}
 </script>
 
 <template>
@@ -82,6 +95,7 @@ const computedRows = computed(() => {
         $attrs.placeholder || 'Escribe tu movida (puedes usar Markdown!!!)'
       "
       :class="{ focus: focused }"
+      @keydown.tab.prevent="insertSpaces"
       @click="focused = true">
     </textarea>
     <Footer>
