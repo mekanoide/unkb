@@ -56,6 +56,10 @@ watch(editionOK, async (newValue) => {
 useHead({
   meta: [
     {
+      property: 'og:description',
+      content: post.value?.content
+    },
+    {
       name: 'description',
       content: post.value?.content
     }
