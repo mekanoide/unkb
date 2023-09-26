@@ -30,6 +30,7 @@ const isOwner = computed(() => {
 const date = computed(() => formatFormalDate(props.data.created_at))
 
 const handlePublish = async () => {
+  showPopover.value = null
   const shouldPublish = confirm('¿Seguro que quieres publicar esta nota?')
   if (!shouldPublish) return
   await useFetch('api/v1/notes/publish', {
@@ -47,6 +48,7 @@ const toggleMenu = () => {
 
 const handleEdition = () => {
   openEdition(props.data.id, props.data.content, 'note', 'private')
+  showPopover.value = null
 }
 
 const handleDelete = async () => {
@@ -74,7 +76,7 @@ const handleDelete = async () => {
         v-if="showPopover === data.id"
         @close="showPopover = null">
         <Menu>
-          <MenuItem @click="handleEdition">
+          <MenuItem @click="handlePublish">
             <Icon
               name="ph:paper-plane-right-bold"
               size="1.25rem" />

@@ -58,13 +58,13 @@ watchEffect(async () => {
         >{{ pending ? '...' : 'Entrar' }}</Button
       >
     </form>
+    <p>
+      ¿Has olvidado tu contraseña? <a href="">Reestablece contraseña</a>.
+    </p>
   </div>
 </template>
 
 <style scoped>
-a {
-  text-decoration: underline;
-}
 .Login {
   display: grid;
   grid-auto-flow: row;

@@ -61,6 +61,16 @@ h3 {
 a {
   transition: var(--transition);
 }
+
+p a {
+  text-decoration-color: currentColor;
+  text-decoration: underline;
+}
+
+p a:hover {
+  text-decoration-color: var(--colorAccent);
+}
+
 code {
   font-family: var(--fontMono);
   overflow: auto;
@@ -101,26 +111,57 @@ li:not(article *):last-child {
 }
 
 li + li:not(article *) {
-/*   border-top: 2px dotted var(--colorText); */
-  background-image: repeating-linear-gradient(0deg, #333333, #333333 2px, transparent 2px, transparent 8px, #333333 8px), repeating-linear-gradient(90deg, #333333, #333333 2px, transparent 2px, transparent 8px, #333333 8px), repeating-linear-gradient(180deg, #333333, #333333 2px, transparent 2px, transparent 8px, #333333 8px), repeating-linear-gradient(270deg, #333333, #333333 2px, transparent 2px, transparent 8px, #333333 8px);
-  background-size: 0px 100%, 100% 2px, 0px 100% , 100% 0px;
+  /*   border-top: 2px dotted var(--colorText); */
+  background-image: repeating-linear-gradient(
+      0deg,
+      #333333,
+      #333333 2px,
+      transparent 2px,
+      transparent 8px,
+      #333333 8px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      #333333,
+      #333333 2px,
+      transparent 2px,
+      transparent 8px,
+      #333333 8px
+    ),
+    repeating-linear-gradient(
+      180deg,
+      #333333,
+      #333333 2px,
+      transparent 2px,
+      transparent 8px,
+      #333333 8px
+    ),
+    repeating-linear-gradient(
+      270deg,
+      #333333,
+      #333333 2px,
+      transparent 2px,
+      transparent 8px,
+      #333333 8px
+    );
+  background-size: 0px 100%, 100% 2px, 0px 100%, 100% 0px;
   background-position: 0 0, 0 0, 100% 0, 0 100%;
   background-repeat: no-repeat;
 }
 
-input[type=checkbox] {
+input[type='checkbox'] {
   width: 1rem;
   aspect-ratio: 1;
   border: 2px solid var(--colorText);
   position: relative;
 }
 
-input[type=checkbox]:checked {
+input[type='checkbox']:checked {
   background-color: var(--colorText);
   color: var(--colorBackground);
 }
 
-input[type=checkbox]:checked::after {
+input[type='checkbox']:checked::after {
   content: '✔';
   position: absolute;
   inset: 0;
@@ -152,7 +193,6 @@ article hr::after {
   content: '***';
   text-align: center;
   padding: var(--spaceM) 0;
-
 }
 
 article mark {
@@ -261,11 +301,10 @@ article a:hover {
 
 .task-list-item {
   list-style: none;
-    position: relative;
+  position: relative;
   width: 100%;
   max-width: 100%;
 }
-
 
 /* Form elements */
 

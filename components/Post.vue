@@ -35,6 +35,19 @@ const isOwner = computed(() => {
 
 const date = computed(() => formatFormalDate(props.data.created_at))
 
+const transformedScope = computed(() => {
+  switch (props.data.scope) {
+    case 'public':
+      return 'público'
+    case 'connections':
+      return 'conexiones'
+    case 'trust':
+      return 'confianza'
+    case 'fire':
+      return 'círculo de fuego'
+  }
+})
+
 const linkPost = (id) => {
   router.push(`/post/${id}`)
 }
@@ -178,6 +191,7 @@ onMounted(() => {
           name="ph:share-network-bold"
           size="1.5rem" />
       </Button>
+      <span v-else>{{ transformedScope }}</span>
     </Footer>
   </div>
 </template>
