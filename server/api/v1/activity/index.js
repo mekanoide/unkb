@@ -6,7 +6,7 @@ export default defineEventHandler(async (event) => {
 
   const { data } = await client
     .from('activity')
-    .select()
+    .select('*, users!target_id(handle), posts!post_id(content)')
     .eq('user_id', user.id)
     .order('created_at', { ascending: false })
   return data

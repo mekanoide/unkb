@@ -22,11 +22,11 @@ export const formatDate = (t) => {
     currentDay === postDay
   ) {
     // Publicado hoy
-    return `${hours}:${minutes}`
+    return `a las ${hours}:${minutes}`
   } else if (daysDifference === 1) {
-    return `Ayer a las ${hours}:${minutes}`
+    return `ayer a las ${hours}:${minutes}`
   } else if (currentYear === postYear) {
-    return `Hace ${daysDifference} días`
+    return `hace ${daysDifference} días`
   } else {
     return postDate.toLocaleDateString() // Publicado en años anteriores, devuelve la fecha completa
   }
