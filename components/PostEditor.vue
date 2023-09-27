@@ -40,7 +40,7 @@ const defaultScope = computed(() => {
   return 'connections'
 })
 
-const scope = ref(defaultScope)
+const scope = ref(props.postType === 'note' ? 'private' : 'connections')
 
 const emit = defineEmits(['post', 'cancel'])
 
@@ -102,6 +102,7 @@ const insertSpaces = (e) => {
       <Actions>
         <ButtonPublish
           v-if="postType === 'post'"
+          type="submit"
           :disabled="!content || pending"
           v-model="scope" />
         <Button

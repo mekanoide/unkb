@@ -1,6 +1,4 @@
 <script setup>
-const config = useRuntimeConfig()
-
 const { data: bookmarkList, refresh: refreshBookmarks } = await useFetch(
   '/api/v1/bookmarks/'
 )
@@ -12,9 +10,9 @@ const { data: bookmarkList, refresh: refreshBookmarks } = await useFetch(
       <li
         v-for="post in bookmarkList"
         :key="post.id">
-        <Post
+        <Bookmark
           :data="post"
-          @deleted="refreshBookmarks" />
+          @removed="refreshBookmarks" />
       </li>
     </ul>
     <EmptyState

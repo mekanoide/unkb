@@ -58,6 +58,7 @@ const handleEdition = () => {
 }
 
 const handleDelete = async () => {
+  showPopover.value = null
   const shouldDelete = confirm('¿Estás seguro de eliminar esta publicación?')
   if (!shouldDelete) return
   await useFetch('/api/v1/posts/delete', {
@@ -236,10 +237,10 @@ onMounted(() => {
 }
 .content:not(.single):hover::before {
   position: absolute;
-  inset: calc(var(--spaceXS) * -1) calc(var(--spaceS) * -1);
+  inset: 0 calc(var(--spaceS) * -1);
   content: '';
-  border: 2px dotted var(--colorAccent);
-  border-radius: var(--corner);
+  border-left: 6px solid var(--colorAccent);
+  border-right: 6px solid var(--colorAccent);
 }
 
 .content.truncate {

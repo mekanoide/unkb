@@ -1,6 +1,4 @@
 <script setup>
-import MarkdownIt from 'markdown-it'
-import mditHljs from 'markdown-it-highlightjs'
 import { usePostStore } from '@/stores/post'
 const postStore = usePostStore()
 

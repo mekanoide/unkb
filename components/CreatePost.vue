@@ -18,6 +18,7 @@ const handlePost = async (content, scope) => {
 <template>
   <PostEditor
     :pending="pending"
+    postType="post"
     @post="handlePost"
     :minRows="2" />
 </template>

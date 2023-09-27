@@ -153,6 +153,7 @@ button:hover {
 
 .button-scope {
   padding: 0 var(--spaceS);
+  border-radius: 0 var(--cornerButton) var(--cornerButton) 0;
   border-left: 2px dashed currentColor;
 }
 

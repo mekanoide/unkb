@@ -5,12 +5,27 @@ const props = defineProps({
     required: true
   }
 })
+
+const handleRemove = () => {
+  emit('removed')
+}
+
+const emit = defineEmits(['removed'])
 </script>
 
 <template>
   <div class="Bookmark">
-    <User :data="data.author.users" />
-    <PostContent :content="data.content.content" />
+    <User :data="data.users" />
+    <PostContent :content="data.content" />
+    <footer>
+      <div class="Bookmark__actions">
+        <Button
+          variant="ghost"
+          @click="handleRemove">
+          <Icon name="ph:star-bold" />
+        </Button>
+      </div>
+    </footer>
   </div>
 </template>
 
