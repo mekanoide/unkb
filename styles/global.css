@@ -321,6 +321,7 @@ textarea {
   padding: var(--spaceS);
   border-radius: var(--corner);
   transition: var(--transition);
+  form-sizing: normal;
 }
 
 input:is(

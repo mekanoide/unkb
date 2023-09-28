@@ -1,8 +1,4 @@
 <script setup>
-definePageMeta({
-  middleware: ['auth']
-})
-
 import { usePostStore } from '@/stores/post'
 import { useEditionStore } from '@/stores/edition'
 
