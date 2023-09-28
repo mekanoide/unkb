@@ -62,7 +62,7 @@ onClickOutside(post, (e) => {
 
 const computedRows = computed(() => {
   if (focused.value) {
-    return props.maxRows || 8
+    return props.maxRows || 12
   } else {
     return props.minRows || 2
   }

@@ -119,6 +119,7 @@ onMounted(() => {
       <Button
         variant="ghost"
         size="small"
+        title="Más opciones"
         @click="toggleMenu">
         <Icon
           name="ph:dots-three-bold"

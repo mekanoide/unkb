@@ -21,6 +21,7 @@ const emit = defineEmits(['removed'])
       <div class="Bookmark__actions">
         <Button
           variant="ghost"
+          title="Eliminar de favoritos"
           @click="handleRemove">
           <Icon name="ph:star-bold" />
         </Button>

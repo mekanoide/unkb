@@ -81,6 +81,7 @@ onMounted(() => {
       <Button
         variant="ghost"
         size="small"
+        title="Más opciones"
         @click="showPopover = data.id">
         <Icon
           name="ph:dots-three-bold"

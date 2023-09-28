@@ -3,6 +3,9 @@ export default defineNuxtConfig({
   /* ssr: false, */
   app: {
     head: {
+      htmlAttrs: {
+        lang: 'es'
+      },
       title: 'UNKB',
       meta: [
         { name: 'robots', content: 'none' },
@@ -11,8 +14,7 @@ export default defineNuxtConfig({
         { property: 'og:type', content: 'website' },
         { property: 'og:locale', content: 'es_ES' },
         { property: 'og:image', content: '/og.png' },
-        { property: 'og:description', content: 'Esto no es una red social.' },
-        { 'http-equiv': 'Content-Security-Policy', content: "img-src 'self' data:image/svg+xml"}
+        { property: 'og:description', content: 'Esto no es una red social.' }
       ],
       link: [{ rel: 'icon', type: 'image/svg', href: '/favicon.svg' }]
     }
