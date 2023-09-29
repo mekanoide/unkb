@@ -53,6 +53,7 @@ watch(content, (newValue) => {
 article {
   max-width: calc(100vw - (var(--spaceM) * 2));
   font-size: var(--fontL);
+  line-height: 1.25;
   display: grid;
   gap: 1em;
   overflow-wrap: anywhere;

@@ -69,12 +69,13 @@ useHead({
     :key="post.id"
     single />
   <PostEditor
+    v-if="user"
     id="write-reply"
     :rows="2"
     postType="reply"
     @post="handleReply"
     placeholder="Escribe una respuesta" />
-  <ul v-if="replies && replies.length > 0">
+  <ul v-if="user && replies && replies.length > 0">
     <li v-for="reply in repliesTree">
       <Reply
         :data="reply"
