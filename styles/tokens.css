@@ -32,7 +32,7 @@
   --fontXL: clamp(2rem, calc(1.5rem + 2vw), 6rem);
 
   --fontHeadline: 'Work Sans', Arial, Helvetica, sans-serif;
-  --fontBody: 'Fira Code', monospace;
+  --fontBody: 'Fragment Mono', monospace;
   --fontMono: 'Fira Code', monospace;
 
   --gradientFaded: repeating-linear-gradient(-45deg, transparent, transparent 2px, var(--colorText) 2px, var(--colorText) 4px);

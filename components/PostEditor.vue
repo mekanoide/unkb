@@ -108,7 +108,7 @@ const insertSpaces = (e) => {
         <Button
           v-else
           type="submit">
-          Publicar
+          Guardar
         </Button>
         <Button
           v-if="cancel"

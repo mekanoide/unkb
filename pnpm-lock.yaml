@@ -29,6 +29,9 @@ dependencies:
   markdown-it-mark:
     specifier: ^3.0.1
     version: 3.0.1
+  markdown-it-mermaid:
+    specifier: ^0.2.5
+    version: 0.2.5
   markdown-it-sub:
     specifier: ^1.0.0
     version: 1.0.0
@@ -2788,12 +2791,32 @@ packages:
     resolution: {integrity: sha512-d4ZVpCW31eWwCMe1YT3ur7mUDnTXbgwyzaL320DrcRT45rfjYxkt5QWLrmOJ+/UEAI2+fQgKe/fCjR8l4TpRgw==}
     dev: true
 
+  /d3@3.5.17:
+    resolution: {integrity: sha512-yFk/2idb8OHPKkbAL8QaOaqENNoMhIaSHZerk3oQsECwkObkCpJyjYwCe+OHiq6UEdhe1m8ZGARRRO3ljFjlKg==}
+    dev: false
+
   /d@1.0.1:
     resolution: {integrity: sha512-m62ShEObQ39CfralilEQRjH6oAMtNCV1xJyEx5LpRYUVN+EviphDgUc/F3hnYbADmkiNs67Y+3ylmlG7Lnu+FA==}
     dependencies:
       es5-ext: 0.10.62
       type: 1.2.0
     dev: true
+
+  /dagre-d3-renderer@0.4.26:
+    resolution: {integrity: sha512-vOWj1uA4/APTrfDyfHaH/xpfXhPh9rszW+HOaEwPCeA6Afl06Lobfh7OpESuVMQW2QGuY4UQ7pte/p0WhdDs7w==}
+    dependencies:
+      d3: 3.5.17
+      dagre-layout: 0.8.8
+      graphlib: 2.1.8
+      lodash: 4.17.21
+    dev: false
+
+  /dagre-layout@0.8.8:
+    resolution: {integrity: sha512-ZNV15T9za7X+fV8Z07IZquUKugCxm5owoiPPxfEx6OJRD331nkiIaF3vSt0JEY5FkrY0KfRQxcpQ3SpXB7pLPQ==}
+    dependencies:
+      graphlibrary: 2.2.0
+      lodash: 4.17.21
+    dev: false
 
   /data-uri-to-buffer@4.0.1:
     resolution: {integrity: sha512-0R9ikRb668HB7QDxT1vkpuUBtqc53YyAwMwGeUFKRojY/NWKvdZ+9UYtRfGmhqNbRkTSVpMbmyhXipFFv2cb/A==}
@@ -3631,6 +3654,18 @@ packages:
   /graceful-fs@4.2.11:
     resolution: {integrity: sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ==}
 
+  /graphlib@2.1.8:
+    resolution: {integrity: sha512-jcLLfkpoVGmH7/InMC/1hIvOPSUh38oJtGhvrOFGzioE1DZ+0YW16RgmOJhHiuWTvGiJQ9Z1Ik43JvkRPRvE+A==}
+    dependencies:
+      lodash: 4.17.21
+    dev: false
+
+  /graphlibrary@2.2.0:
+    resolution: {integrity: sha512-XTcvT55L8u4MBZrM37zXoUxsgxs/7sow7YSygd9CIwfWTVO8RVu7AYXhhCiTuFEf+APKgx6Jk4SuQbYR0vYKmQ==}
+    dependencies:
+      lodash: 4.17.21
+    dev: false
+
   /gzip-size@7.0.0:
     resolution: {integrity: sha512-O1Ld7Dr+nqPnmGpdhzLmMTQ4vAsD+rHwMm1NLUmoUFFymBOMKxCCrtDxqdBRYXdeEPEi3SyoR4TizJLQrnKBNA==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
@@ -3695,6 +3730,11 @@ packages:
 
   /hash-sum@2.0.0:
     resolution: {integrity: sha512-WdZTbAByD+pHfl/g9QSsBIIwy8IT+EsPiKDs0KNX+zSHhdDLFKdZu0BQHljvO+0QI/BasbMSUa8wYNCZTvhslg==}
+
+  /he@1.2.0:
+    resolution: {integrity: sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==}
+    hasBin: true
+    dev: false
 
   /highlight.js@11.8.0:
     resolution: {integrity: sha512-MedQhoqVdr0U6SSnWPzfiadUcDHfN/Wzq25AkXiQv9oiOO/sG0S7XkvpFIqWBl9Yq1UYyYOOVORs5UW2XlPyzg==}
@@ -4254,7 +4294,6 @@ packages:
 
   /lodash@4.17.21:
     resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
-    dev: true
 
   /lru-cache@10.0.1:
     resolution: {integrity: sha512-IJ4uwUTi2qCccrioU6g9g/5rvvVl13bsdczUUcqbciD9iLr095yj8DQKdObriEvuNSx325N1rV1O0sJFszx75g==}
@@ -4375,6 +4414,12 @@ packages:
     resolution: {integrity: sha512-HyxjAu6BRsdt6Xcv6TKVQnkz/E70TdGXEFHRYBGLncRE9lBFwDNLVtFojKxjJWgJ+5XxUwLaHXy+2sGBbDn+4A==}
     dev: false
 
+  /markdown-it-mermaid@0.2.5:
+    resolution: {integrity: sha512-ZUTFRX+cXEtWmn/9LMlpVklPJiDrHPWyHE/wamC2wm0Ojh1qOcuKWfWW3BqP83+7w6C59rS7M3OrGTs/u9mQTA==}
+    dependencies:
+      mermaid: 7.1.2
+    dev: false
+
   /markdown-it-sub@1.0.0:
     resolution: {integrity: sha512-z2Rm/LzEE1wzwTSDrI+FlPEveAAbgdAdPhdWarq/ZGJrGW/uCQbKAnhoCsE4hAbc3SEym26+W2z/VQB0cQiA9Q==}
     dev: false
@@ -4428,6 +4473,17 @@ packages:
   /merge2@1.4.1:
     resolution: {integrity: sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==}
     engines: {node: '>= 8'}
+
+  /mermaid@7.1.2:
+    resolution: {integrity: sha512-bDLu3fQuf3/R0fNkNzB0GTaF7+6SxnZpfTs9DVQF1ougsuP23MBzvEIGfL0ML8zeyg7+J2D+0AaoLVhskW5ulw==}
+    dependencies:
+      d3: 3.5.17
+      dagre-d3-renderer: 0.4.26
+      dagre-layout: 0.8.8
+      he: 1.2.0
+      lodash: 4.17.21
+      moment: 2.29.4
+    dev: false
 
   /micromatch@4.0.5:
     resolution: {integrity: sha512-DMy+ERcEW2q8Z2Po+WNXuw3c5YaUSFjAO5GsJqfEl7UjvtIuFKO6ZrKvcItdy98dwFI2N1tg3zNIdKaQT+aNdA==}
@@ -4585,6 +4641,10 @@ packages:
       pathe: 1.1.1
       pkg-types: 1.0.3
       ufo: 1.3.0
+
+  /moment@2.29.4:
+    resolution: {integrity: sha512-5LC9SOxjSc2HF6vO2CyuTDNivEdoz2IvyJJGj6X8DJ0eFyfszE0QiEd+iXmBvUP3WHxSjFH/vIsA0EN00cgr8w==}
+    dev: false
 
   /mri@1.2.0:
     resolution: {integrity: sha512-tzzskb3bG8LvYGFF/mDTpq3jpI6Q9wc3LEmBaghu+DdCssd1FakN7Bc0hVNmEyGq1bq3RgfkCb3cmQLpNPOroA==}

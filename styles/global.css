@@ -163,11 +163,6 @@ input[type='checkbox']:checked::after {
 
 /* Post content format */
 
-article {
-  display: grid;
-  gap: var(--spaceL);
-}
-
 article strong {
   font-weight: bold;
 }

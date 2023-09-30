@@ -55,7 +55,7 @@ article {
   font-size: var(--fontL);
   line-height: 1.25;
   display: grid;
-  gap: 1em;
+  gap: var(--spaceM);
   overflow-wrap: anywhere;
 }
 </style>

@@ -60,9 +60,9 @@ watch(editionOK, async (newValue) => {
     <ul v-if="bookmarks && bookmarks.length > 0">
       <li
         v-for="post in bookmarks"
-        :key="post.id">
+        :key="post.posts.id">
         <Post
-          :data="post"
+          :data="post.posts"
           @deleted="refresh" />
       </li>
     </ul>
