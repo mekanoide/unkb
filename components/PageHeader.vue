@@ -1,5 +1,4 @@
 <script setup>
-
 import { useMainStore } from '@/stores/main'
 const store = useMainStore()
 
@@ -38,10 +37,6 @@ const { data: me, error } = await useAsyncData(() => fetchOwnUser())
         icon="ph:note-blank-bold"
         to="/notes" />
       <NavigationItem
-        label="Favos"
-        icon="ph:star-bold"
-        to="/bookmarks" />
-        <NavigationItem
         label="Actividad"
         icon="ph:heartbeat-bold"
         to="/activity" />

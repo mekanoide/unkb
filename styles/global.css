@@ -96,18 +96,10 @@ ul:not(article *) {
 }
 
 li:not(article *) {
-  padding: var(--spaceM) 0;
+  padding: var(--spaceL) 0;
   position: relative;
   width: 100%;
   max-width: 100%;
-}
-
-li:not(article *):first-child {
-  padding-top: 0;
-}
-
-li:not(article *):last-child {
-  padding-bottom: 0;
 }
 
 li + li:not(article *) {
