@@ -2,6 +2,7 @@
 import { usePostStore } from '@/stores/post'
 import { useEditionStore } from '@/stores/edition'
 
+const user = useSupabaseUser()
 const postStore = usePostStore()
 const editionStore = useEditionStore()
 const route = useRoute()
@@ -75,7 +76,7 @@ useHead({
     postType="reply"
     @post="handleReply"
     placeholder="Escribe una respuesta" />
-  <ul v-if="user && replies && replies.length > 0">
+  <ul v-if="replies && replies.length > 0">
     <li v-for="reply in repliesTree">
       <Reply
         :data="reply"

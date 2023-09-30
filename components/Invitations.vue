@@ -107,7 +107,6 @@ const copyLink = (id, txt) => {
             </Transition>
           </div>
           <Button
-            variant="secondary"
             @click="handleCancelInvitation(invitation.target_email)">
             Cancelar
           </Button>
@@ -177,12 +176,14 @@ footer {
 }
 
 .invitation-link {
-  /* width: max-content; */
   border: 2px solid currentColor;
   padding: var(--spaceS);
   border-radius: var(--corner);
   cursor: pointer;
   position: relative;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .copied {

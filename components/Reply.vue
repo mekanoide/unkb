@@ -4,7 +4,6 @@ import { usePostStore } from '@/stores/post'
 import { useEditionStore } from '@/stores/edition'
 
 const user = useSupabaseUser()
-
 const store = useMainStore()
 const postStore = usePostStore()
 const editionStore = useEditionStore()
@@ -79,6 +78,7 @@ onMounted(() => {
         <span v-if="data.edited"> • editado</span>
       </div>
       <Button
+        v-if="user"
         variant="ghost"
         size="small"
         title="Más opciones"
@@ -131,6 +131,7 @@ onMounted(() => {
       @click="toggleExpanded" />
     <Footer>
       <Button
+        v-if="user"
         variant="text"
         size="small"
         @click="toggleReply">
