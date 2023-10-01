@@ -18,7 +18,7 @@ const props = defineProps({
     type: Boolean
   }
 })
-const emit = defineEmits(['deleted'])
+const emit = defineEmits(['changed', 'deleted'])
 
 const contentElement = ref(null)
 const truncate = ref(false)
@@ -89,6 +89,7 @@ const handleSavePost = async (id) => {
       id: id
     }
   })
+  emit('changed')
 }
 
 const handleLinkPost = (id) => {
@@ -178,10 +179,10 @@ onMounted(() => {
         </NuxtLink>
         <Button
           variant="ghost"
-          title="Guardar"
+          :title="data.fav ? 'Quitar de favoritos' : 'Guardar en favoritos'"
           @click="handleSavePost(data.id)">
           <Icon
-            name="ph:star-bold"
+            :name="data.fav ? 'ph:push-pin-simple-slash-bold' : 'ph:push-pin-simple-bold'"
             size="1.5rem" />
         </Button>
       </div>

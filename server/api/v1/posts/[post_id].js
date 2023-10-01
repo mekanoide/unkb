@@ -8,7 +8,7 @@ export default defineEventHandler(async (event) => {
 
   const { data } = await client
     .from('posts')
-    .select('*, users(*)')
+    .select('*, users!author_id(*)')
     .eq('id', post_id)
     .single()
   return data

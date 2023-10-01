@@ -15,7 +15,7 @@ const { data: postsFromConnections, refresh } = await useFetch(
 )
 
 const { data: bookmarks, refresh: refreshBookmarks } = await useFetch(
-  '/api/v1/bookmarks/'
+  '/api/v1/bookmarks'
 )
 
 watch(editionOK, async (newValue) => {

@@ -6,14 +6,16 @@ export default defineEventHandler(async (event) => {
 
   const { data } = await client
     .from('bookmarks')
-    .select('*, posts(*, users(*))')
+    .select('*, posts!post_id(*, users!author_id(*))')
     .eq('owner_id', user.id)
-  
-    /* const { data } = await client
-    .from('posts')
-    .select('*, users(*)')
-    .in('id', bookmarkList.map((item) => item.post_id))
-    .order('created_at', { ascending: false }) */
-  
-  return data
+    .order('created_at', { foreignTable: 'posts', ascending: false })
+
+  const postsWithFav = data.map((post) => ({
+    ...post,
+    posts: {
+      ...post.posts,
+      fav: true
+    }
+  }))
+  return postsWithFav
 })
