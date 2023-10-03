@@ -31,7 +31,7 @@ export default defineEventHandler(async (event) => {
   }
 
   const link = await getLinks(body.content)
-
+  console.log('body', body)
   const { data } = await client
     .from('posts')
     .update({
@@ -43,6 +43,7 @@ export default defineEventHandler(async (event) => {
     .eq('id', body.id)
 
   const mentions = await getMentionsFromPost(body.content)
+  
   if (mentions) {
     for (const mention of mentions) {
       const { data: mentionData } = await client.from('mentions').upsert({

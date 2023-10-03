@@ -5,7 +5,7 @@ const editionStore = useEditionStore()
 const postStore = usePostStore()
 
 const config = useRuntimeConfig()
-const tab = ref('saved')
+const tab = ref('all')
 
 const { createPost } = postStore
 const { editionOK } = storeToRefs(editionStore)
@@ -31,19 +31,37 @@ watch(editionOK, async (newValue) => {
     postType="note"
     @post="handlePost"
     @posted="refreshNotes" />
-  <ul v-if="notes && notes.length > 0">
-    <li
-      v-for="note in notes"
-      :key="note.id">
-      <Note
-        :data="note"
-        @deleted="refreshNotes"
-        @published="refreshNotes" />
-    </li>
-  </ul>
-  <EmptyState
-    v-else
-    message="No has anotado nada aún" />
+  <TabMenu>
+    <Tab
+      value="all"
+      :selected="tab === 'all'"
+      @click="tab = 'all'">
+      Todos
+    </Tab>
+    <Tab
+      value="favs"
+      :selected="tab === 'favs'"
+      @click="tab = 'favs'">
+      Favoritos
+    </Tab>
+  </TabMenu>
+  <section v-if="tab === 'all'">
+    <ul v-if="notes && notes.length > 0">
+      <li
+        v-for="note in notes"
+        :key="note.id">
+        <Note
+          :data="note"
+          @deleted="refreshNotes" />
+      </li>
+    </ul>
+    <EmptyState
+      v-else
+      message="No has anotado nada aún" />
+  </section>
+  <section v-else-if="tab === 'favs'">
+    <h1>No hay nada</h1>
+  </section>
 </template>
 
 <style scoped></style>

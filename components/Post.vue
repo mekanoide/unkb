@@ -114,8 +114,10 @@ onMounted(() => {
     <Header>
       <div class="post-meta">
         <User :data="data.users" />
-        • <time :datetime="date">{{ date }}</time>
-        <span v-if="data.edited"> • editado</span>
+        <div>
+          <time :datetime="date">{{ date }}</time>
+          <span v-if="data.edited" class="edited"> • editado</span>
+        </div>
       </div>
       <Button
         variant="ghost"
@@ -194,7 +196,7 @@ onMounted(() => {
           name="ph:share-network-bold"
           size="1.5rem" />
       </Button>
-      <span v-else>{{ transformedScope }}</span>
+      <span v-else class="scope">{{ transformedScope }}</span>
     </Footer>
   </div>
 </template>
@@ -210,10 +212,8 @@ onMounted(() => {
 }
 
 .post-meta {
-  display: flex;
-  gap: var(--spaceS);
-  justify-content: flex-start;
-  align-items: center;
+display: grid;
+gap: var(--spaceXS);
 }
 
 .menu {
@@ -261,6 +261,12 @@ footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.scope,
+.edited {
+  font-size: var(--fontS);
+  text-transform: uppercase;
 }
 
 .link-reply {

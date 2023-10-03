@@ -167,6 +167,7 @@ article strong {
   font-weight: bold;
 }
 article em {
+  /* font-family: 'Lora', serif; */
   font-style: italic;
 }
 

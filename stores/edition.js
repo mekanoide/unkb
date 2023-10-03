@@ -26,12 +26,10 @@ export const useEditionStore = defineStore('edition', () => {
     const type = edit.value.type
     edit.value = null
 
-    console.log('submit edition', id, content, scope, type)
-
     if (type === 'post' || type === 'note') {
       console.log('submit edition to API', id, content, scope)
       const { data, error } = await useFetch('/api/v1/posts/edit', {
-        method: 'post',
+        method: 'POST',
         body: {
           id: id,
           scope: scope,
@@ -42,7 +40,7 @@ export const useEditionStore = defineStore('edition', () => {
       return data
     } else if (type === 'reply') {
       const { data, error } = await useFetch('/api/v1/replies/edit', {
-        method: 'post',
+        method: 'POST',
         body: {
           id: id,
           content: content

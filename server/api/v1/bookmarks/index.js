@@ -6,7 +6,15 @@ export default defineEventHandler(async (event) => {
 
   const { data } = await client
     .from('bookmarks')
-    .select('*, posts!post_id(*, users!author_id(*))')
+    .select(
+      `
+      *,
+      posts:post_id(
+        *,
+        users:author_id(*)
+        )
+      `
+    )
     .eq('owner_id', user.id)
     .order('created_at', { foreignTable: 'posts', ascending: false })
 
