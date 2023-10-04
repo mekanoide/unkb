@@ -114,9 +114,10 @@ onMounted(() => {
     <Header>
       <div class="post-meta">
         <User :data="data.users" />
-        <div>
+        <div class="metadata">
           <time :datetime="date">{{ date }}</time>
-          <span v-if="data.edited" class="edited"> • editado</span>
+          <span> • {{ transformedScope }}</span>
+          <span v-if="data.edited"> • editado</span>
         </div>
       </div>
       <Button
@@ -136,16 +137,19 @@ onMounted(() => {
           <MenuItem
             v-if="isOwner"
             @click="handleEdition">
+            <Icon name="ph:pencil-simple-line-bold" size="1.25rem" />
             Editar
           </MenuItem>
           <MenuItem
             v-if="isOwner"
             @click="handleDelete">
+            <Icon name="ph:trash-simple-bold" size="1.25rem" />
             Eliminar
           </MenuItem>
           <MenuItem
             v-if="!isOwner"
             @click="handleReport">
+            <Icon name="ph:warning-bold" size="1.25rem" />
             Denunciar
           </MenuItem>
         </Menu>
@@ -196,7 +200,6 @@ onMounted(() => {
           name="ph:share-network-bold"
           size="1.5rem" />
       </Button>
-      <span v-else class="scope">{{ transformedScope }}</span>
     </Footer>
   </div>
 </template>
@@ -263,8 +266,7 @@ footer {
   align-items: center;
 }
 
-.scope,
-.edited {
+.metadata {
   font-size: var(--fontS);
   text-transform: uppercase;
 }

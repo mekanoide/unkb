@@ -74,8 +74,10 @@ onMounted(() => {
     <Header>
       <div class="post-meta">
         <User :data="data.users" />
-        • <time :datetime="date">{{ date }}</time>
-        <span v-if="data.edited"> • editado</span>
+        <div class="metadata">
+          <time :datetime="date">{{ date }}</time>
+          <span v-if="data.edited"> • editado</span>
+        </div>
       </div>
       <Button
         v-if="user"
@@ -112,7 +114,7 @@ onMounted(() => {
             v-if="!isOwner"
             @click="handleReport">
             <Icon
-              name="ph:flag-pennant-bold"
+              name="ph:warning-bold"
               size="1.25rem" />
             Denunciar
           </MenuItem>
@@ -174,10 +176,13 @@ onMounted(() => {
 }
 
 .post-meta {
-  display: flex;
-  gap: var(--spaceS);
-  justify-content: flex-start;
-  align-items: center;
+  display: grid;
+  gap: var(--spaceXS);
+}
+
+.metadata {
+  font-size: var(--fontS);
+  text-transform: uppercase;
 }
 
 .content {

@@ -13,7 +13,6 @@ const scope = ref(edit.value?.scope)
 const pending = ref(false)
 
 const handlePost = async () => {
-  console.log('handlePost', content.value, scope.value)
   await submitEdition(content.value, scope.value)
 }
 </script>
@@ -36,7 +35,7 @@ const handlePost = async () => {
             <Button
               v-else
               type="submit"
-              :disabled="pending">
+              :disabled="!content || pending">
               Publicar
             </Button>
             <Button

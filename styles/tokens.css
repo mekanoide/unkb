@@ -26,8 +26,8 @@
 
   --maxWidthBody: 1440px;
 
-  --fontBase: clamp(14px, calc(14px + 0.5vmin), 20px);
-  --fontS: 0.75rem;
+  --fontBase: min(calc(12px + 0.5vmin), 20px);
+  --fontS: 0.875rem;
   --fontL: 1.25rem;
   --fontXL: clamp(2rem, calc(1.5rem + 2vw), 6rem);
 
@@ -37,6 +37,39 @@
 
   --gradientFaded: repeating-linear-gradient(-45deg, transparent, transparent 2px, var(--colorText) 2px, var(--colorText) 4px);
   --gradientWork: repeating-linear-gradient(-45deg, transparent, transparent 8px, var(--colorText) 8px, var(--colorText) 16px);
+
+  --patternBorder: repeating-linear-gradient(
+    0deg,
+    var(--colorText),
+    var(--colorText) 2px,
+    transparent 2px,
+    transparent 8px,
+    var(--colorText) 8px
+  ),
+  repeating-linear-gradient(
+    90deg,
+    var(--colorText),
+    var(--colorText) 2px,
+    transparent 2px,
+    transparent 8px,
+    var(--colorText) 8px
+  ),
+  repeating-linear-gradient(
+    180deg,
+    var(--colorText),
+    var(--colorText) 2px,
+    transparent 2px,
+    transparent 8px,
+    var(--colorText) 8px
+  ),
+  repeating-linear-gradient(
+    270deg,
+    var(--colorText),
+    var(--colorText) 2px,
+    transparent 2px,
+    transparent 8px,
+    var(--colorText) 8px
+  );
 
   --corner: 0.75rem;
   --cornerButton: 0.75rem;

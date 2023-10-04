@@ -30,8 +30,7 @@ export default defineNuxtConfig({
     '@nuxtjs/color-mode',
     '@nuxtjs/robots',
     '@pinia/nuxt',
-    'nuxt-icon',
-    'nuxt-security'
+    'nuxt-icon'
   ],
   imports: {
     dirs: ['stores']

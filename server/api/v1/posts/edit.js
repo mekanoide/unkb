@@ -6,6 +6,8 @@ export default defineEventHandler(async (event) => {
   const client = await serverSupabaseClient(event)
   const body = await readBody(event)
 
+  const content = String(body.content)
+
   const getMentionsFromPost = async (txt) => {
     const mentionRegex = /@([a-z0-9_]+)/g
     const matches = txt.match(mentionRegex)
@@ -30,20 +32,21 @@ export default defineEventHandler(async (event) => {
     }
   }
 
-  const link = await getLinks(body.content)
-  console.log('body', body)
+  const link = await getLinks(content)
+
   const { data } = await client
     .from('posts')
     .update({
-      content: body.content,
+      content: content,
       scope: body.scope,
       link: link,
       edited: true
     })
     .eq('id', body.id)
+    .select()
 
-  const mentions = await getMentionsFromPost(body.content)
-  
+  const mentions = await getMentionsFromPost(content)
+
   if (mentions) {
     for (const mention of mentions) {
       const { data: mentionData } = await client.from('mentions').upsert({

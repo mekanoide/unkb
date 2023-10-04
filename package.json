@@ -10,14 +10,13 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
-    "@nuxt/devtools": "^0.8.2",
+    "@nuxt/devtools": "1.0.0-beta.0",
     "@nuxtjs/color-mode": "^3.3.0",
-    "@nuxtjs/supabase": "^1.0.2",
-    "@types/node": "^20.5.9",
-    "markdown-it": "^13.0.1",
-    "nuxt": "^3.7.0",
-    "nuxt-icon": "^0.5.0",
-    "nuxt-security": "^0.14.4"
+    "@nuxtjs/supabase": "^1.1.2",
+    "@types/node": "^20.8.2",
+    "markdown-it": "^13.0.2",
+    "nuxt": "^3.7.4",
+    "nuxt-icon": "^0.5.0"
   },
   "dependencies": {
     "@nuxtjs/robots": "^3.0.0",
@@ -28,7 +27,6 @@
     "markdown-it-emoji": "^2.0.2",
     "markdown-it-highlightjs": "^4.0.1",
     "markdown-it-mark": "^3.0.1",
-    "markdown-it-mermaid": "^0.2.5",
     "markdown-it-sub": "^1.0.0",
     "markdown-it-sup": "^1.0.0",
     "markdown-it-task-lists": "^2.1.1"
