@@ -4,6 +4,9 @@
   --colorShadeDark: hsl(6 70% 28%);
   --colorDark: hsl(6 0% 2%);
   --colorAccent: hsl(66 70% 56%);
+
+  --colorContent: var(--colorDark);
+  --colorMeta: hsl(126 70% 56%);
   
   --colorBackground: var(--colorLight);
   --colorText: var(--colorDark);
