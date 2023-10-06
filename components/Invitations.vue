@@ -5,8 +5,6 @@ const config = useRuntimeConfig()
 
 const invitationsStore = useInvitationsStore()
 
-const { cancelInvitation } = invitationsStore
-
 const showingNewInvitation = ref(false)
 const email = ref('')
 const copied = ref(null)
@@ -34,27 +32,23 @@ const pendingInvitations = computed(() => {
 })
 
 const usedInvitations = computed(() => {
-  return invitations.value.filter((item) => item.used === true)
+  return invitations.value.filter((item) => item.used === true).length
 })
 
-const openNewInvitation = async () => {
-  showingNewInvitation.value = true
-}
-
-const handleCreateInvitation = async () => {
-  /* await createInvitation(email.value) */
+const createNewInvitation = async () => {
   const { data, error } = await useFetch('/api/v1/invitations/create', {
-    method: 'post',
-    body: {
-      email: email.value
-    }
+    method: 'post'
   })
-  showingNewInvitation.value = false
   refreshInvitations()
 }
 
-const handleCancelInvitation = async (email) => {
-  await cancelInvitation(email)
+const cancelInvitation = async (id) => {
+  const { error } = await useFetch('/api/v1/invitations/cancel', {
+    method: 'delete',
+    body: {
+      id: id
+    }
+  })
   refreshInvitations()
 }
 
@@ -70,19 +64,18 @@ const copyLink = (id, txt) => {
 <template>
   <section>
     <p v-if="hasInvitationsLeft">
-      Te quedan {{ numInvitationsLeft }} invitaciones.
+      Has usado {{ usedInvitations }} invitaciones. Te quedan {{ numInvitationsLeft }} invitaciones.
     </p>
     <p v-else>No tienes invitaciones.</p>
     <div>
       <Button
         v-if="hasInvitationsLeft"
-        @click="openNewInvitation">
+        @click="createNewInvitation">
         Nueva invitación
       </Button>
     </div>
   </section>
-
-  <section v-if="pendingInvitations">
+  <section v-if="pendingInvitations && pendingInvitations.length > 0">
     <h3>Invitaciones pendientes</h3>
     <ul>
       <li
@@ -95,9 +88,9 @@ const copyLink = (id, txt) => {
           <div
             class="invitation-link"
             @click="
-              copyLink(invitation.id, `${config.public.baseUrl}/register/${invitation.token}`)
+              copyLink(invitation.id, invitation.token)
             ">
-            {{ `${config.public.baseUrl}/register/${invitation.token}` }}
+            {{ invitation.token }}
             <Transition name="fade">
               <div
                 v-if="copied === invitation.id"
@@ -107,20 +100,10 @@ const copyLink = (id, txt) => {
             </Transition>
           </div>
           <Button
-            @click="handleCancelInvitation(invitation.target_email)">
+            @click="cancelInvitation(invitation.id)">
             Cancelar
           </Button>
         </div>
-      </li>
-    </ul>
-  </section>
-  <section v-if="usedInvitations">
-    <h3>Invitaciones usadas</h3>
-    <ul>
-      <li
-        class="invitation"
-        v-for="invitation in usedInvitations">
-        {{ invitation.target_email }}
       </li>
     </ul>
   </section>
