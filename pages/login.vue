@@ -39,7 +39,7 @@ watchEffect(async () => {
 <template>
   <div class="Login">
     <h1>Entrar</h1>
-    <p>Si no tienes una cuenta, tendrás que pedir que alguien te invite.</p>
+    <p>Si tienes un codigo de invitacion, <NuxtLink to="/invitation">entra aqui</NuxtLink>.</p>
     <form @submit.prevent="handleLogin">
       <TextField
         label="Correo electrónico"
@@ -53,7 +53,6 @@ watchEffect(async () => {
         v-model="password" />
       <Button
         type="submit"
-       
         :disabled="pending"
         >{{ pending ? '...' : 'Entrar' }}</Button
       >

@@ -70,7 +70,6 @@ watch(
 </script>
 
 <template>
-  {{ invitation }}
   <div v-if="user">
     <h1>Ya estás dentro, aquí no hay nada que ver</h1>
     <NuxtLink to="/">Ve a la página de Inicio</NuxtLink>
