@@ -43,7 +43,7 @@ watch(editionOK, async (newValue) => {
       value="favs"
       :selected="tab === 'pinned'"
       @click="tab = 'pinned'">
-      Favoritos
+      Fijados
     </Tab>
   </TabMenu>
   <section v-if="tab === 'all'">

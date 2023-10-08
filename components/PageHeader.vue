@@ -33,12 +33,12 @@ const { data: me, error } = await useAsyncData(() => fetchOwnUser())
         icon="ph:globe-hemisphere-east-bold"
         to="/" />
       <NavigationItem
-        label="Notas"
-        icon="ph:note-blank-bold"
+        label="Ideas"
+        icon="ph:brain-bold"
         to="/notes" />
       <NavigationItem
         label="Actividad"
-        icon="ph:heartbeat-bold"
+        icon="ph:activity-bold"
         to="/activity" />
       <NavigationItem
         v-if="me"
