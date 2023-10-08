@@ -6,8 +6,6 @@ const editionStore = useEditionStore()
 const { submitEdition, cancelEdition } = editionStore
 const { edit } = storeToRefs(editionStore)
 
-const type = edit.value?.type ?? 'post'
-
 const content = ref(edit.value?.content ?? null)
 const scope = ref(edit.value?.scope)
 const pending = ref(false)

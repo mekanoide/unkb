@@ -15,17 +15,13 @@ const props = defineProps({
     required: true
   }
 })
-const emit = defineEmits(['deleted', 'edited', 'published'])
+const emit = defineEmits(['deleted', 'changed'])
 
 const contentElement = ref(null)
 
 const { showPopover } = storeToRefs(store)
 const { deletePost } = postStore
 const { openEdition } = editionStore
-
-const isOwner = computed(() => {
-  return props.data.author_id === user.value.id
-})
 
 const date = computed(() => formatFormalDate(props.data.created_at))
 
@@ -34,12 +30,12 @@ const handlePublish = async () => {
   const shouldPublish = confirm('¿Seguro que quieres publicar esta nota?')
   if (!shouldPublish) return
   await useFetch('api/v1/notes/publish', {
-    method: 'POST',
+    method: 'post',
     body: {
       id: props.data.id
     }
   })
-  emit('published')
+  emit('changed')
 }
 
 const toggleMenu = () => {
@@ -51,9 +47,20 @@ const handleEdition = () => {
   showPopover.value = null
 }
 
+const handleSavePost = async (id, pinned) => {
+  await useFetch('/api/v1/notes/pin', {
+    method: 'post',
+    body: {
+      id: id,
+      pinned: pinned
+    }
+  })
+  emit('changed')
+}
+
 const handleDelete = async () => {
   await deletePost(props.data.id)
-  emit('deleted')
+  emit('changed')
 }
 </script>
 
@@ -106,6 +113,18 @@ const handleDelete = async () => {
     <LinkPreview
       v-if="data.link"
       :data="data.link" />
+    <Footer>
+      <div class="actions">
+        <Button
+          variant="ghost"
+          :title="data.pinned ? 'Quitar de favoritos' : 'Guardar en favoritos'"
+          @click="handleSavePost(data.id, data.pinned)">
+          <Icon
+            :name="data.pinned ? 'ph:push-pin-simple-slash-bold' : 'ph:push-pin-simple-bold'"
+            size="1.5rem" />
+        </Button>
+      </div>
+    </Footer>
   </div>
 </template>
 

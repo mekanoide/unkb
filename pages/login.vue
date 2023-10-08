@@ -20,13 +20,6 @@ const handleLogin = async () => {
     console.log('Error!!!', error)
   }
   pending.value = false
-  /*   const { error } = await useFetch('/api/v1/auth/login', {
-    method: 'post',
-    body: {
-      email: email.value,
-      password: password.value
-    }
-  }) */
 }
 
 watchEffect(async () => {

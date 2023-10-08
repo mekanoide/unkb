@@ -26,12 +26,22 @@ export const useEditionStore = defineStore('edition', () => {
     const type = edit.value.type
     edit.value = null
 
-    if (type === 'post' || type === 'note') {
+    if (type === 'post') {
       const { data, error } = await useFetch('/api/v1/posts/edit', {
         method: 'put',
         body: {
           id: id,
           scope: scope,
+          content: content
+        }
+      })
+      editionOK.value = true
+      return data
+    } else if (type === 'note') {
+      const { data, error } = await useFetch('/api/v1/notes/edit', {
+        method: 'put',
+        body: {
+          id: id,
           content: content
         }
       })

@@ -14,8 +14,8 @@ const { data: postsFromConnections, refresh } = await useFetch(
   '/api/v1/posts/from/followed'
 )
 
-const { data: bookmarks, refresh: refreshBookmarks } = await useFetch(
-  '/api/v1/bookmarks'
+const { data: favs, refresh: refreshFavs } = await useFetch(
+  '/api/v1/favs/posts'
 )
 
 watch(editionOK, async (newValue) => {
@@ -57,13 +57,13 @@ watch(editionOK, async (newValue) => {
       message="Aún no hay nada publicado" />
   </section>
   <section v-else-if="tab === 'favs'">
-    <ul v-if="bookmarks && bookmarks.length > 0">
+    <ul v-if="favs && favs.length > 0">
       <li
-        v-for="post in bookmarks"
-        :key="post.posts.id">
+        v-for="fav in favs"
+        :key="fav.posts.id">
         <Post
-          :data="post.posts"
-          @deleted="refresh" />
+          :data="fav.posts"
+          @deleted="refreshFavs" />
       </li>
     </ul>
     <EmptyState

@@ -4,10 +4,10 @@ export default defineEventHandler(async (event) => {
   const user = await serverSupabaseUser(event)
   const client = await serverSupabaseClient(event)
 
-  const { data: bookmarks } = await client.from('bookmarks').select('post_id')
+  const { data: favs } = await client.from('favs').select('post_id').eq('owner_id', user.id)
 
-  const favList = bookmarks.map((item) => item.post_id)
-  console.log('bookmarks', favList)
+  const favList = favs.map((item) => item.post_id)
+  console.log('favs', favList)
 
   const { data: follows } = await client
     .from('connections')

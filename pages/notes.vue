@@ -10,6 +10,7 @@ const tab = ref('all')
 const { createPost } = postStore
 const { editionOK } = storeToRefs(editionStore)
 const { data: notes, refresh: refreshNotes } = await useFetch('/api/v1/notes')
+const { data: pinned, refresh: refreshPinned } = await useFetch('/api/v1/notes/pinned')
 
 const handlePost = async (content, scope) => {
   await createPost(content, scope)
@@ -40,8 +41,8 @@ watch(editionOK, async (newValue) => {
     </Tab>
     <Tab
       value="favs"
-      :selected="tab === 'favs'"
-      @click="tab = 'favs'">
+      :selected="tab === 'pinned'"
+      @click="tab = 'pinned'">
       Favoritos
     </Tab>
   </TabMenu>
@@ -52,15 +53,26 @@ watch(editionOK, async (newValue) => {
         :key="note.id">
         <Note
           :data="note"
-          @deleted="refreshNotes" />
+          @changed="refreshNotes" />
       </li>
     </ul>
     <EmptyState
       v-else
       message="No has anotado nada aún" />
   </section>
-  <section v-else-if="tab === 'favs'">
-    <h1>No hay nada</h1>
+  <section v-else-if="tab === 'pinned'">
+    <ul v-if="pinned && pinned.length > 0">
+      <li
+        v-for="note in pinned"
+        :key="note.id">
+        <Note
+          :data="note"
+          @changed="refreshPinned" />
+      </li>
+    </ul>
+    <EmptyState
+      v-else
+      message="No hay nada" />
   </section>
 </template>
 

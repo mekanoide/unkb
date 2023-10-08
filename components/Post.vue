@@ -82,13 +82,22 @@ const toggleMenu = () => {
   }
 }
 
-const handleSavePost = async (id) => {
-  await useFetch('/api/v1/bookmarks/posts/create', {
-    method: 'put',
-    body: {
-      id: id
-    }
-  })
+const handleSavePost = async (id, fav) => {
+  if(fav) {
+    await useFetch('/api/v1/favs/remove', {
+      method: 'delete',
+      body: {
+        id: id
+      }
+    })
+  } else {
+    await useFetch('/api/v1/favs/create', {
+      method: 'post',
+      body: {
+        id: id
+      }
+    })
+  }
   emit('changed')
 }
 
@@ -186,7 +195,7 @@ onMounted(() => {
         <Button
           variant="ghost"
           :title="data.fav ? 'Quitar de favoritos' : 'Guardar en favoritos'"
-          @click="handleSavePost(data.id)">
+          @click="handleSavePost(data.id, data.fav)">
           <Icon
             :name="data.fav ? 'ph:push-pin-simple-slash-bold' : 'ph:push-pin-simple-bold'"
             size="1.5rem" />
