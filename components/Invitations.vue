@@ -81,9 +81,6 @@ const copyLink = (id, txt) => {
       <li
         class="pending"
         v-for="invitation in pendingInvitations">
-        <div>
-          <span>{{ invitation.target_email }}</span>
-        </div>
         <div class="actions">
           <div
             class="invitation-link"
