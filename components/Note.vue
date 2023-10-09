@@ -59,7 +59,15 @@ const handleSavePost = async (id, pinned) => {
 }
 
 const handleDelete = async () => {
-  await deletePost(props.data.id)
+  showPopover.value = null
+  const shouldDelete = confirm('¿Estás seguro de eliminar esta publicación?')
+  if (!shouldDelete) return
+  await useFetch('/api/v1/notes/delete', {
+    method: 'delete',
+    body: {
+      id: props.data.id
+    }
+  })
   emit('changed')
 }
 </script>
