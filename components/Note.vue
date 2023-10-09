@@ -139,7 +139,7 @@ const handleDelete = async () => {
 <style scoped>
 .Note {
   display: grid;
-  gap: var(--spaceS);
+  gap: var(--spaceM);
 }
 
 .menu {

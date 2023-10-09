@@ -201,7 +201,7 @@ onMounted(() => {
             size="1.5rem" />
         </Button>
       </div>
-      <Button
+<!--       <Button
         v-if="data.scope === 'public'"
         title="Compartir publicación"
         variant="ghost">
@@ -209,7 +209,7 @@ onMounted(() => {
           name="ph:share-network-bold"
           size="1.5rem" />
       </Button>
-    </Footer>
+ -->    </Footer>
   </div>
 </template>
 
