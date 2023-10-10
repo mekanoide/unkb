@@ -6,16 +6,17 @@ const user = useSupabaseUser()
 const postStore = usePostStore()
 const editionStore = useEditionStore()
 const route = useRoute()
+const id = route.params.id
 
 const { editionOK } = storeToRefs(editionStore)
 const { createReply } = postStore
 
 const { data: post, refresh: refreshPost } = await useFetch(
-  `/api/v1/posts/${route.params.id}`
+  `/api/v1/posts/${id}`
 )
 
 const { data: replies, refresh: refreshReplies } = await useFetch(
-  `/api/v1/replies/${route.params.id}`
+  `/api/v1/replies/${id}`
 )
 
 const buildTree = (responses, parent_id = null) => {
@@ -38,7 +39,7 @@ const repliesTree = computed(() => {
 })
 
 const handleReply = async (content, scope, parent) => {
-  await createReply(route.params.id, content)
+  await createReply(id, content)
   refreshReplies()
 }
 

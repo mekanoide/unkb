@@ -30,6 +30,7 @@ const { startPostEdition, deletePost, fetchPostAuthor, fetchReplyCount } =
   postStore
 
 const isOwner = computed(() => {
+  if(user.value === null) return false
   return props.data.author_id === user.value.id
 })
 
@@ -240,21 +241,6 @@ gap: var(--spaceXS);
 
 .content:not(.single) {
   cursor: pointer;
-}
-
-.content:not(.single)::before {
-  position: absolute;
-  inset: -1rem;
-  content: '';
-  transition: var(--transition);
-  border: 0px dotted var(--colorAccent);
-}
-.content:not(.single):hover::before {
-  position: absolute;
-  inset: 0 calc(var(--spaceS) * -1);
-  content: '';
-  border-left: 6px solid var(--colorAccent);
-  border-right: 6px solid var(--colorAccent);
 }
 
 .content.truncate {

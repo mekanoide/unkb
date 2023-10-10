@@ -1,9 +1,13 @@
 <script setup>
 import { useEditionStore } from '@/stores/edition'
 import { useTooltipStore } from '@/stores/tooltip'
+import { useUserStore } from '@/stores/user'
 
 const tooltipStore = useTooltipStore()
 const editionStore = useEditionStore()
+const userStore = useUserStore()
+
+const { initialize } = userStore
 const { edit } = storeToRefs(editionStore)
 const { tooltip } = storeToRefs(tooltipStore)
 
@@ -19,6 +23,10 @@ nuxtApp.hook('page:start', () => {
 nuxtApp.hook('page:finish', () => {
   clearTimeout(loadTimeout.value)
   loading.value = false
+})
+
+onMounted(() => {
+  initialize()
 })
 </script>
 

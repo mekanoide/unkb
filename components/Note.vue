@@ -97,6 +97,12 @@ const handleDelete = async () => {
               size="1.25rem" />
             Publicar
           </MenuItem>
+          <MenuItem @click="handleSavePost(data.id, data.pinned)">
+            <Icon
+            :name="data.pinned ? 'ph:push-pin-simple-slash-bold' : 'ph:push-pin-simple-bold'"
+            size="1.25rem" />
+            {{ data.pinned ? 'Desfijar nota' : 'Fijar nota' }}
+          </MenuItem>
           <MenuItem @click="handleEdition">
             <Icon
               name="ph:pencil-simple-line-bold"
@@ -121,18 +127,6 @@ const handleDelete = async () => {
     <LinkPreview
       v-if="data.link"
       :data="data.link" />
-    <Footer>
-      <div class="actions">
-        <Button
-          variant="ghost"
-          :title="data.pinned ? 'Quitar de favoritos' : 'Guardar en favoritos'"
-          @click="handleSavePost(data.id, data.pinned)">
-          <Icon
-            :name="data.pinned ? 'ph:push-pin-simple-slash-bold' : 'ph:push-pin-simple-bold'"
-            size="1.5rem" />
-        </Button>
-      </div>
-    </Footer>
   </div>
 </template>
 

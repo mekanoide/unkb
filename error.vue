@@ -6,7 +6,7 @@ const error = useError()
   <div class="PAGE">
     <div class="Error">
       <h1>ERROR {{ error.statusCode }}</h1>
-      <p>{{ error.statusMessage }}</p>
+      <p>{{ error.message }}</p>
       <NuxtLink to="/">Vuelve a la página principal</NuxtLink>
     </div>
   </div>

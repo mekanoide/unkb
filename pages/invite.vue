@@ -1,12 +1,25 @@
 <script setup>
+import { useFetch } from '@vueuse/core';
+
 definePageMeta({
   layout: 'clear'
 })
 
+const user = useSupabaseUser()
+
 const token = ref('')
-const tokenError = ref(true)
 
 const validateToken = async () => {
+  const { data } = await useFetch('/api/v1/invitations/validate', {
+    method: 'post',
+    body: {
+      token: token.value
+    }
+  })
+  console.log('Válido?', data.value)
+  if (data) {
+    navigateTo('/register')
+  }
 }
 </script>
 
@@ -25,11 +38,10 @@ const validateToken = async () => {
     <form @submit.prevent="validateToken">
       <TextField
         label="Código de invitacion"
-        :error="tokenError"
         :maxlength="32"
         placeholder="Introduce el codigo"
         v-model="token" />
-      <Button type="submit" :disabled="tokenError">Validar</Button>
+      <Button type="submit">Validar</Button>
     </form>
     <p>Ya tienes cuenta? <NuxtLink to="/login">Accede aquí</NuxtLink>.</p>
   </div>

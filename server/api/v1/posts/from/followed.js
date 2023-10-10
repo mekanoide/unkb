@@ -4,7 +4,10 @@ export default defineEventHandler(async (event) => {
   const user = await serverSupabaseUser(event)
   const client = await serverSupabaseClient(event)
 
-  const { data: favs } = await client.from('favs').select('post_id').eq('owner_id', user.id)
+  const { data: favs } = await client
+    .from('favs')
+    .select('post_id')
+    .eq('owner_id', user.id)
 
   const favList = favs.map((item) => item.post_id)
   console.log('favs', favList)
@@ -25,8 +28,11 @@ export default defineEventHandler(async (event) => {
     .from('posts')
     .select(
       `
-      *,
-      users!author_id(*)
+        *,
+        users: author_id(
+          *,
+          roles: role_id(*)
+        )
       `
     )
     .in('author_id', followedUserIds)
