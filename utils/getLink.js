@@ -6,8 +6,13 @@ export const getLinks = async (txt) => {
   const matches = stringToCheck.match(linkRegex)
   if (matches) {
     const url = matches[1]
+    let html = ''
 
-    const html = await $fetch(url)
+    try {
+      html = await $fetch(url)
+    } catch (error) {
+      return
+    }
 
     const $ = cheerio.load(html)
 

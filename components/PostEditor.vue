@@ -45,7 +45,12 @@ const scope = ref(props.postType === 'note' ? 'private' : 'connections')
 const emit = defineEmits(['post', 'cancel'])
 
 const handleSubmit = async () => {
-  emit('post', content.value, scope.value)
+  if (!content.value) return
+  if(props.postType === 'reply') {
+    emit('post', content.value)
+  } else {
+    emit('post', content.value, scope.value)
+  }
   focused.value = false
   content.value = null
 }

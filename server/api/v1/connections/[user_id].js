@@ -7,7 +7,15 @@ export default defineEventHandler(async (event) => {
   const { user_id } = event.context.params
   const { data, error } = await client
     .from('connections')
-    .select('*, connection:users!friend_id(*)')
+    .select(
+      `
+        *,
+        users: friend_id(
+          *,
+          roles: role_id(name)
+        )
+      `
+    )
     .eq('user_id', user_id)
 
   if (error) {

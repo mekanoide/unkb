@@ -1,12 +1,9 @@
 <script setup>
-import { useFetch } from '@vueuse/core';
-
 definePageMeta({
   layout: 'clear'
 })
 
 const user = useSupabaseUser()
-
 const token = ref('')
 
 const validateToken = async () => {
@@ -16,9 +13,9 @@ const validateToken = async () => {
       token: token.value
     }
   })
-  console.log('Válido?', data.value)
+  console.log('Válido?', data)
   if (data) {
-    navigateTo('/register')
+    return navigateTo('/register')
   }
 }
 </script>
@@ -39,7 +36,7 @@ const validateToken = async () => {
       <TextField
         label="Código de invitacion"
         :maxlength="32"
-        placeholder="Introduce el codigo"
+        placeholder="Introduce el código"
         v-model="token" />
       <Button type="submit">Validar</Button>
     </form>

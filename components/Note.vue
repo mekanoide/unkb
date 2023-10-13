@@ -1,13 +1,11 @@
 <script setup>
 import { useMainStore } from '@/stores/main'
-import { usePostStore } from '@/stores/post'
+import { useNoteStore } from '@/stores/note'
 import { useEditionStore } from '@/stores/edition'
 
 const store = useMainStore()
 const editionStore = useEditionStore()
-const postStore = usePostStore()
-
-const user = useSupabaseUser()
+const noteStore = useNoteStore()
 
 const props = defineProps({
   data: {
@@ -20,7 +18,7 @@ const emit = defineEmits(['deleted', 'changed'])
 const contentElement = ref(null)
 
 const { showPopover } = storeToRefs(store)
-const { deletePost } = postStore
+const { deleteNote } = noteStore
 const { openEdition } = editionStore
 
 const date = computed(() => formatFormalDate(props.data.created_at))
@@ -60,14 +58,7 @@ const handleSavePost = async (id, pinned) => {
 
 const handleDelete = async () => {
   showPopover.value = null
-  const shouldDelete = confirm('¿Estás seguro de eliminar esta publicación?')
-  if (!shouldDelete) return
-  await useFetch('/api/v1/notes/delete', {
-    method: 'delete',
-    body: {
-      id: props.data.id
-    }
-  })
+  await deleteNote(props.data.id)
   emit('changed')
 }
 </script>

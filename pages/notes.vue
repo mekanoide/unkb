@@ -1,19 +1,19 @@
 <script setup>
 import { useEditionStore } from '@/stores/edition'
-import { usePostStore } from '@/stores/post'
+import { useNoteStore } from '@/stores/note'
 const editionStore = useEditionStore()
-const postStore = usePostStore()
+const noteStore = useNoteStore()
 
 const config = useRuntimeConfig()
 const tab = ref('all')
 
-const { createPost } = postStore
+const { createNote } = noteStore
 const { editionOK } = storeToRefs(editionStore)
 const { data: notes, refresh: refreshNotes } = await useFetch('/api/v1/notes')
 const { data: pinned, refresh: refreshPinned } = await useFetch('/api/v1/notes/pinned')
 
 const handlePost = async (content, scope) => {
-  await createPost(content, scope)
+  await createNote(content)
   refreshNotes()
 }
 

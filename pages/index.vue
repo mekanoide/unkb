@@ -15,7 +15,7 @@ const { data: postsFromConnections, refresh } = await useFetch(
 )
 
 const { data: favs, refresh: refreshFavs } = await useFetch(
-  '/api/v1/favs/posts'
+  '/api/v1/posts/favs'
 )
 
 watch(editionOK, async (newValue) => {
@@ -49,6 +49,7 @@ watch(editionOK, async (newValue) => {
         :key="post.id">
         <Post
           :data="post"
+          @changed="refresh"
           @deleted="refresh" />
       </li>
     </ul>
@@ -63,6 +64,7 @@ watch(editionOK, async (newValue) => {
         :key="fav.posts.id">
         <Post
           :data="fav.posts"
+          @changed="refreshFavs"
           @deleted="refreshFavs" />
       </li>
     </ul>

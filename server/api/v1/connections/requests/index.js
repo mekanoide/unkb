@@ -5,7 +5,7 @@ export default defineEventHandler(async (event) => {
   const client = await serverSupabaseClient(event)
   const { data } = await client
     .from('connection_requests')
-    .select('user_id, requester:users!user_id(*)')
+    .select(`user_id, requester:users!user_id(*, roles:role_id(*))`)
     .eq('target_id', user.id)
   return data
 })

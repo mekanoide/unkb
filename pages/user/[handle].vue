@@ -3,12 +3,10 @@ definePageMeta({
   middleware: ['auth']
 })
 
-import { usePostStore } from '@/stores/post'
 import { useConnectionsStore } from '@/stores/connections'
 
 /* composables */
 
-const postStore = usePostStore()
 const connectionsStore = useConnectionsStore()
 const route = useRoute()
 const user = useSupabaseUser()
@@ -17,14 +15,13 @@ const user = useSupabaseUser()
 
 const tab = ref('content')
 
-const { postBeingEditedId } = postStore
 const { deleteConnection } = connectionsStore
 
 const editProfile = () => {
   console.log('Edit profile')
 }
 
-/* Fetch data */
+/* Fetch selected user data */
 const { data: selectedUser, pending: selectedUserPending } = await useFetch(
   `/api/v1/users/${route.params.handle}`
 )
@@ -127,8 +124,7 @@ const statusDescription = computed(() => {
       Cancelar solicitud
     </Button>
     <div v-if="connectionStatus === 'received'">
-      <Button
-        @click="handleAcceptRequest(selectedUser.id)">
+      <Button @click="handleAcceptRequest(selectedUser.id)">
         Aceptar conexión
       </Button>
       <Button
@@ -202,9 +198,6 @@ header {
 }
 .bio {
   margin-top: var(--spaceM);
-}
-
-.status {
 }
 
 h1 {

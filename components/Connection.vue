@@ -17,17 +17,15 @@ const props = defineProps({
 const emit = defineEmits(['deleted'])
 
 const handleDelete = async () => {
-  await deleteConnection(props.data.id)
+  await deleteConnection(props.data.users.id)
   emit('deleted')
 }
 </script>
 
 <template>
   <li>
-    <User
-      :data="data"
-      size="large" />
-    <Button v-if="ownUser" size="small" @click="handleDelete">Cortar</Button>
+    <User :data="data.users" />
+    <Button v-if="ownUser" @click="handleDelete">Cortar</Button>
   </li>
 </template>
 

@@ -47,14 +47,11 @@ export const useConnectionsStore = defineStore('connections', () => {
       return
     }
     await useFetch('/api/v1/connections/delete', {
-      method: 'delete',
+      method: 'post',
       body: {
         id: id
       }
     })
-    if (error) {
-      console.log('Error!!!', error)
-    }
   }
 
   /* Fetch invitations */

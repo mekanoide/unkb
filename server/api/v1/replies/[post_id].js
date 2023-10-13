@@ -8,7 +8,15 @@ export default defineEventHandler(async (event) => {
 
   const { data } = await client
     .from('replies')
-    .select()
+    .select(
+      `
+        *,
+        users: author_id(
+          *,
+          roles: role_id(*)
+        )
+      `
+    )
     .eq('post_id', post_id)
     .order('created_at', { ascending: true })
   return data

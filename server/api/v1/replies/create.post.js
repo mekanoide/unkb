@@ -37,15 +37,18 @@ export default defineEventHandler(async (event) => {
     post_id: body.post_id,
     content: body.content,
     parent_id: body.parent_id,
-    created_at: new Date(),
     link: link
   }
-  console.log('payload', payload)
-  const { data } = await client
+  console.log('Reply payload', payload)
+
+  const { data, error } = await client
     .from('replies')
     .upsert(payload)
     .select()
-
+  
+  console.log('Reply data', data)
+  console.log('Reply error', error)
+  
   const mentions = await getMentionsFromPost(body.content)
   if (mentions) {
     for (const mention of mentions) {

@@ -67,5 +67,11 @@ export default defineNuxtConfig({
       exclude: ['/register', '/post/*', '/manifesto', '/invite']
     }
   },
-  devtools: { enabled: false }
+  devtools: {
+    enabled: true,
+
+    timeline: {
+      enabled: true
+    }
+  }
 })

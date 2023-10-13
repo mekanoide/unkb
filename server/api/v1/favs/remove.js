@@ -5,8 +5,9 @@ export default defineEventHandler(async (event) => {
 
   const body = await readBody(event)
 
-  const { error } = await client.from('favs').delete({
-    post_id: body.id
-  })
+  const { error } = await client
+    .from('favs')
+    .delete()
+    .eq('post_id', body.id)
   return error
 })

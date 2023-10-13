@@ -83,10 +83,13 @@ const toggleMenu = () => {
   }
 }
 
-const handleSavePost = async (id, fav) => {
-  if(fav) {
+const handlePinPost = async (id, fav) => {
+  console.log('Fav?', fav)
+  console.log('Post id?', id)
+  if (fav) {
+    console.log('Removing fav')
     await useFetch('/api/v1/favs/remove', {
-      method: 'delete',
+      method: 'post',
       body: {
         id: id
       }
@@ -196,7 +199,7 @@ onMounted(() => {
         <Button
           variant="ghost"
           :title="data.fav ? 'Quitar de favoritos' : 'Guardar en favoritos'"
-          @click="handleSavePost(data.id, data.fav)">
+          @click="handlePinPost(data.id, data.fav)">
           <Icon
             :name="data.fav ? 'ph:push-pin-simple-slash-bold' : 'ph:push-pin-simple-bold'"
             size="1.5rem" />

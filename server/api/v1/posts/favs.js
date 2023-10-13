@@ -10,7 +10,10 @@ export default defineEventHandler(async (event) => {
       *,
       posts: post_id(
         *,
-        users: author_id(*)
+        users: author_id(
+          *,
+          roles: role_id(*)
+        )
       )
     `)
     .order('created_at', { ascending: false })

@@ -39,7 +39,7 @@ const handleEdition = () => {
   openEdition(props.data.id, props.data.content, 'reply', null)
 }
 
-const handleReply = async (content, scope) => {
+const handleReply = async (content, scope = null) => {
   await createReply(props.data.post_id, content, props.data.id)
   showReply.value = false
   emit('refresh')
