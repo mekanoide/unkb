@@ -324,6 +324,10 @@ textarea:disabled {
   border: 2px dotted currentColor;
 }
 
+*:disabled {
+  cursor: not-allowed;
+}
+
 button {
   cursor: pointer;
 }

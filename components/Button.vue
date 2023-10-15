@@ -45,7 +45,7 @@ button:not(.secondary, .ghost, .square, .text) {
   color: var(--colorBackground);
 }
 
-button:hover {
+button:not(:disabled):hover {
   background-color: var(--colorAccent);
   color: var(--colorDark);
 }

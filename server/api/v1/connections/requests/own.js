@@ -3,12 +3,17 @@ import { serverSupabaseUser, serverSupabaseClient } from '#supabase/server'
 export default defineEventHandler(async (event) => {
   const user = await serverSupabaseUser(event)
   const client = await serverSupabaseClient(event)
-
   const { data } = await client
-    .from('invitations')
-    .select()
-    .eq('inviter_id', user.id)
-    .eq('used', true)
-    .order('created_at', { ascending: false })
+    .from('connection_requests')
+    .select(
+      `
+        *,
+        users:target_id(
+          *,
+          roles:role_id(*)
+        )
+     `
+    )
+    .eq('user_id', user.id)
   return data
 })

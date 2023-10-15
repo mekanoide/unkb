@@ -32,7 +32,6 @@ watchEffect(async () => {
 <template>
   <div class="Login">
     <h1>Entrar</h1>
-    <p>Si tienes un código de invitación, <NuxtLink to="/invite">entra aquí</NuxtLink>.</p>
     <form @submit.prevent="handleLogin">
       <TextField
         label="Correo electrónico"
@@ -53,6 +52,7 @@ watchEffect(async () => {
     <p>
       ¿Has olvidado tu contraseña? <a href="">Reestablece tu contraseña</a>.
     </p>
+    <p>Si no tienes cuenta, necesitas un enlace de invitación.</p>
   </div>
 </template>
 

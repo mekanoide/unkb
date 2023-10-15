@@ -1,59 +1,59 @@
 <script setup>
-import { useInvitationsStore } from '@/stores/invitations'
-
 const config = useRuntimeConfig()
 
-const invitationsStore = useInvitationsStore()
-
-const showingNewInvitation = ref(false)
+const showingNewInvite = ref(false)
 const email = ref('')
 const copied = ref(null)
 
 const { data: role, pending: pendingRole } = await useFetch('/api/v1/user/role')
 
-const { data: invitations, refresh: refreshInvitations } = await useFetch(
-  '/api/v1/invitations'
+const { data: invites, refresh: refreshInvites } = await useFetch(
+  '/api/v1/invites'
 )
 
-const numInvitations = computed(() => {
-  return invitations.value.length
+const numInvites = computed(() => {
+  return invites.value.length
 })
 
-const numInvitationsLeft = computed(() => {
-  return role.value.max_invitations - numInvitations.value
+const numInvitesLeft = computed(() => {
+  return role.value.max_invites - numInvites.value
 })
 
-const hasInvitationsLeft = computed(() => {
-  return numInvitationsLeft.value > 0
+const hasInvitesLeft = computed(() => {
+  return numInvitesLeft.value > 0
 })
 
-const pendingInvitations = computed(() => {
-  return invitations.value.filter((item) => item.used === false)
+const pendingInvites = computed(() => {
+  return invites.value.filter((item) => item.used === false)
 })
 
-const usedInvitations = computed(() => {
-  return invitations.value.filter((item) => item.used === true).length
+const usedInvites = computed(() => {
+  return invites.value.filter((item) => item.used === true).length
 })
 
-const createNewInvitation = async () => {
-  const { data, error } = await useFetch('/api/v1/invitations/create', {
-    method: 'post'
-  })
-  refreshInvitations()
+const inviteLink = (token) => {
+  return `${config.public.baseUrl}/invite/${token}`
 }
 
-const cancelInvitation = async (id) => {
-  const { error } = await useFetch('/api/v1/invitations/cancel', {
+const createNewInvite = async () => {
+  const { data, error } = await useFetch('/api/v1/invites/create', {
+    method: 'post'
+  })
+  refreshInvites()
+}
+
+const cancelInvite = async (id) => {
+  const { error } = await useFetch('/api/v1/invites/cancel', {
     method: 'delete',
     body: {
       id: id
     }
   })
-  refreshInvitations()
+  refreshInvites()
 }
 
-const copyLink = (id, txt) => {
-  navigator.clipboard.writeText(txt)
+const copyLink = (id, url) => {
+  navigator.clipboard.writeText(url)
   copied.value = id
   setTimeout(() => {
     copied.value = null
@@ -63,50 +63,50 @@ const copyLink = (id, txt) => {
 
 <template>
   <section>
-    <p v-if="hasInvitationsLeft">
-      Has usado {{ usedInvitations }} invitaciones. Te quedan {{ numInvitationsLeft }} invitaciones.
+    <p v-if="hasInvitesLeft">
+      Has usado {{ usedInvites }} invitaciones. Te quedan {{ numInvitesLeft }} invitaciones.
     </p>
     <p v-else>No tienes invitaciones.</p>
     <div>
       <Button
-        v-if="hasInvitationsLeft"
-        @click="createNewInvitation">
+        v-if="hasInvitesLeft"
+        @click="createNewInvite">
         Nueva invitación
       </Button>
     </div>
   </section>
-  <section v-if="pendingInvitations && pendingInvitations.length > 0">
+  <section v-if="pendingInvites && pendingInvites.length > 0">
     <h3>Invitaciones pendientes</h3>
     <ul>
       <li
         class="pending"
-        v-for="invitation in pendingInvitations">
+        v-for="invite in pendingInvites">
         <div class="actions">
           <div
-            class="invitation-link"
+            class="invite-link"
             @click="
-              copyLink(invitation.id, invitation.token)
+              copyLink(invite.id, inviteLink(invite.token))
             ">
-            {{ invitation.token }}
+            {{ inviteLink(invite.token) }}
             <Transition name="fade">
               <div
-                v-if="copied === invitation.id"
+                v-if="copied === invite.id"
                 class="copied">
                 Enlace copiado al portapapeles!
               </div>
             </Transition>
           </div>
           <Button
-            @click="cancelInvitation(invitation.id)">
+            @click="cancelInvite(invite.id)">
             Cancelar
           </Button>
         </div>
       </li>
     </ul>
   </section>
-  <Modal v-if="showingNewInvitation">
+  <Modal v-if="showingNewInvite">
     <h1>Invitación</h1>
-    <form @submit.prevent="handleCreateInvitation">
+    <form @submit.prevent="handleCreateInvite">
       <TextField
         type="email"
         v-model="email"
@@ -116,7 +116,7 @@ const copyLink = (id, txt) => {
         <Button type="submit">Invitar</Button>
         <Button
           variant="secondary"
-          @click="showingNewInvitation = false"
+          @click="showingNewInvite = false"
           >Cancelar</Button
         >
       </footer>
@@ -142,7 +142,7 @@ footer {
   gap: var(--spaceXS);
 }
 
-.invitation {
+.invite {
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: center;
@@ -155,7 +155,7 @@ footer {
   grid-template-columns: 1fr auto;
 }
 
-.invitation-link {
+.invite-link {
   border: 2px solid currentColor;
   padding: var(--spaceS);
   border-radius: var(--corner);

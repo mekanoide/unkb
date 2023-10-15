@@ -37,6 +37,10 @@ const { data: me, error } = await useAsyncData(() => fetchOwnUser())
         icon="ph:brain-bold"
         to="/notes" />
       <NavigationItem
+        label="Grupos"
+        icon="ph:users-four-bold"
+        to="/groups" />
+      <NavigationItem
         label="Actividad"
         icon="ph:activity-bold"
         to="/activity" />

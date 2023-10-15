@@ -4,7 +4,7 @@ export default defineEventHandler(async (event) => {
   const user = await serverSupabaseUser(event)
   const client = await serverSupabaseClient(event)
 
-  const {user_id} = event.context.params
+  const { user_id } = event.context.params
 
   const { data } = await client
     .from('posts')

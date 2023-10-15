@@ -5,9 +5,10 @@ export default defineEventHandler(async (event) => {
   const client = await serverSupabaseClient(event)
 
   const { data } = await client
-    .from('invitations')
+    .from('invites')
     .select()
     .eq('inviter_id', user.id)
+    .eq('used', false)
     .order('created_at', { ascending: false })
   return data
 })

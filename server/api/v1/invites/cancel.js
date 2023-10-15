@@ -7,8 +7,10 @@ export default defineEventHandler(async (event) => {
   const body = await readBody(event)
   console.log('cuerpo!', body)
 
-  const { data } = await client.from('invitations').upsert({
-    inviter_id: user.id
-  })
+  const { error } = await client
+    .from('invites')
+    .delete()
+    .eq('id', body.id)
+
   return data
 })

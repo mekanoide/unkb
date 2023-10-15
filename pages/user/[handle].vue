@@ -30,11 +30,6 @@ const { data: userPosts, refresh: refreshPosts } = await useFetch(
   `/api/v1/posts/from/${selectedUser.value.id}`
 )
 
-/* Fetch user connections */
-const { data: connections, refresh: refreshConnections } = await useFetch(
-  `/api/v1/connections/${selectedUser.value.id}`
-)
-
 /* Fetch users status */
 const { data: connectionStatus, refresh: connectionStatusRefresh } =
   await useFetch(`/api/v1/connections/status/${selectedUser.value.id}`)
@@ -159,9 +154,9 @@ const statusDescription = computed(() => {
     </Tab>
     <Tab
       v-if="selectedUser && user.id === selectedUser.id"
-      value="invitations"
-      :selected="tab === 'invitations'"
-      @click="tab = 'invitations'">
+      value="invites"
+      :selected="tab === 'invites'"
+      @click="tab = 'invites'">
       Invitaciones
     </Tab>
   </TabMenu>
@@ -181,12 +176,10 @@ const statusDescription = computed(() => {
   </div>
   <Connections
     :id="selectedUser.id"
-    :data="connections"
-    v-else-if="tab === 'connections'"
-    @changed="connectionsRefresh" />
-  <Invitations
-    v-else-if="tab === 'invitations'"
-    :data="invitations" />
+    v-else-if="tab === 'connections'" />
+  <Invites
+    v-else-if="tab === 'invites'"
+    :data="invites" />
 </template>
 
 <style scoped>

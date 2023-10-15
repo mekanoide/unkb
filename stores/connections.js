@@ -27,6 +27,18 @@ export const useConnectionsStore = defineStore('connections', () => {
   const sendConnectionRequest = async (id) => {
   }
 
+  /* Cancel connection request */
+  const cancelConnectionRequest = async (userId, targetId) => {
+    const { error } = await client
+      .from('connection_requests')
+      .delete()
+      .eq('user_id', userId)
+      .eq('target_id', targetId)
+    if (error) {
+      console.log('Error!!!', error)
+    }
+  }
+
   /* Accept connection */
   const acceptConnection = async (id) => {
   }
@@ -72,15 +84,17 @@ export const useConnectionsStore = defineStore('connections', () => {
 
   }
   /* Cancel pending invitation */
-  const cancelInvitation = async (email) => {
+  const cancelInvitation = async (id) => {
     const shouldCancel = confirm('De verdad quieres cancelar esta invitación?')
     if (!shouldCancel) {
       return
     }
-    const { error } = await client
-      .from('invitations')
-      .delete()
-      .eq('target_email', email)
+    const { error } = await useFetch('api/v1/invites/cancel', {
+      method: 'post',
+      body: {
+        id: id
+      }
+    })
     if (error) {
       console.log('Error!!!', error)
     }
@@ -92,6 +106,7 @@ export const useConnectionsStore = defineStore('connections', () => {
     getContact,
     areWeConnected,
     sendConnectionRequest,
+    cancelConnectionRequest,
     acceptConnection,
     fetchInviter,
     createInvitation,

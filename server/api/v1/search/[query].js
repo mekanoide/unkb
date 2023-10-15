@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) => {
 
   const { data, error } = await client
     .from('users')
-    .select()
+    .select(`*, roles:role_id(*)`)
     .ilike('handle', `${query}%`)
     .limit(10)
   return data

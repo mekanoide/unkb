@@ -2,7 +2,7 @@
 import { useConnectionsStore } from '@/stores/connections'
 const store = useConnectionsStore()
 
-const { deleteConnection } = store
+const { deleteConnection, cancelConnectionRequest } = store
 
 const props = defineProps({
   data: {
@@ -14,18 +14,28 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['deleted'])
+const emit = defineEmits(['changed'])
 
-const handleDelete = async () => {
+const handleDeleteConnection = async () => {
   await deleteConnection(props.data.users.id)
-  emit('deleted')
+  emit('changed')
+}
+
+const handleCancelConnectionRequest = async () => {
+  await cancelConnectionRequest(props.data.user_id, props.data.target_id)
+  emit('changed')
 }
 </script>
 
 <template>
   <li>
     <User :data="data.users" />
-    <Button v-if="ownUser" @click="handleDelete">Cortar</Button>
+    <div
+      v-if="ownUser"
+      class="actions">
+      <Button v-if="data.target_id" @click="handleCancelConnectionRequest">Cancelar solicitud</Button>
+      <Button v-else @click="handleDeleteConnection">Cortar conexión</Button>
+    </div>
   </li>
 </template>
 

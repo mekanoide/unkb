@@ -4,51 +4,43 @@ definePageMeta({
 })
 
 const user = useSupabaseUser()
+const client = useSupabaseClient()
 
 const route = useRoute()
+const token = route.params.token
 
 const handle = ref('')
 const email = ref('')
 const password = ref('')
 
-const nameError = ref(true)
-const emailError = ref(true)
+const errorName = ref(true)
 
-const { data: invitation, error: errorInvitation } = await useFetch(
-  `/api/v1/invitations/get/${route.params.token}`
-)
+const { data: invite, error: errorInvite } = await useFetch(`/api/v1/invites/${token}`)
 
 const validateName = async () => {
-  const { data } = await useFetch('/api/v1/auth/check-handle', {
+  const { data, error } = await useFetch('/api/v1/auth/check-handle', {
     method: 'post',
     body: {
-      handle: handle
+      handle: handle.value
     }
   })
   if (data.value) {
-    nameError.value = data.value
+    errorName.value = true
   } else {
-    nameError.value = null
-  }
-}
-
-const validateEmail = async () => {
-  if (email.value !== invitation.value.target_email) {
-    emailError.value = 'El correo electrónico no coincide con la invitación'
-  } else {
-    emailError.value = null
+    errorName.value = false
   }
 }
 
 const handleRegistry = async () => {
-  const { data } = await useFetch('/api/v1/auth/register', {
-    method: 'post',
-    body: {
-      parent: invitation.value.inviter_id,
-      email: email.value,
-      password: password.value,
-      handle: handle.value,
-      token: route.params.token
+  console.log('Register', invite.value.inviter_id)
+  const { data, error } = await client.auth.signUp({
+    email: email.value,
+    password: password.value,
+    options: {
+      data: {
+        handle: handle.value.toLowerCase(),
+        parent_id: invite.value.inviter_id
+      }
     }
   })
   if (data) {
@@ -70,13 +62,8 @@ watch(
 </script>
 
 <template>
-  {{ invitation }}
-  <div v-if="user">
-    <h1>Ya estás dentro, aquí no hay nada que ver</h1>
-    <NuxtLink to="/">Ve a la página de Inicio</NuxtLink>
-  </div>
   <div
-    v-else
+    v-if="invite && !errorInvite"
     class="Register">
     <h1>¡Hola!</h1>
     <p>
@@ -86,24 +73,36 @@ watch(
     <form @submit.prevent="handleRegistry">
       <TextField
         label="Nombre"
-        :error="nameError"
-        :maxlength="32"
+        type="text"
+        :maxlength="16"
         placeholder="Caracteres alfanuméricos y guión bajo"
         v-model="handle"
         @blur="validateName" />
       <TextField
         label="Correo electrónico"
-        :error="emailError"
         type="email"
-        v-model="email"
-        @blur="validateEmail" />
+        v-model="email" />
       <TextField
         label="Contraseña"
         type="password"
         v-model="password" />
-      <Button type="submit" :disabled="nameError || emailError">Entrar</Button>
+      <Button
+        type="submit"
+        :disabled="errorName"
+        >Entrar</Button
+      >
     </form>
     <p>Ya tienes cuenta? <NuxtLink to="/login">Accede aquí</NuxtLink>.</p>
+  </div>
+  <div
+    v-else
+    class="Register">
+    <h1>Vaya</h1>
+    <p>Esta invitación no es válida o está ya usada.</p>
+    <p>
+      Si ya tienes una cuenta prueba a
+      <NuxtLink to="/login">acceder aquí</NuxtLink>.
+    </p>
   </div>
 </template>
 

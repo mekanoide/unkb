@@ -4,14 +4,21 @@ const props = defineProps({
   id: {
     type: String,
     required: true
-  },
-  data: {
-    type: Array,
-    required: true
   }
 })
+
 const emit = defineEmits(['changed'])
 const user = useSupabaseUser()
+
+/* Fetch user connections */
+const { data: connections, refresh: refreshConnections } = await useFetch(
+  `/api/v1/connections/${props.id}`
+)
+
+/* Fetch user connection requests */
+const { data: requests, refresh: refreshRequests } = await useFetch(
+  `/api/v1/connections/requests/own`
+)
 
 /* TODO: add requested connections */
 </script>
@@ -19,16 +26,23 @@ const user = useSupabaseUser()
 <template>
   <Search v-if="user.id === id" />
   <Requests v-if="user.id === id" />
-  <ul v-if="data && data.length > 0">
+  <ul v-if="(connections && connections.length > 0) || (requests && requests.length > 0)">
     <Connection
-      v-for="connection in data"
+      v-if="requests && requests.length > 0"
+      v-for="connection in requests"
       :key="connection.id"
       :ownUser="user.id === id"
       :data="connection"
-      @deleted="emit('changed')" />
+      @changed="refreshRequests" />
+    <Connection
+      v-if="connections && connections.length > 0"
+      v-for="connection in connections"
+      :key="connection.id"
+      :ownUser="user.id === id"
+      :data="connection"
+      @changed="refreshConnections" />
   </ul>
   <EmptyState
     v-else
     message="No tienes a nadie" />
 </template>
-  
