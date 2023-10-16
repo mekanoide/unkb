@@ -1,8 +1,6 @@
 <script setup>
 const config = useRuntimeConfig()
 
-const showingNewInvite = ref(false)
-const email = ref('')
 const copied = ref(null)
 
 const { data: role, pending: pendingRole } = await useFetch('/api/v1/user/role')
@@ -16,7 +14,7 @@ const numInvites = computed(() => {
 })
 
 const numInvitesLeft = computed(() => {
-  return role.value.max_invites - numInvites.value
+  return role.value.max_invitations - numInvites.value
 })
 
 const hasInvitesLeft = computed(() => {
@@ -104,24 +102,6 @@ const copyLink = (id, url) => {
       </li>
     </ul>
   </section>
-  <Modal v-if="showingNewInvite">
-    <h1>Invitación</h1>
-    <form @submit.prevent="handleCreateInvite">
-      <TextField
-        type="email"
-        v-model="email"
-        label="Correo del invitado"
-        placeholder="fulanit@ejemplo.com" />
-      <footer>
-        <Button type="submit">Invitar</Button>
-        <Button
-          variant="secondary"
-          @click="showingNewInvite = false"
-          >Cancelar</Button
-        >
-      </footer>
-    </form>
-  </Modal>
 </template>
 
 <style scoped>
@@ -179,3 +159,4 @@ section + section {
   margin-top: var(--spaceL);
 }
 </style>
+
