@@ -34,14 +34,14 @@ const validateName = async () => {
 }
 
 const handleRegistry = async () => {
-  console.log('handleRegistry', email.value, password.value, handle.value, invitation.value.invitationr_id)
+  console.log('handleRegistry', email.value, password.value, handle.value, invitation.value.inviter_id)
   const { error } = await client.auth.signUp({
     email: email.value,
     password: password.value,
     options: {
       data: {
         handle: handle.value.toLowerCase(),
-        parent_id: invitation.value.invitationr_id,
+        parent_id: invitation.value.inviter_id,
         token: token
       },
       emailRedirectTo: config.public.baseUrl

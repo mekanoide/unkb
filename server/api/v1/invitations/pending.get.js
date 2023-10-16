@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) => {
   const { data } = await client
     .from('invitations')
     .select()
-    .eq('invitationr_id', user.id)
+    .eq('inviter_id', user.id)
     .eq('used', false)
     .order('created_at', { ascending: false })
   return data
