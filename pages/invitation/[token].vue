@@ -17,7 +17,7 @@ const password = ref('')
 
 const errorName = ref(true)
 
-const { data: invite, error: errorInvite } = await useFetch(`/api/v1/invites/${token}`)
+const { data: invitation, error: errorInvitation } = await useFetch(`/api/v1/invitations/${token}`)
 
 const validateName = async () => {
   const { data, error } = await useFetch('/api/v1/auth/check-handle', {
@@ -34,14 +34,14 @@ const validateName = async () => {
 }
 
 const handleRegistry = async () => {
-  console.log('handleRegistry', email.value, password.value, handle.value, invite.value.inviter_id)
+  console.log('handleRegistry', email.value, password.value, handle.value, invitation.value.invitationr_id)
   const { error } = await client.auth.signUp({
     email: email.value,
     password: password.value,
     options: {
       data: {
         handle: handle.value.toLowerCase(),
-        parent_id: invite.value.inviter_id,
+        parent_id: invitation.value.invitationr_id,
         token: token
       },
       emailRedirectTo: config.public.baseUrl
@@ -67,7 +67,7 @@ watch(
 
 <template>
   <div
-    v-if="invite && !errorInvite"
+    v-if="invitation && !errorInvitation"
     class="Register">
     <h1>¡Hola!</h1>
     <p>

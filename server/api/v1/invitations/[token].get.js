@@ -8,7 +8,7 @@ export default defineEventHandler(async (event) => {
   console.log('token de la invitación!!!', token)
 
   const { data, error } = await client
-    .from('invites')
+    .from('invitations')
     .select()
     .eq('token', token)
     .eq('used', false)

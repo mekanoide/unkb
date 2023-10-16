@@ -70,7 +70,7 @@ export const useConnectionsStore = defineStore('connections', () => {
   const fetchInvitations = async () => {
   }
 
-  const fetchInviter = async (id) => {
+  const fetchInvitationr = async (id) => {
     const { data } = await client
       .from('users')
       .select()
@@ -89,7 +89,7 @@ export const useConnectionsStore = defineStore('connections', () => {
     if (!shouldCancel) {
       return
     }
-    const { error } = await useFetch('api/v1/invites/cancel', {
+    const { error } = await useFetch('api/v1/invitations/cancel', {
       method: 'post',
       body: {
         id: id
@@ -108,7 +108,7 @@ export const useConnectionsStore = defineStore('connections', () => {
     sendConnectionRequest,
     cancelConnectionRequest,
     acceptConnection,
-    fetchInviter,
+    fetchInvitationr,
     createInvitation,
     fetchInvitations,
     cancelInvitation,
