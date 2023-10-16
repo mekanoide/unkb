@@ -1,4 +1,5 @@
 <script setup>
+import { storeToRefs } from 'pinia'
 import { useEditionStore } from '@/stores/edition'
 import { useTooltipStore } from '@/stores/tooltip'
 import { useUserStore } from '@/stores/user'

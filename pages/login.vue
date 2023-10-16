@@ -6,6 +6,8 @@ definePageMeta({
 const { auth } = useSupabaseClient()
 const user = useSupabaseUser()
 
+const authError = ref(false)
+
 const email = ref('')
 const password = ref('')
 const pending = ref(false)
@@ -17,7 +19,7 @@ const handleLogin = async () => {
     password: password.value
   })
   if (error) {
-    console.log('Error!!!', error)
+    authError.value = true
   }
   pending.value = false
 }
@@ -43,6 +45,7 @@ watchEffect(async () => {
         type="password"
         autocomplete="current-password"
         v-model="password" />
+      <p v-if="authError">Correo electrónico o contraseña incorrectos.</p>
       <Button
         type="submit"
         :disabled="pending"

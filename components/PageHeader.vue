@@ -1,4 +1,5 @@
 <script setup>
+import { storeToRefs } from 'pinia'
 import { useMainStore } from '@/stores/main'
 const store = useMainStore()
 
@@ -36,10 +37,10 @@ const { data: me, error } = await useAsyncData(() => fetchOwnUser())
         label="Ideas"
         icon="ph:brain-bold"
         to="/notes" />
-      <NavigationItem
+<!--       <NavigationItem
         label="Grupos"
         icon="ph:users-four-bold"
-        to="/groups" />
+        to="/groups" /> -->
       <NavigationItem
         label="Actividad"
         icon="ph:activity-bold"

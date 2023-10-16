@@ -1,7 +1,7 @@
 <script setup>
+import { storeToRefs } from 'pinia'
 import { useMainStore } from '@/stores/main'
 import { useConnectionsStore } from '@/stores/connections'
-
 
 const client = useSupabaseClient()
 const store = useMainStore()

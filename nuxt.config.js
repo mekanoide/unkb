@@ -32,10 +32,10 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     'nuxt-icon'
   ],
+  pinia: { autoImports: ['defineStore', 'acceptHMRUpdate'] },
   imports: {
     dirs: ['stores']
   },
-  pinia: { autoImports: ['defineStore', 'acceptHMRUpdate', 'storeToRefs'] },
   robots: {
     UserAgent: '*',
     Disallow: '*'

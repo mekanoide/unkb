@@ -1,4 +1,5 @@
 <script setup>
+import { storeToRefs } from 'pinia'
 import { useEditionStore } from '@/stores/edition'
 
 const editionStore = useEditionStore()

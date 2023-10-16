@@ -1,4 +1,6 @@
 <script setup>
+const config = useRuntimeConfig()
+
 definePageMeta({
   layout: 'clear'
 })
@@ -32,18 +34,20 @@ const validateName = async () => {
 }
 
 const handleRegistry = async () => {
-  console.log('Register', invite.value.inviter_id)
-  const { data, error } = await client.auth.signUp({
+  console.log('handleRegistry', email.value, password.value, handle.value, invite.value.inviter_id)
+  const { error } = await client.auth.signUp({
     email: email.value,
     password: password.value,
     options: {
       data: {
         handle: handle.value.toLowerCase(),
-        parent_id: invite.value.inviter_id
-      }
+        parent_id: invite.value.inviter_id,
+        token: token
+      },
+      emailRedirectTo: config.public.baseUrl
     }
   })
-  if (data) {
+  if (!error) {
     return navigateTo('/')
   }
 }

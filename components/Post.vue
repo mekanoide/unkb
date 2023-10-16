@@ -1,4 +1,5 @@
 <script setup>
+import { storeToRefs } from 'pinia'
 import { useEditionStore } from '@/stores/edition'
 import { useMainStore } from '@/stores/main'
 import { usePostStore } from '@/stores/post'
