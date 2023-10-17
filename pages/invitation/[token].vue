@@ -47,20 +47,21 @@ const handleRegistry = async () => {
       emailRedirectTo: config.public.baseUrl
     }
   })
-  if (!error) {
-    return navigateTo('/')
+  if (error) {
+    throw error
   }
+  return navigateTo('/welcome')
 }
 
 watch(
   user,
   (newValue) => {
     if (newValue) {
-      return navigateTo('/')
+      return navigateTo('/welcome')
     }
   },
   {
-    immediate: true
+    immediate: false
   }
 )
 </script>
