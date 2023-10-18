@@ -10,6 +10,7 @@ import { useConnectionsStore } from '@/stores/connections'
 const connectionsStore = useConnectionsStore()
 const route = useRoute()
 const user = useSupabaseUser()
+const showEditProfile = ref(false)
 
 /* properties and function */
 
@@ -18,13 +19,15 @@ const tab = ref('content')
 const { deleteConnection } = connectionsStore
 
 const editProfile = () => {
-  console.log('Edit profile')
+  showEditProfile.value = true
 }
 
 /* Fetch selected user data */
-const { data: selectedUser, pending: selectedUserPending } = await useFetch(
-  `/api/v1/users/${route.params.handle}`
-)
+const {
+  data: selectedUser,
+  pending: selectedUserPending,
+  refresh: refreshSelectedUser
+} = await useFetch(`/api/v1/users/${route.params.handle}`)
 
 const { data: userPosts, refresh: refreshPosts } = await useFetch(
   `/api/v1/posts/from/${selectedUser.value.id}`
@@ -77,6 +80,11 @@ const handleRejectRequest = async (id) => {
     }
   })
   connectionStatusRefresh()
+}
+
+const handleUpdateProfile = async () => {
+  await refreshSelectedUser()
+  showEditProfile.value = false
 }
 
 const statusDescription = computed(() => {
@@ -180,6 +188,10 @@ const statusDescription = computed(() => {
   <Invitations
     v-else-if="tab === 'invitations'"
     :data="invitations" />
+  <EditProfile
+    v-if="showEditProfile"
+    @update="handleUpdateProfile"
+    @close="showEditProfile = false" />
 </template>
 
 <style scoped>

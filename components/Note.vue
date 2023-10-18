@@ -83,12 +83,12 @@ const handleDelete = async () => {
         v-if="showPopover === data.id"
         @close="showPopover = null">
         <Menu>
-          <MenuItem @click="handlePublish">
+     <!-- <MenuItem @click="handlePublish">
             <Icon
               name="ph:paper-plane-right-bold"
               size="1.25rem" />
             Publicar
-          </MenuItem>
+          </MenuItem> -->
           <MenuItem @click="handleSavePost(data.id, data.pinned)">
             <Icon
             :name="data.pinned ? 'ph:push-pin-simple-slash-bold' : 'ph:push-pin-simple-bold'"
