@@ -132,6 +132,12 @@ input[type='checkbox']:checked::after {
 
 /* Post content format */
 
+article {
+  display: grid;
+  font-size: var(--fontL);
+  gap: var(--spaceM);
+}
+
 article strong {
   font-weight: bold;
 }
@@ -264,6 +270,11 @@ article a:hover {
 }
 
 /* Form elements */
+
+form {
+  display: grid;
+  gap: var(--spaceM);
+}
 
 input:is(
     [type='text'],

@@ -129,12 +129,6 @@ const insertSpaces = (e) => {
 </template>
 
 <style scoped>
-form {
-  display: grid;
-  grid-auto-flow: row;
-  gap: var(--spaceS);
-}
-
 textarea {
   width: 100%;
   font-size: var(--fontL);

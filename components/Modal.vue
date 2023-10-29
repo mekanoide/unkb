@@ -1,10 +1,15 @@
 <script setup>
+const props = defineProps({
+  cancellable: {
+    type: Boolean
+  }
+})
 const emit = defineEmits(['close'])
 </script>
 
 <template>
   <div class="Modal">
-    <Button class="button-close" variant="ghost"><Icon name="ph:x-bold" size="2rem" @click="emit('close')" /></Button>
+    <Button v-if="cancellable" class="button-close" variant="ghost"><Icon name="ph:x-bold" size="2rem" @click="emit('close')" /></Button>
     <div class="box">
       <slot><!-- optional fallback --></slot>
     </div>

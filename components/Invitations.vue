@@ -60,9 +60,10 @@ const copyLink = (id, url) => {
 </script>
 
 <template>
-  <section>
+  <section class="invitations-left">
     <p v-if="hasInvitationsLeft">
-      Has usado {{ usedInvitations }} invitaciones. Te quedan {{ numInvitationsLeft }} invitaciones.
+      Has usado {{ usedInvitations }} invitaciones. Te quedan
+      {{ numInvitationsLeft }} invitaciones.
     </p>
     <p v-else>No tienes invitaciones.</p>
     <div>
@@ -73,46 +74,41 @@ const copyLink = (id, url) => {
       </Button>
     </div>
   </section>
-  <section v-if="pendingInvitations && pendingInvitations.length > 0">
+  <section
+    v-if="pendingInvitations && pendingInvitations.length > 0"
+    class="invitations">
     <h3>Invitaciones pendientes</h3>
     <ul>
       <li
         class="pending"
         v-for="invitation in pendingInvitations">
-        <div class="actions">
-          <div
-            class="invitation-link"
-            @click="
-              copyLink(invitation.id, invitationLink(invitation.token))
-            ">
-            {{ invitationLink(invitation.token) }}
-            <Transition name="fade">
-              <div
-                v-if="copied === invitation.id"
-                class="copied">
-                Enlace copiado al portapapeles!
-              </div>
-            </Transition>
-          </div>
-          <Button
-            @click="cancelInvitation(invitation.id)">
-            Cancelar
-          </Button>
+        <div
+          class="invitation-link"
+          @click="copyLink(invitation.id, invitationLink(invitation.token))">
+          {{ invitationLink(invitation.token) }}
+          <Transition name="fade">
+            <div
+              v-if="copied === invitation.id"
+              class="copied">
+              Enlace copiado al portapapeles!
+            </div>
+          </Transition>
         </div>
+        <Button @click="cancelInvitation(invitation.id)"> Cancelar </Button>
       </li>
     </ul>
   </section>
 </template>
 
 <style scoped>
-section {
+.invitations-left {
+  padding-top: var(--spaceL);
   display: grid;
   gap: var(--spaceM);
 }
 
-form {
-  display: grid;
-  gap: var(--spaceS);
+.invitations {
+  padding-top: var(--spaceL);
 }
 
 footer {
@@ -128,8 +124,7 @@ footer {
   align-items: center;
 }
 
-.actions {
-  margin-top: var(--spaceS);
+.pending {
   display: grid;
   gap: var(--spaceS);
   grid-template-columns: 1fr auto;
@@ -159,4 +154,3 @@ section + section {
   margin-top: var(--spaceL);
 }
 </style>
-

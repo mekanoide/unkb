@@ -2,7 +2,7 @@
   <NuxtLink :to="to"
     ><Icon
       :name="icon"
-      size="1.5rem" /><span>{{ label }}</span></NuxtLink
+      size="2rem" /><span>{{ label }}</span></NuxtLink
   >
 </template>
 
@@ -49,6 +49,9 @@ a.router-link-active {
 }
 
 @media screen and (max-width: 1024px) {
+  a {
+    padding: var(--spaceS) var(--spaceM);
+  }
   span {
     display: none;
   }

@@ -62,8 +62,7 @@ const validateName = async () => {
 
 <style scoped>
 
-.EditProfile,
-form {
+.EditProfile {
   display: grid;
   gap: var(--spaceM);
 }

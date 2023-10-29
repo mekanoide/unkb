@@ -17,7 +17,7 @@ const handleSearch = () => {
       <input
         type="search"
         v-model="searchQuery"
-        placeholder="Buscar usuarios"
+        :placeholder="$attrs.placeholder"
         @input="handleSearch" />
       <Button
         type="submit"
@@ -25,7 +25,7 @@ const handleSearch = () => {
         variant="square">
         <Icon
           name="fa-solid:search"
-          size="1.5rem" />
+          size="1.25rem" />
       </Button>
     </form>
   </div>
@@ -33,10 +33,8 @@ const handleSearch = () => {
 
 <style scoped>
 form {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  align-items: center;
   position: relative;
+  align-items: center;
 }
 
 .search-button {

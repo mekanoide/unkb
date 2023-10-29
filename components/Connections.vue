@@ -24,25 +24,33 @@ const { data: requests, refresh: refreshRequests } = await useFetch(
 </script>
 
 <template>
-  <Search v-if="user.id === id" />
-  <Requests v-if="user.id === id" />
-  <ul v-if="(connections && connections.length > 0) || (requests && requests.length > 0)">
-    <Connection
-      v-if="requests && requests.length > 0"
-      v-for="connection in requests"
-      :key="connection.id"
-      :ownUser="user.id === id"
-      :data="connection"
-      @changed="refreshRequests" />
-    <Connection
-      v-if="connections && connections.length > 0"
-      v-for="connection in connections"
-      :key="connection.id"
-      :ownUser="user.id === id"
-      :data="connection"
-      @changed="refreshConnections" />
-  </ul>
-  <EmptyState
-    v-else
-    message="No tienes a nadie" />
+  <div>
+    <Search v-if="user.id === id" />
+    <Requests v-if="user.id === id" />
+    <ul v-if="(connections && connections.length > 0) || (requests && requests.length > 0)">
+      <Connection
+        v-if="requests && requests.length > 0"
+        v-for="connection in requests"
+        :key="connection.id"
+        :ownUser="user.id === id"
+        :data="connection"
+        @changed="refreshRequests" />
+      <Connection
+        v-if="connections && connections.length > 0"
+        v-for="connection in connections"
+        :key="connection.id"
+        :ownUser="user.id === id"
+        :data="connection"
+        @changed="refreshConnections" />
+    </ul>
+    <EmptyState
+      v-else
+      message="No tienes a nadie" />
+  </div>
 </template>
+
+<style scoped>
+div {
+  padding-top: var(--spaceL);
+}
+</style>

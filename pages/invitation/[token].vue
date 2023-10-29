@@ -17,7 +17,9 @@ const password = ref('')
 
 const errorName = ref(true)
 
-const { data: invitation, error: errorInvitation } = await useFetch(`/api/v1/invitations/${token}`)
+const { data: invitation, error: errorInvitation } = await useFetch(
+  `/api/v1/invitations/${token}`
+)
 
 const validateName = async () => {
   const { data, error } = await useFetch('/api/v1/auth/check-handle', {
@@ -34,7 +36,13 @@ const validateName = async () => {
 }
 
 const handleRegistry = async () => {
-  console.log('handleRegistry', email.value, password.value, handle.value, invitation.value.inviter_id)
+  console.log(
+    'handleRegistry',
+    email.value,
+    password.value,
+    handle.value,
+    invitation.value.inviter_id
+  )
   const { error } = await client.auth.signUp({
     email: email.value,
     password: password.value,
@@ -123,11 +131,5 @@ a {
   gap: var(--spaceM);
   max-width: 480px;
   margin: auto;
-}
-
-form {
-  display: grid;
-  justify-content: stretch;
-  gap: var(--spaceM);
 }
 </style>

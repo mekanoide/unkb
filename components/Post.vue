@@ -42,9 +42,9 @@ const transformedScope = computed(() => {
     case 'public':
       return 'público'
     case 'connections':
-      return 'conexiones'
+      return 'coleguis'
     case 'trust':
-      return 'confianza'
+      return 'gente de confianza'
     case 'fire':
       return 'círculo de fuego'
   }
@@ -174,7 +174,7 @@ onMounted(() => {
       :class="{ truncate: truncate && !expanded, single: single }"
       role="link"
       ref="contentElement"
-      @click.prevent="handleLinkPost(data.id)">
+      @click="handleLinkPost(data.id)">
       <PostContent :content="data.content" />
     </div>
     <Truncate

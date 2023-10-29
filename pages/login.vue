@@ -67,10 +67,4 @@ watchEffect(async () => {
   max-width: 480px;
   margin: auto;
 }
-
-form {
-  display: grid;
-  justify-content: stretch;
-  gap: var(--spaceM);
-}
 </style>
