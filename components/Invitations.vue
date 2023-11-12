@@ -1,16 +1,13 @@
 <script setup>
 const config = useRuntimeConfig()
 
-const copied = ref(null)
+const copied = ref(false)
 
 const { data: role, pending: pendingRole } = await useFetch('/api/v1/user/role')
-
-const { data: invitations, refresh: refreshInvitations } = await useFetch(
-  '/api/v1/invitations'
-)
+const { data: userData, refresh } = await useFetch('/api/v1/user/me')
 
 const numInvitations = computed(() => {
-  return invitations.value.length
+  return userData.value.invitations_used
 })
 
 const numInvitationsLeft = computed(() => {
@@ -21,83 +18,40 @@ const hasInvitationsLeft = computed(() => {
   return numInvitationsLeft.value > 0
 })
 
-const pendingInvitations = computed(() => {
-  return invitations.value.filter((item) => item.used === false)
-})
-
-const usedInvitations = computed(() => {
-  return invitations.value.filter((item) => item.used === true).length
-})
-
 const invitationLink = (token) => {
   return `${config.public.baseUrl}/invitation/${token}`
 }
 
-const createNewInvitation = async () => {
-  const { data, error } = await useFetch('/api/v1/invitations/create', {
-    method: 'post'
-  })
-  refreshInvitations()
-}
-
-const cancelInvitation = async (id) => {
-  const { error } = await useFetch('/api/v1/invitations/cancel', {
-    method: 'delete',
-    body: {
-      id: id
-    }
-  })
-  refreshInvitations()
-}
-
-const copyLink = (id, url) => {
+const copyLink = (url) => {
   navigator.clipboard.writeText(url)
-  copied.value = id
+  copied.value = true
   setTimeout(() => {
-    copied.value = null
+    copied.value = false
   }, 3000)
 }
 </script>
 
 <template>
-  <section class="invitations-left">
-    <p v-if="hasInvitationsLeft">
-      Has usado {{ usedInvitations }} invitaciones. Te quedan
+  <div v-if="hasInvitationsLeft">
+    <p>
+      Has usado {{ numInvitations }} invitaciones. Te quedan
       {{ numInvitationsLeft }} invitaciones.
     </p>
-    <p v-else>No tienes invitaciones.</p>
-    <div>
-      <Button
-        v-if="hasInvitationsLeft"
-        @click="createNewInvitation">
-        Nueva invitación
-      </Button>
-    </div>
-  </section>
-  <section
-    v-if="pendingInvitations && pendingInvitations.length > 0"
-    class="invitations">
-    <h3>Invitaciones pendientes</h3>
-    <ul>
-      <li
-        class="pending"
-        v-for="invitation in pendingInvitations">
-        <div
-          class="invitation-link"
-          @click="copyLink(invitation.id, invitationLink(invitation.token))">
-          {{ invitationLink(invitation.token) }}
-          <Transition name="fade">
-            <div
-              v-if="copied === invitation.id"
-              class="copied">
-              Enlace copiado al portapapeles!
-            </div>
-          </Transition>
-        </div>
-        <Button @click="cancelInvitation(invitation.id)"> Cancelar </Button>
-      </li>
-    </ul>
-  </section>
+    <p>Copia y comparte este enlace para invitar a nuevos usuarios.</p>
+  </div>
+  <p v-else>No tienes invitaciones.</p>
+  <div
+    class="invitation-link"
+    @click="copyLink(invitationLink(userData.invitation_token))">
+    {{ invitationLink(userData.invitation_token) }}
+    <Transition name="fade">
+      <div
+        v-if="copied"
+        class="copied">
+        Enlace copiado al portapapeles!
+      </div>
+    </Transition>
+  </div>
 </template>
 
 <style scoped>

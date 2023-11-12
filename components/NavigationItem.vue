@@ -1,9 +1,10 @@
 <template>
-  <NuxtLink :to="to"
-    ><Icon
+  <NuxtLink :to="to">
+    <!-- <Icon
       :name="icon"
-      size="2rem" /><span>{{ label }}</span></NuxtLink
-  >
+      :size="size" /> -->
+    <span>{{ label }}</span>
+  </NuxtLink>
 </template>
 
 <script setup>
@@ -18,7 +19,18 @@ const props = defineProps({
   },
   icon: {
     type: String
+  },
+  variant: {
+    type: String,
+    required: false
   }
+})
+
+const size = computed(() => {
+  if (props.variant === 'mobile') {
+    return '2rem'
+  }
+  return '1.5rem'
 })
 </script>
 

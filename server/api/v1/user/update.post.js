@@ -7,10 +7,7 @@ export default defineEventHandler(async (event) => {
 
   const { data } = await client
     .from('users')
-    .update({
-      handle: body.handle,
-      bio: body.bio
-    })
+    .update(body)
     .eq('id', user.id)
     .select()
     .single()

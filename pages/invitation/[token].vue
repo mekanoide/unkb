@@ -1,15 +1,19 @@
 <script setup>
+import { useUserStore } from '@/stores/user'
 const config = useRuntimeConfig()
 
 definePageMeta({
   layout: 'clear'
 })
 
+const userStore = useUserStore()
 const user = useSupabaseUser()
 const client = useSupabaseClient()
 
 const route = useRoute()
 const token = route.params.token
+
+const { checkHandle } = userStore
 
 const handle = ref('')
 const email = ref('')
@@ -22,13 +26,8 @@ const { data: invitation, error: errorInvitation } = await useFetch(
 )
 
 const validateName = async () => {
-  const { data, error } = await useFetch('/api/v1/auth/check-handle', {
-    method: 'post',
-    body: {
-      handle: handle.value
-    }
-  })
-  if (data.value) {
+  const { data, error } = await checkHandle(handle.value)
+  if (data) {
     errorName.value = true
   } else {
     errorName.value = false
@@ -40,8 +39,7 @@ const handleRegistry = async () => {
     'handleRegistry',
     email.value,
     password.value,
-    handle.value,
-    invitation.value.inviter_id
+    handle.value
   )
   const { error } = await client.auth.signUp({
     email: email.value,
@@ -49,7 +47,7 @@ const handleRegistry = async () => {
     options: {
       data: {
         handle: handle.value.toLowerCase(),
-        parent_id: invitation.value.inviter_id,
+        parent_id: invitation.value.id,
         token: token
       },
       emailRedirectTo: config.public.baseUrl

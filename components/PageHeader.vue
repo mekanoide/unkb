@@ -1,26 +1,8 @@
 <script setup>
-import { storeToRefs } from 'pinia'
 import { useMainStore } from '@/stores/main'
 const store = useMainStore()
 
-const { auth } = useSupabaseClient()
-const router = useRouter()
-
-const { fetchOwnUser, togglePopover } = store
-const { showPopover } = storeToRefs(store)
-
-const handleSignOut = async () => {
-  const shouldExit = confirm('Seguro que quieres cerrar sesión?')
-  if (!shouldExit) {
-    return
-  }
-  const { error } = await auth.signOut()
-  if (error) {
-    console.log(error)
-    return
-  }
-  router.push('/signin')
-}
+const { fetchOwnUser } = store
 
 const { data: me, error } = await useAsyncData(() => fetchOwnUser())
 </script>
@@ -55,11 +37,16 @@ const { data: me, error } = await useAsyncData(() => fetchOwnUser())
         label="Manifiesto"
         icon="ph:lightbulb-bold"
         to="/manifesto" />
+      <NavigationItem
+        label="Configuración"
+        icon="ph:gear-fine-bold"
+        to="/settings" />
     </nav>
     <nav class="nav-mobile">
       <NavigationItem
         label="Comunidad"
         icon="ph:globe-hemisphere-east-bold"
+        variant="mobile"
         to="/" />
       <!--       <NavigationItem
         label="Corrillos"
@@ -68,48 +55,21 @@ const { data: me, error } = await useAsyncData(() => fetchOwnUser())
       <NavigationItem
         label="Ideas"
         icon="ph:brain-bold"
+        variant="mobile"
         to="/notes" />
       <NavigationItem
         label="Actividad"
         icon="ph:activity-bold"
+        variant="mobile"
         to="/activity" />
       <NavigationItem
         v-if="me"
         label="Perfil"
         icon="ph:person-simple-bold"
+        variant="mobile"
         :to="`/user/${me.handle}`" />
-      <NavigationItem
-        class="manifesto-button"
-        label="Manifiesto"
-        icon="ph:lightbulb-bold"
-        to="/manifesto" />
     </nav>
-    <div class="menu-desktop">
-      <button
-        class="button-menu"
-        @click.stop="togglePopover('main-menu')">
-        <Icon
-          name="ph:list-bold"
-          size="1.5rem" />
-        <span>Más</span>
-      </button>
-      <Dropdown
-        v-if="showPopover === 'main-menu'"
-        class="menu"
-        @close="showPopover = null">
-        <!--         <NavigationItem
-          label="Configuración"
-          icon="ph:gear-fine-bold"
-          to="/settings"
-          /> -->
-        <NavigationButton @click="handleSignOut">
-          <Icon
-            name="ph:sign-out-bold"
-            size="1.5rem" />
-          Cerrar sesión
-        </NavigationButton>
-      </Dropdown>
-    </div>
+    <div class="menu-desktop"></div>
   </header>
 </template>
 
@@ -179,12 +139,9 @@ header {
     grid-auto-flow: column;
     justify-content: center;
     z-index: 100;
-    border-top: 2px dashed currentColor;
+    border-top: 2px solid currentColor;
     padding: var(--spaceS);
     gap: 0;
-  }
-  .manifesto-button {
-    display: none;
   }
   .nav-desktop {
     display: none;

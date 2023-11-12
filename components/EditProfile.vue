@@ -5,6 +5,7 @@ import { useUserStore } from '@/stores/user'
 const userStore = useUserStore()
 
 const { me } = storeToRefs(userStore)
+const { updateUser } = userStore
 
 const initialHandle = me.value.handle
 
@@ -12,14 +13,11 @@ const errorName = ref(false)
 const emit = defineEmits(['update', 'close'])
 
 const submitChanges = async () => {
-  console.log('Payload', me.value.handle, me.value.bio)
-  await useFetch('/api/v1/user/update', {
-    method: 'post',
-    body: {
-      handle: me.value.handle,
-      bio: me.value.bio
-    }
-  })
+  const payload = {
+    handle: me.value.handle,
+    bio: me.value.bio
+  }
+  await updateUser(payload)
   emit('update')
 }
 

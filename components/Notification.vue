@@ -1,10 +1,10 @@
 <script setup>
 import { storeToRefs } from 'pinia'
-import { useMainStore } from '@/stores/main'
+import { useNotificationStore } from '@/stores/notification'
 
-const mainStore = useMainStore()
+const notificationStore = useNotificationStore()
 
-const { notifications } = storeToRefs
+const { notifications } = storeToRefs(notificationStore)
 </script>
 
 <template>

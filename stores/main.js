@@ -4,7 +4,6 @@ export const useMainStore = defineStore('main', () => {
 
   const requestUrl = ref('')
 
-  const notifications = ref([])
   const activeUser = ref(null)
   const contacts = ref([])
   const showPopover = ref('')
@@ -64,7 +63,6 @@ export const useMainStore = defineStore('main', () => {
   return {
     activeUser,
     requestUrl,
-    notifications,
     showPopover,
     getContact,
     fetchOwnUser,

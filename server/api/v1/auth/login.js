@@ -1,7 +1,6 @@
-import { serverSupabaseUser, serverSupabaseClient } from '#supabase/server'
+import { serverSupabaseClient } from '#supabase/server'
 
 export default defineEventHandler(async (event) => {
-  const user = await serverSupabaseUser(event)
   const client = await serverSupabaseClient(event)
 
   const body = await readBody(event)
@@ -11,7 +10,6 @@ export default defineEventHandler(async (event) => {
     email: body.email,
     password: body.password,
   })
-  console.log('enviado???')
   if (error) {
     return error
   }

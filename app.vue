@@ -1,14 +1,18 @@
 <script setup>
 import { storeToRefs } from 'pinia'
 import { useEditionStore } from '@/stores/edition'
+import { useNotificationStore } from '@/stores/notification'
 import { useTooltipStore } from '@/stores/tooltip'
-import { useUserStore } from '@/stores/user'
+import { useThemeStore } from '@/stores/theme'
 
 const tooltipStore = useTooltipStore()
 const editionStore = useEditionStore()
-const userStore = useUserStore()
+const notificationStore = useNotificationStore()
+const themeStore = useThemeStore()
 
-const { initialize } = userStore
+const { initialise } = themeStore
+
+const { notifications } = storeToRefs(notificationStore)
 const { edit } = storeToRefs(editionStore)
 const { tooltip } = storeToRefs(tooltipStore)
 
@@ -27,7 +31,7 @@ nuxtApp.hook('page:finish', () => {
 })
 
 onMounted(() => {
-  initialize()
+  initialise()
 })
 </script>
 
@@ -41,5 +45,8 @@ onMounted(() => {
     <Tooltip
       v-if="tooltip"
       :data="tooltip.message" />
+    <Notification
+      v-if="notifications"
+      :data="notifications" />
   </NuxtLayout>
 </template>

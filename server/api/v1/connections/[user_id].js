@@ -11,7 +11,9 @@ export default defineEventHandler(async (event) => {
       `
         *,
         users: friend_id(
-          *,
+          id,
+          handle,
+          role_id,
           roles: role_id(name)
         )
       `

@@ -11,15 +11,13 @@ const props = defineProps({
   <span
     v-if="data.id !== 4"
     class="Badge">
-    <Icon
-      name="ph:pentagram-bold"
-      size="0.75rem" />
+    𖤐
   </span>
 </template>
 
 <style scoped>
 .Badge {
-  font-size: var(--fontS);
+  font-weight: bold;
   border-radius: var(--corner);
   text-transform: uppercase;
   position: relative;

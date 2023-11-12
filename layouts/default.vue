@@ -1,3 +1,10 @@
+<script setup>
+import { storeToRefs } from 'pinia'
+import { useUserStore } from '@/stores/user'
+const userStore = useUserStore()
+const { me } = storeToRefs(userStore)
+</script>
+
 <template>
   <div class="PAGE">
     <PageHeader />

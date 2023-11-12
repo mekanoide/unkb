@@ -160,13 +160,6 @@ const statusDescription = computed(() => {
       @click="tab = 'connections'">
       Conexiones
     </Tab>
-    <Tab
-      v-if="selectedUser && user.id === selectedUser.id"
-      value="invitations"
-      :selected="tab === 'invitations'"
-      @click="tab = 'invitations'">
-      Invitaciones
-    </Tab>
   </TabMenu>
   <div
     v-if="tab === 'content'"
@@ -185,9 +178,6 @@ const statusDescription = computed(() => {
   <Connections
     :id="selectedUser.id"
     v-else-if="tab === 'connections'" />
-  <Invitations
-    v-else-if="tab === 'invitations'"
-    :data="invitations" />
   <EditProfile
     v-if="showEditProfile"
     @update="handleUpdateProfile"

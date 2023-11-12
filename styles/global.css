@@ -134,7 +134,6 @@ input[type='checkbox']:checked::after {
 
 article {
   display: grid;
-  font-size: var(--fontL);
   gap: var(--spaceM);
 }
 

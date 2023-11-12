@@ -14,12 +14,12 @@ const pending = ref(false)
 
 const handleLogin = async () => {
   pending.value = true
-  const { error } = await auth.signInWithPassword({
+  const { data, error } = await auth.signInWithPassword({
     email: email.value,
     password: password.value
   })
   if (error) {
-    authError.value = true
+    return error
   }
   pending.value = false
 }
@@ -34,6 +34,10 @@ watchEffect(async () => {
 <template>
   <div class="Login">
     <h1>Entrar</h1>
+    <p>
+      {{ email }}
+      {{ password }}
+    </p>
     <form @submit.prevent="handleLogin">
       <TextField
         label="Correo electrónico"
@@ -45,7 +49,7 @@ watchEffect(async () => {
         type="password"
         autocomplete="current-password"
         v-model="password" />
-      <p v-if="authError">Correo electrónico o contraseña incorrectos.</p>
+      <p v-if="authError">{{ authError }}</p>
       <Button
         type="submit"
         :disabled="pending"
@@ -53,7 +57,8 @@ watchEffect(async () => {
       >
     </form>
     <p>
-      ¿Has olvidado tu contraseña? <a href="">Reestablece tu contraseña</a>.
+      ¿Has olvidado tu contraseña?
+      <NuxtLink to="/reset-password">Reestablece tu contraseña</NuxtLink>.
     </p>
     <p>Si no tienes cuenta, necesitas un enlace de invitación.</p>
   </div>

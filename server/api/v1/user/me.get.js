@@ -4,17 +4,11 @@ export default defineEventHandler(async (event) => {
   const user = await serverSupabaseUser(event)
   const client = await serverSupabaseClient(event)
 
-  const { data, error } = await client
-    .from('invitations')
-    .upsert({
-      inviter_id: user.id
-    })
-    .select()
+  const { data } = await client
+    .from('users')
+    .select('*')
+    .eq('id', user.id)
     .single()
-  if (error) {
-    console.log('error en la consulta')
-    console.log(error)
-    throw error
-  }
+
   return data
 })
