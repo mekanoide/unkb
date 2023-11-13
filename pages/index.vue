@@ -2,7 +2,7 @@
 definePageMeta({
   middleware: ['auth']
 })
-
+import { useInfiniteScroll } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
 import { useEditionStore } from '@/stores/edition'
 
@@ -10,20 +10,48 @@ const editionStore = useEditionStore()
 
 const { editionOK } = storeToRefs(editionStore)
 const tab = ref('all')
+const postsContainer = ref(null)
+const posts = ref([])
+const offset = ref(0)
+const loading = ref(false)
 
-const { data: postsFromConnections, refresh } = await useFetch(
-  '/api/v1/posts/from/followed'
-)
+const fetchPosts = async () => {
+  loading.value = true
+  const { data } = await useFetch(
+    `/api/v1/posts/from/followed?offset=${offset.value}`
+  )
+  posts.value = [...posts.value, ...data.value]
+  console.log('Posts', posts.value)
+}
 
 const { data: favs, refresh: refreshFavs } = await useFetch(
   '/api/v1/posts/favs'
 )
+
+const handleScroll = () => {
+  if (
+    window.innerHeight + window.scrollY >= document.body.offsetHeight &&
+    !loading.value
+  ) {
+    offset.value += 10
+    fetchPosts()
+  }
+}
 
 watch(editionOK, async (newValue) => {
   if (newValue) {
     refresh()
     editionOK.value = false
   }
+})
+
+onMounted(() => {
+  window.addEventListener('scroll', handleScroll)
+  fetchPosts()
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('scroll', handleScroll)
 })
 </script>
 
@@ -44,9 +72,11 @@ watch(editionOK, async (newValue) => {
     </Tab>
   </TabMenu>
   <section v-if="tab === 'all'">
-    <ul v-if="postsFromConnections && postsFromConnections.length > 0">
+    <ul
+      v-if="posts && posts.length > 0"
+      ref="postsContainer">
       <li
-        v-for="post in postsFromConnections"
+        v-for="post in posts"
         :key="post.id">
         <Post
           :data="post"
@@ -54,6 +84,7 @@ watch(editionOK, async (newValue) => {
           @deleted="refresh" />
       </li>
     </ul>
+    <div v-else-if="loading">Cargando!!!</div>
     <EmptyState
       v-else
       message="Aún no hay nada publicado" />

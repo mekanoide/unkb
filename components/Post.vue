@@ -274,7 +274,7 @@ footer {
   display: flex;
   height: 2rem;
   gap: var(--spaceXS);
-  border-radius: var(--corner);
+  border-radius: var(--cornerButton);
   padding: 0 var(--spaceS);
   align-items: center;
 }

@@ -1,9 +1,11 @@
 <template>
-  <div></div>
+  <section>
+    <h1>Cargando!!!</h1>
+  </section>
 </template>
 
 <style scoped>
-div {
+section {
   position: fixed;
   inset: 0;
   z-index: 5000;
@@ -12,6 +14,7 @@ div {
   background-color: var(--colorBackground);
   pointer-events: none;
 }
+
 
 @keyframes pulse {
   from {

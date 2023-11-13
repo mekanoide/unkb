@@ -75,7 +75,7 @@
   );
 
   --corner: 0.75rem;
-  --cornerButton: 0.75rem;
+  --cornerButton: 8rem;
 
   --shadowLayer: var(--spaceS) var(--spaceS) 0 var(--colorText);
 

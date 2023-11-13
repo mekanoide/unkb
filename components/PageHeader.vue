@@ -84,6 +84,9 @@ header {
   gap: var(--spaceL);
 }
 
+.logo {
+  margin-left: var(--spaceM);
+}
 .nav-desktop {
   display: grid;
   align-content: start;
