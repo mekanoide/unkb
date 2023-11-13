@@ -4,6 +4,10 @@ export default defineEventHandler(async (event) => {
   const user = await serverSupabaseUser(event)
   const client = await serverSupabaseClient(event)
   const query = getQuery(event)
+  const PAGE_SIZE = 10
+
+  const from = query.offset * PAGE_SIZE
+  const to = from + PAGE_SIZE - 1
 
   const { data: favs } = await client
     .from('favs')
@@ -39,7 +43,7 @@ export default defineEventHandler(async (event) => {
     .in('author_id', followedUserIds)
     .neq('scope', 'private')
     .order('created_at', { ascending: false })
-    .range(query.offset, query.offset + 10)
+    .range(from, to)
 
   console.log('posts', postList)
 

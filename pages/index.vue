@@ -2,7 +2,6 @@
 definePageMeta({
   middleware: ['auth']
 })
-import { useInfiniteScroll } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
 import { useEditionStore } from '@/stores/edition'
 
@@ -12,42 +11,42 @@ const { editionOK } = storeToRefs(editionStore)
 const tab = ref('all')
 const postsContainer = ref(null)
 const posts = ref([])
-const offset = ref(0)
 const loading = ref(false)
+const offset = ref(0)
 
-const fetchPosts = async () => {
+const fetchPosts = async (offset) => {
   loading.value = true
   const { data } = await useFetch(
-    `/api/v1/posts/from/followed?offset=${offset.value}`
+    `/api/v1/posts/from/followed?offset=${offset}`
   )
   posts.value = [...posts.value, ...data.value]
-  console.log('Posts', posts.value)
+  loading.value = false
 }
 
 const { data: favs, refresh: refreshFavs } = await useFetch(
   '/api/v1/posts/favs'
 )
 
-const handleScroll = () => {
+const handleScroll = async () => {
   if (
-    window.innerHeight + window.scrollY >= document.body.offsetHeight &&
-    !loading.value
+    !loading.value && window.innerHeight + window.scrollY >= document.body.offsetHeight
   ) {
-    offset.value += 10
-    fetchPosts()
+    console.log('Bottom of the page')
+    offset.value++
+    await fetchPosts(offset.value)
   }
 }
 
 watch(editionOK, async (newValue) => {
   if (newValue) {
-    refresh()
+    fetchPosts(offset.value)
     editionOK.value = false
   }
 })
 
 onMounted(() => {
+  fetchPosts(offset.value)
   window.addEventListener('scroll', handleScroll)
-  fetchPosts()
 })
 
 onBeforeUnmount(() => {
