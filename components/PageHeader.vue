@@ -112,7 +112,6 @@ header {
   gap: var(--spaceS);
   align-items: center;
   justify-content: start;
-  font-size: var(--fontL);
   transition: var(--transition);
   padding: var(--spaceS);
   border-radius: var(--corner);

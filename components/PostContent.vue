@@ -52,7 +52,6 @@ watch(content, (newValue) => {
 <style scoped>
 article {
   max-width: calc(100vw - (var(--spaceM) * 2));
-  line-height: 1.25;
   display: grid;
   gap: var(--spaceM);
   overflow-wrap: anywhere;

@@ -18,13 +18,7 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   const resetPassword = async (email) => {
-    const { data, error } = await auth.resetPasswordForEmail(email, {
-      redirectTo: `${config.public.baseUrl}/new-password`
-    })
-    if (error) {
-      return error
-    }
-    return data
+
   }
 
   const signIn = async (email, password) => {

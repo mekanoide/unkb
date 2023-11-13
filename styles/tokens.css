@@ -1,7 +1,7 @@
 :root {
   --colorLight: hsl(6 90% 64%);
-  --colorShadeLight: hsl(6 70% 32%);
-  --colorShadeDark: hsl(6 70% 28%);
+  --colorShadeLight: hsl(6 60% 22%);
+  --colorShadeDark: hsl(6 50% 40%);
   --colorDark: hsl(6 0% 2%);
   --colorAccent: hsl(66 90% 66%);
 

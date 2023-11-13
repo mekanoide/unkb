@@ -131,7 +131,6 @@ const insertSpaces = (e) => {
 <style scoped>
 textarea {
   width: 100%;
-  font-size: var(--fontL);
   transition: var(--transition);
 }
 </style>

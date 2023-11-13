@@ -12,7 +12,7 @@ const handle = ref(null)
 const bio = ref(null)
 
 const editHandle = ref(false)
-const editEmail = ref(false)
+/* const editEmail = ref(false) */
 const loading = ref(true)
 
 loading.value = false
@@ -21,7 +21,7 @@ const { data: userData, refresh } = await useFetch('/api/v1/user/me')
 handle.value = userData.value.handle
 bio.value = userData.value.bio
 
-const validHandle = ref(false)
+const validHandle = ref(true)
 
 const startResetPassword = () => {
   const shouldReset = confirm('Seguro que quieres regenerar tu contraseña?')
@@ -32,9 +32,10 @@ const startResetPassword = () => {
 }
 
 const validateName = async () => {
-  const data = await checkHandle(handle.value)
+  validHandle.value = false
+  const { data, error } = await checkHandle(handle.value)
   console.log(data)
-  if (data) {
+  if (!data) {
     validHandle.value = false
     return
   }
@@ -95,6 +96,7 @@ const handleDeleteAccount = async () => {
         @blur="validateName" />
       <TextField
         label="Bio"
+        placeholder="Cuenta algo sobre ti"
         textarea
         :disabled="!editHandle"
         v-model="bio" />
@@ -119,7 +121,7 @@ const handleDeleteAccount = async () => {
     </form>
   </section>
   <!-- TODO: Implement change of email functionality -->
-<!--   <section>
+  <!--   <section>
     <h2>Correo electrónico</h2>
     <form @submit.prevent="">
       <TextField
@@ -146,7 +148,9 @@ const handleDeleteAccount = async () => {
   </section> -->
   <section>
     <h2>Cambiar contraseña</h2>
-    <footer><Button @click="startResetPassword">Regenerar contraseña</Button></footer>
+    <footer>
+      <Button @click="startResetPassword">Regenerar contraseña</Button>
+    </footer>
   </section>
   <section>
     <h2>Modo de color</h2>
@@ -159,12 +163,7 @@ const handleDeleteAccount = async () => {
   <section>
     <h2>Cuenta</h2>
     <footer>
-      <Button @click="handleSignOut">
-        <Icon
-          name="ph:sign-out-bold"
-          size="1.5rem" />
-        Cerrar sesión
-      </Button>
+      <Button @click="handleSignOut"> Cerrar sesión </Button>
     </footer>
     <!--     <Button @click="handleDeleteAccount">
       <Icon

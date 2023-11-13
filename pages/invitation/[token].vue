@@ -19,7 +19,7 @@ const handle = ref('')
 const email = ref('')
 const password = ref('')
 
-const errorName = ref(true)
+const validHandle = ref(false)
 
 const { data: invitation, error: errorInvitation } = await useFetch(
   `/api/v1/invitations/${token}`
@@ -27,20 +27,15 @@ const { data: invitation, error: errorInvitation } = await useFetch(
 
 const validateName = async () => {
   const { data, error } = await checkHandle(handle.value)
-  if (data) {
-    errorName.value = true
-  } else {
-    errorName.value = false
+  if (!data) {
+    validHandle.value = false
+    return
   }
+  validHandle.value = true
 }
 
 const handleRegistry = async () => {
-  console.log(
-    'handleRegistry',
-    email.value,
-    password.value,
-    handle.value
-  )
+  console.log('handleRegistry', email.value, password.value, handle.value)
   const { error } = await client.auth.signUp({
     email: email.value,
     password: password.value,
@@ -87,22 +82,25 @@ watch(
         label="Nombre"
         type="text"
         :maxlength="16"
-        placeholder="Caracteres alfanuméricos y guión bajo"
+        placeholder="Puedes usar caracteres alfanuméricos y guión bajo"
+        autocomplete="off"
         v-model="handle"
         @blur="validateName" />
       <TextField
         label="Correo electrónico"
         type="email"
+        autocomplete="off"
         v-model="email" />
       <TextField
         label="Contraseña"
         type="password"
+        autocomplete="off"
         v-model="password" />
       <Button
         type="submit"
-        :disabled="errorName"
-        >Entrar</Button
-      >
+        :disabled="!validHandle">
+        Entrar
+      </Button>
     </form>
     <p>Ya tienes cuenta? <NuxtLink to="/login">Accede aquí</NuxtLink>.</p>
   </div>

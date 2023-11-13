@@ -20,12 +20,12 @@ export const useUserStore = defineStore('user', () => {
   }
 
   const checkHandle = async (handle) => {
-    const { data, error } = await useFetch('/api/v1/auth/check-handle', {
+    const response = await useFetch('/api/v1/auth/check-handle', {
       method: 'post',
       body: { handle }
     })
-    if (error) return error
-    return data
+    console.log('response', response)
+    return response
   }
 
   return {

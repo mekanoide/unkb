@@ -3,7 +3,7 @@ html {
   background-color: var(--colorBackground);
   color: var(--colorText);
   font-size: var(--fontBase);
-  line-height: 1.125;
+  line-height: 1.5;
   text-underline-offset: 2px;
   scroll-behavior: smooth;
   scrollbar-color: var(--colorText) transparent;
@@ -182,13 +182,20 @@ article h3 {
 }
 article :is(ul, ol) {
   padding-left: var(--spaceS);
-  margin-left: var(--spaceS);
   display: grid;
   gap: var(--spaceS);
 }
 
 article :is(ul, ol) :is(ul, ol) {
   padding-top: var(--spaceS);
+}
+
+article ul {
+  margin-left: var(--spaceXS);
+}
+
+article ol {
+  margin-left: var(--spaceM);
 }
 
 article ul ul li {
