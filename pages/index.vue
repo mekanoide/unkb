@@ -9,9 +9,8 @@ const editionStore = useEditionStore()
 
 const { editionOK } = storeToRefs(editionStore)
 const tab = ref('all')
-const postsContainer = ref(null)
 const posts = ref([])
-const loading = ref(false)
+const loading = ref(true)
 const offset = ref(0)
 
 const fetchPosts = async (offset) => {
@@ -29,7 +28,8 @@ const { data: favs, refresh: refreshFavs } = await useFetch(
 
 const handleScroll = async () => {
   if (
-    !loading.value && window.innerHeight + window.scrollY >= document.body.offsetHeight
+    !loading.value &&
+    window.innerHeight + window.scrollY >= document.body.offsetHeight
   ) {
     console.log('Bottom of the page')
     offset.value++
@@ -71,9 +71,7 @@ onBeforeUnmount(() => {
     </Tab>
   </TabMenu>
   <section v-if="tab === 'all'">
-    <ul
-      v-if="posts && posts.length > 0"
-      ref="postsContainer">
+    <ul v-if="posts && posts.length > 0">
       <li
         v-for="post in posts"
         :key="post.id">
@@ -83,10 +81,10 @@ onBeforeUnmount(() => {
           @deleted="refresh" />
       </li>
     </ul>
-    <div v-else-if="loading">Cargando!!!</div>
     <EmptyState
-      v-else
+      v-else-if="!loading && posts && posts.length === 0"
       message="Aún no hay nada publicado" />
+    <LoadingContent v-if="loading" />
   </section>
   <section v-else-if="tab === 'favs'">
     <ul v-if="favs && favs.length > 0">
