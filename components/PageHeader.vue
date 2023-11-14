@@ -32,12 +32,12 @@ const { data: me, error } = await useAsyncData(() => fetchOwnUser())
         label="Perfil"
         icon="ph:person-simple-bold"
         :to="`/user/${me.handle}`" />
-      <NavigationItem
+<!--       <NavigationItem
         class="manifesto-button"
         label="Manifiesto"
         icon="ph:lightbulb-bold"
         to="/manifesto" />
-      <NavigationItem
+ -->      <NavigationItem
         label="Configuración"
         icon="ph:gear-fine-bold"
         to="/settings" />
