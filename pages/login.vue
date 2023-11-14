@@ -34,10 +34,6 @@ watchEffect(async () => {
 <template>
   <div class="Login">
     <h1>Entrar</h1>
-    <p>
-      {{ email }}
-      {{ password }}
-    </p>
     <form @submit.prevent="handleLogin">
       <TextField
         label="Correo electrónico"
