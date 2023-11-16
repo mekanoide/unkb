@@ -7,22 +7,57 @@ const noteStore = useNoteStore()
 
 const config = useRuntimeConfig()
 const tab = ref('all')
+const notes = ref([])
+const loading = ref(true)
+const offset = ref(0)
 
 const { createNote } = noteStore
 const { editionOK } = storeToRefs(editionStore)
-const { data: notes, refresh: refreshNotes } = await useFetch('/api/v1/notes')
-const { data: pinned, refresh: refreshPinned } = await useFetch('/api/v1/notes/pinned')
+
+const fetchNotes = async (offset) => {
+  loading.value = true
+  const { data } = await useFetch(
+    `/api/v1/notes?offset=${offset}`
+  )
+  console.log('Notas', data)
+  notes.value = [...notes.value, ...data.value]
+  loading.value = false
+}
+
+const { data: pinned, refresh: refreshPinned } = await useFetch(
+  '/api/v1/notes/pinned'
+)
 
 const handlePost = async (content, scope) => {
   await createNote(content)
-  refreshNotes()
+  fetchNotes()
+}
+
+const handleScroll = async () => {
+  if (
+    !loading.value &&
+    window.innerHeight + window.scrollY >= document.body.offsetHeight
+  ) {
+    console.log('Bottom of the page')
+    offset.value++
+    await fetchNotes(offset.value)
+  }
 }
 
 watch(editionOK, async (newValue) => {
   if (newValue) {
-    refreshNotes()
+    fetchNotes()
     editionOK.value = false
   }
+})
+
+onMounted(() => {
+  fetchNotes(offset.value)
+  window.addEventListener('scroll', handleScroll)
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('scroll', handleScroll)
 })
 </script>
 
@@ -32,7 +67,7 @@ watch(editionOK, async (newValue) => {
     placeholder="Escribe solo para ti..."
     postType="note"
     @post="handlePost"
-    @posted="refreshNotes" />
+    @posted="fetchNotes(offset)" />
   <TabMenu>
     <Tab
       value="all"
@@ -54,12 +89,13 @@ watch(editionOK, async (newValue) => {
         :key="note.id">
         <Note
           :data="note"
-          @changed="refreshNotes" />
+          @changed="fetchNotes(offset)" />
       </li>
     </ul>
     <EmptyState
-      v-else
+      v-else-if="!loading && notes && notes.length === 0"
       message="No has anotado nada aún" />
+    <LoadingContent v-if="loading" />
   </section>
   <section v-else-if="tab === 'pinned'">
     <ul v-if="pinned && pinned.length > 0">
@@ -72,7 +108,7 @@ watch(editionOK, async (newValue) => {
       </li>
     </ul>
     <EmptyState
-      v-else
+      v-else-if="!loading && pinned && pinned.length === 0"
       message="No hay nada" />
   </section>
 </template>

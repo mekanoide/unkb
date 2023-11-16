@@ -77,8 +77,8 @@ onBeforeUnmount(() => {
         :key="post.id">
         <Post
           :data="post"
-          @changed="refresh"
-          @deleted="refresh" />
+          @changed="fetchPosts(offset)"
+          @deleted="fetchPosts(offset)" />
       </li>
     </ul>
     <EmptyState
@@ -93,8 +93,8 @@ onBeforeUnmount(() => {
         :key="fav.posts.id">
         <Post
           :data="fav.posts"
-          @changed="refreshFavs"
-          @deleted="refreshFavs" />
+          @changed="fetchPinned(offset)"
+          @deleted="fetchPinned(offset)" />
       </li>
     </ul>
     <EmptyState
