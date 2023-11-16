@@ -1,19 +1,41 @@
 <template>
   <div>
-    <h2>Cargando!!!</h2>
+    <span>*</span>
+    <span>*</span>
+    <span>*</span>
   </div>
 </template>
 
 <style scoped>
 div {
+  display: flex;
+  place-content: center;
   padding: var(--spaceL) var(--spaceM);
-  background-color: var(--colorText);
-/*   border: 2px dotted var(--colorText); */
-  border-radius: var(--corner);
 }
 
-h2 {
-  text-align: center;
-  color: var(--colorBackground);
+span {
+  font-size: var(--fontSizeL);
+  animation: pulse 0.25s infinite alternate;
+}
+
+span:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+span:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes pulse {
+  from {
+    color: var(--colorText);
+  }
+  to {
+    color: var(--colorBackground);
+  }
 }
 </style>

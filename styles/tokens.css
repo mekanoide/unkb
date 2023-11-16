@@ -29,7 +29,7 @@
 
   --maxWidthBody: 1440px;
 
-  --fontBase: min(calc(12px + 0.5vw), 20px);
+  --fontBase: min(calc(14px + 0.5vmin), 20px);
   --fontS: 0.875rem;
   --fontL: 1.25rem;
   --fontXL: clamp(2rem, calc(1.5rem + 2vw), 6rem);
@@ -46,8 +46,8 @@
     var(--colorText),
     var(--colorText) 2px,
     transparent 2px,
-    transparent 8px,
-    var(--colorText) 8px
+    transparent 6px,
+    var(--colorText) 6px
   ),
   repeating-linear-gradient(
     90deg,

@@ -7,6 +7,7 @@ export const useMainStore = defineStore('main', () => {
   const activeUser = ref(null)
   const contacts = ref([])
   const showPopover = ref('')
+  const showMenu = ref(false)
 
   const getContact = (handle) => {
     return contacts.value.find((user) => user.handle === handle)
@@ -64,6 +65,7 @@ export const useMainStore = defineStore('main', () => {
     activeUser,
     requestUrl,
     showPopover,
+    showMenu,
     getContact,
     fetchOwnUser,
     fetchRole,

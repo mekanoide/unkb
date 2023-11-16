@@ -98,7 +98,8 @@ onBeforeUnmount(() => {
       </li>
     </ul>
     <EmptyState
-      v-else
+      v-else-if="!loading && favs && favs.length === 0"
       message="No tienes favoritos" />
+    <LoadingContent v-if="loading" />
   </section>
 </template>

@@ -32,7 +32,7 @@ button {
   justify-content: center;
   align-items: center;
   gap: var(--spaceS);
-  border: 4px double currentColor;
+  border: 2px double currentColor;
   font-weight: 600;
   border-radius: var(--cornerButton);
   transition: var(--transition);
@@ -40,7 +40,6 @@ button {
 }
 
 button:not(.secondary, .ghost, .square, .text) {
-  border: none;
   background-color: var(--colorText);
   color: var(--colorBackground);
 }

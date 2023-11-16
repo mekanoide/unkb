@@ -42,20 +42,23 @@ button {
   align-items: center;
   justify-content: start;
   transition: var(--transition);
-  padding: var(--spaceS) var(--spaceM);
+  padding: 0 var(--spaceM);
   text-transform: uppercase;
   font-weight: bold;
   position: relative;
-  border: 2px double var(--colorText);
+  height: 3rem;
+  border-left: 2px double var(--colorText);
+  border-top: 2px double var(--colorText);
+  border-bottom: 2px double var(--colorText);
 }
 
 button:first-child {
-  border-radius: var(--corner) 0 0 var(--corner);
-  border-right: none;
+  border-radius: var(--cornerButton) 0 0 var(--cornerButton);
 }
 
 button:last-child {
-  border-radius: 0 var(--corner) var(--corner) 0;
+  border-radius: 0 var(--cornerButton) var(--cornerButton) 0;
+  border-right: 2px double var(--colorText);
 }
 
 button.active {

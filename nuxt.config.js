@@ -22,7 +22,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       appName: 'UNKB',
-      baseUrl: process.env.BASE_URL || 'http://localhost:3006'
+      baseUrl: process.env.BASE_URL ?? 'http://localhost:3006'
     }
   },
   modules: [

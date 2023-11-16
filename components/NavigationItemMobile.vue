@@ -1,10 +1,10 @@
 <template>
-  <NuxtLink :to="to">
-<!--     <Icon
-      v-if="variant === 'mobile'"
+  <NuxtLink
+    :to="to"
+    :aria-label="label">
+    <Icon
       :name="icon"
-      size="2rem" /> -->
-    <span>{{ label }}</span>
+      size="1.5rem" />
   </NuxtLink>
 </template>
 
@@ -20,18 +20,7 @@ const props = defineProps({
   },
   icon: {
     type: String
-  },
-  variant: {
-    type: String,
-    required: false
   }
-})
-
-const size = computed(() => {
-  if (props.variant === 'mobile') {
-    return '2rem'
-  }
-  return '1.5rem'
 })
 </script>
 
@@ -50,7 +39,7 @@ a {
   position: relative;
 }
 
-a:hover {
+a:active {
   color: var(--colorDark);
   background-color: var(--colorAccent);
 }

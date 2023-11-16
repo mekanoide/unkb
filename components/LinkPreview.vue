@@ -17,9 +17,9 @@ const props = defineProps({
       <h2>{{ data.title }}</h2>
       <p v-html="data.description"></p>
     </div>
-    <Icon
+<!--     <Icon
       name="ph:arrow-circle-right"
-      size="2.5rem" />
+      size="2.5rem" /> -->
   </a>
 </template>
 
@@ -30,9 +30,6 @@ const props = defineProps({
   color: var(--colorBackground);
   border-radius: var(--corner);
   display: grid;
-  grid-template-columns: 1fr auto;
-  align-items: center;
-  gap: var(--spaceM);
 }
 
 .metadata {

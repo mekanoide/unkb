@@ -1,8 +1,11 @@
 <script setup>
+import { storeToRefs } from 'pinia'
 import { useMainStore } from '@/stores/main'
 const store = useMainStore()
 
 const { fetchOwnUser } = store
+
+const { showMenu } = storeToRefs(store)
 
 const { data: me, error } = await useAsyncData(() => fetchOwnUser())
 </script>
@@ -28,48 +31,63 @@ const { data: me, error } = await useAsyncData(() => fetchOwnUser())
         icon="ph:activity-bold"
         to="/activity" />
       <NavigationItem
-        v-if="me"
-        label="Perfil"
-        icon="ph:person-simple-bold"
-        :to="`/user/${me.handle}`" />
-<!--       <NavigationItem
+        label="Conexiones"
+        icon="ph:users-bold"
+        to="/connections" />
+      <!--       <NavigationItem
         class="manifesto-button"
         label="Manifiesto"
         icon="ph:lightbulb-bold"
         to="/manifesto" />
- -->      <NavigationItem
+ -->
+      <NavigationItem
         label="Configuración"
         icon="ph:gear-fine-bold"
         to="/settings" />
     </nav>
     <nav class="nav-mobile">
-      <NavigationItem
+      <NavigationItemMobile
         label="Comunidad"
-        icon="ph:globe-hemisphere-east-bold"
+        icon="ph:house-bold"
         variant="mobile"
         to="/" />
       <!--       <NavigationItem
         label="Corrillos"
         icon="ph:users-three-bold"
         to="/groups" /> -->
-      <NavigationItem
+      <NavigationItemMobile
         label="Ideas"
         icon="ph:brain-bold"
-        variant="mobile"
         to="/notes" />
-      <NavigationItem
+      <NavigationItemMobile
         label="Actividad"
         icon="ph:activity-bold"
-        variant="mobile"
         to="/activity" />
-      <NavigationItem
-        v-if="me"
-        label="Perfil"
-        icon="ph:person-simple-bold"
-        variant="mobile"
-        :to="`/user/${me.handle}`" />
+      <NavigationItemMobile
+        label="Conexiones"
+        icon="ph:users-bold"
+        to="/connections" />
     </nav>
-    <div class="menu-desktop"></div>
+    <Transition name="slide">
+      <nav
+        v-if="showMenu"
+        class="menu-mobile">
+        <div class="menu-actions">
+          <Button
+            variant="ghost"
+            @click="showMenu = false">
+            <Icon
+              name="ph:x-bold"
+              size="1.5rem" />
+          </Button>
+        </div>
+        <NavigationItem
+          label="Configuración"
+          icon="ph:gear-fine-bold"
+          to="/settings"
+          @click="showMenu = false" />
+      </nav>
+    </Transition>
   </header>
 </template>
 
@@ -90,13 +108,12 @@ header {
 .nav-desktop {
   display: grid;
   align-content: start;
-  grid-auto-flow: row;
   gap: var(--spaceXS);
 }
 
 .nav-mobile {
   display: grid;
-  gap: var(--spaceM);
+  gap: var(--spaceS);
   grid-auto-flow: column;
 }
 
@@ -133,6 +150,26 @@ header {
   color: var(--colorDark);
 }
 
+.menu-mobile {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  display: grid;
+  gap: var(--spaceS);
+  align-content: start;
+  width: min(90%, 24rem);
+  padding: var(--spaceM);
+  background-color: var(--colorBackground);
+  border-left: 2px solid currentColor;
+  z-index: 1000;
+}
+
+.menu-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
 @media screen and (max-width: 1024px) {
   header {
     position: fixed;
@@ -167,5 +204,15 @@ header {
   .menu-mobile {
     display: none;
   }
+}
+
+.slide-enter-active,
+.slide-leave-active {
+  transition: var(--transition);
+}
+
+.slide-enter-from,
+.slide-leave-to {
+  transform: translateX(100%);
 }
 </style>

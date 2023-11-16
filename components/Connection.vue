@@ -33,8 +33,8 @@ const handleCancelConnectionRequest = async () => {
     <div
       v-if="ownUser"
       class="actions">
-      <Button v-if="data.target_id" @click="handleCancelConnectionRequest">Cancelar solicitud</Button>
-      <Button v-else @click="handleDeleteConnection">Cortar conexión</Button>
+      <Button v-if="data.target_id" @click="handleCancelConnectionRequest">Cancelar</Button>
+      <Button v-else @click="handleDeleteConnection">Cortar</Button>
     </div>
   </li>
 </template>

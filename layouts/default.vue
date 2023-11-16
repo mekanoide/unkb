@@ -1,7 +1,11 @@
 <script setup>
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '@/stores/user'
+import { useMainStore } from '@/stores/main'
 const userStore = useUserStore()
+const mainStore = useMainStore()
+
+const { showMenu } = storeToRefs(mainStore)
 const { me } = storeToRefs(userStore)
 </script>
 
@@ -9,8 +13,15 @@ const { me } = storeToRefs(userStore)
   <div class="PAGE">
     <PageHeader />
     <main>
-      <div class="logo-mobile">
+      <div class="header-mobile">
         <Logo />
+        <Button
+          variant="ghost"
+          @click="showMenu = !showMenu">
+          <Icon
+            name="ph:list-bold"
+            size="1.5rem" />
+        </Button>
       </div>
       <slot><!-- optional fallback --></slot>
     </main>
@@ -33,7 +44,7 @@ main {
   gap: var(--spaceM);
 }
 
-.logo-mobile {
+.header-mobile {
   display: none;
 }
 
@@ -45,9 +56,11 @@ main {
     padding-top: 0;
     padding-bottom: var(--spaceXL);
   }
-  .logo-mobile {
+  .header-mobile {
     display: grid;
-    place-content: start;
+    grid-auto-flow: column;
+    justify-content: space-between;
+    align-items: center;
   }
 }
 </style>
