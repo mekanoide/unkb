@@ -104,7 +104,7 @@ onBeforeUnmount(() => {
         :key="note.id">
         <Note
           :data="note"
-          @changed="refreshPinned" />
+          @changed="fetchPinnedNotes" />
       </li>
     </ul>
     <EmptyState
