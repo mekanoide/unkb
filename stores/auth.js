@@ -22,13 +22,11 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   const signIn = async (email, password) => {
-    console.log('signing in with', email, password)
 
     const { data, error } = await auth.signInWithPassword({
       email: email,
       password: password
     })
-    console.log('data', data)
   }
 
 
@@ -37,7 +35,6 @@ export const useAuthStore = defineStore('auth', () => {
       password: password
     })
     if (error) {
-      console.log(error)
       return error
     }
     return data

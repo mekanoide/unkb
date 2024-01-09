@@ -7,11 +7,10 @@
 
   --colorContent: var(--colorDark);
   --colorMeta: hsl(126 70% 56%);
-  
+
   --colorBackground: var(--colorLight);
   --colorText: var(--colorDark);
   --colorNegative: coral;
-  
 
   /* Syntax */
   --colorSyntaxKeyword: hsl(24 100% 72%);
@@ -38,44 +37,56 @@
   --fontBody: 'Fragment Mono', monospace;
   --fontMono: 'Fira Code', monospace;
 
-  --gradientFaded: repeating-linear-gradient(-45deg, transparent, transparent 2px, var(--colorText) 2px, var(--colorText) 4px);
-  --gradientWork: repeating-linear-gradient(-45deg, transparent, transparent 8px, var(--colorText) 8px, var(--colorText) 16px);
-
-  --patternBorder: repeating-linear-gradient(
-    0deg,
-    var(--colorText),
-    var(--colorText) 2px,
+  --gradientFaded: repeating-linear-gradient(
+    -45deg,
+    transparent,
     transparent 2px,
-    transparent 6px,
-    var(--colorText) 6px
-  ),
-  repeating-linear-gradient(
-    90deg,
-    var(--colorText),
     var(--colorText) 2px,
-    transparent 2px,
+    var(--colorText) 4px
+  );
+  --gradientWork: repeating-linear-gradient(
+    -45deg,
+    transparent,
     transparent 8px,
-    var(--colorText) 8px
-  ),
-  repeating-linear-gradient(
-    180deg,
-    var(--colorText),
-    var(--colorText) 2px,
-    transparent 2px,
-    transparent 8px,
-    var(--colorText) 8px
-  ),
-  repeating-linear-gradient(
-    270deg,
-    var(--colorText),
-    var(--colorText) 2px,
-    transparent 2px,
-    transparent 8px,
-    var(--colorText) 8px
+    var(--colorText) 8px,
+    var(--colorText) 16px
   );
 
-  --corner: 0.75rem;
-  --cornerButton: 8rem;
+  --patternBorder: repeating-linear-gradient(
+      0deg,
+      var(--colorText),
+      var(--colorText) 2px,
+      transparent 2px,
+      transparent 12px,
+      var(--colorText) 12px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      var(--colorText),
+      var(--colorText) 2px,
+      transparent 2px,
+      transparent 12px,
+      var(--colorText) 12px
+    ),
+    repeating-linear-gradient(
+      180deg,
+      var(--colorText),
+      var(--colorText) 2px,
+      transparent 2px,
+      transparent 12px,
+      var(--colorText) 12px
+    ),
+    repeating-linear-gradient(
+      270deg,
+      var(--colorText),
+      var(--colorText) 2px,
+      transparent 2px,
+      transparent 12px,
+      var(--colorText) 12px
+    );
+
+  --corner: 0.25rem;
+  --cornerButton: 0.25rem;
 
   --shadowLayer: var(--spaceS) var(--spaceS) 0 var(--colorText);
 

@@ -8,7 +8,7 @@ const user = useSupabaseUser()
 
 /* Fetch users status */
 const { data: connectionStatus, refresh: connectionStatusRefresh } =
-  await useFetch(`/api/v1/connections/status/${selectedUser.value.id}`)
+  await useFetch(`/api/connections/status/${selectedUser.value.id}`)
 
 const handleDeleteConnection = async (id) => {
   await deleteConnection(selectedUser.id)

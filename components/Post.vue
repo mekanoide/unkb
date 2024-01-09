@@ -2,13 +2,12 @@
 import { storeToRefs } from 'pinia'
 import { useEditionStore } from '@/stores/edition'
 import { useMainStore } from '@/stores/main'
-import { usePostStore } from '@/stores/post'
+import { usePostsStore } from '@/stores/posts'
 
-const router = useRouter()
 const user = useSupabaseUser()
-const store = useMainStore()
+const mainStore = useMainStore()
 const editionStore = useEditionStore()
-const postStore = usePostStore()
+const postsStore = usePostsStore()
 
 const props = defineProps({
   data: {
@@ -25,24 +24,30 @@ const contentElement = ref(null)
 const truncate = ref(false)
 const expanded = ref(false)
 
-const { showPopover } = storeToRefs(store)
+const { showPopover } = storeToRefs(mainStore)
 const { openEdition } = editionStore
 const { startPostEdition, deletePost, fetchPostAuthor, fetchReplyCount } =
-  postStore
+  postsStore
 
 const isOwner = computed(() => {
-  if(user.value === null) return false
+  if (user.value === null) return false
   return props.data.author_id === user.value.id
 })
 
 const date = computed(() => formatFormalDate(props.data.created_at))
+
+const replyText = computed(() => {
+  if (replyCount === 0) return 'Sin respuestas'
+  if (replyCount === 1) return '1 respuesta'
+  return `${replyCount} respuestas`
+})
 
 const transformedScope = computed(() => {
   switch (props.data.scope) {
     case 'public':
       return 'público'
     case 'connections':
-      return 'coleguis'
+      return 'vínculos'
     case 'trust':
       return 'gente de confianza'
     case 'fire':
@@ -51,7 +56,7 @@ const transformedScope = computed(() => {
 })
 
 const linkPost = (id) => {
-  router.push(`/post/${id}`)
+  navigateTo(`/post/${id}`)
 }
 
 const handleEdition = () => {
@@ -61,14 +66,7 @@ const handleEdition = () => {
 
 const handleDelete = async () => {
   showPopover.value = null
-  const shouldDelete = confirm('¿Estás seguro de eliminar esta publicación?')
-  if (!shouldDelete) return
-  await useFetch('/api/v1/posts/delete', {
-    method: 'delete',
-    body: {
-      id: props.data.id
-    }
-  })
+  await deletePost(props.data.id)
   emit('deleted')
 }
 
@@ -84,28 +82,6 @@ const toggleMenu = () => {
   }
 }
 
-const handlePinPost = async (id, fav) => {
-  console.log('Fav?', fav)
-  console.log('Post id?', id)
-  if (fav) {
-    console.log('Removing fav')
-    await useFetch('/api/v1/favs/remove', {
-      method: 'post',
-      body: {
-        id: id
-      }
-    })
-  } else {
-    await useFetch('/api/v1/favs/create', {
-      method: 'post',
-      body: {
-        id: id
-      }
-    })
-  }
-  emit('changed')
-}
-
 const handleLinkPost = (id) => {
   if (!props.single) {
     linkPost(id)
@@ -113,8 +89,6 @@ const handleLinkPost = (id) => {
 }
 
 const replyCount = await fetchReplyCount(props.data.id)
-
-/* Get content height in order to whether truncate it or not */
 
 onMounted(() => {
   if (!props.single) {
@@ -151,19 +125,16 @@ onMounted(() => {
           <MenuItem
             v-if="isOwner"
             @click="handleEdition">
-            <Icon name="ph:pencil-simple-line-bold" size="1.25rem" />
             Editar
           </MenuItem>
           <MenuItem
             v-if="isOwner"
             @click="handleDelete">
-            <Icon name="ph:trash-simple-bold" size="1.25rem" />
             Eliminar
           </MenuItem>
           <MenuItem
             v-if="!isOwner"
             @click="handleReport">
-            <Icon name="ph:warning-bold" size="1.25rem" />
             Denunciar
           </MenuItem>
         </Menu>
@@ -192,34 +163,16 @@ onMounted(() => {
           class="link-reply"
           title="Ver respuestas"
           :to="`/post/${data.id}#write-reply`">
-          <Icon
-            name="ph:chat-bold"
-            size="1.5rem" />
-          {{ replyCount }}
+          {{ replyText }}
         </NuxtLink>
-        <Button
-          variant="ghost"
-          :title="data.fav ? 'Quitar de favoritos' : 'Guardar en favoritos'"
-          @click="handlePinPost(data.id, data.fav)">
-          <Icon
-            :name="data.fav ? 'ph:push-pin-simple-slash-bold' : 'ph:push-pin-simple-bold'"
-            size="1.5rem" />
-        </Button>
       </div>
-<!--       <Button
-        v-if="data.scope === 'public'"
-        title="Compartir publicación"
-        variant="ghost">
-        <Icon
-          name="ph:share-network-bold"
-          size="1.5rem" />
-      </Button>
- -->    </Footer>
+    </Footer>
   </div>
 </template>
 
 <style scoped>
 .Post {
+  padding: var(--spaceL) 0;
   display: grid;
   gap: var(--spaceM);
 }
@@ -229,8 +182,8 @@ onMounted(() => {
 }
 
 .post-meta {
-display: grid;
-gap: var(--spaceXS);
+  display: grid;
+  gap: var(--spaceXS);
 }
 
 .menu {
@@ -259,12 +212,6 @@ gap: var(--spaceXS);
   gap: var(--spaceS);
 }
 
-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
 .metadata {
   font-size: var(--fontS);
   text-transform: uppercase;
@@ -273,14 +220,11 @@ footer {
 .link-reply {
   display: flex;
   height: 2rem;
+  text-transform: uppercase;
+  font-weight: bold;
   gap: var(--spaceXS);
   border-radius: var(--cornerButton);
-  padding: 0 var(--spaceS);
+  padding: var(--spaceS) 0;
   align-items: center;
-}
-
-.link-reply:hover {
-  background-color: var(--colorAccent);
-  color: var(--colorDark);
 }
 </style>

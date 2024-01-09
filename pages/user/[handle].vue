@@ -27,15 +27,15 @@ const {
   data: selectedUser,
   pending: selectedUserPending,
   refresh: refreshSelectedUser
-} = await useFetch(`/api/v1/users/${route.params.handle}`)
+} = await useFetch(`/api/users/${route.params.handle}`)
 
 const { data: userPosts, refresh: refreshPosts } = await useFetch(
-  `/api/v1/posts/from/${selectedUser.value.id}`
+  `/api/posts/from/${selectedUser.value.id}`
 )
 
 /* Fetch users status */
 const { data: connectionStatus, refresh: connectionStatusRefresh } =
-  await useFetch(`/api/v1/connections/status/${selectedUser.value.id}`)
+  await useFetch(`/api/connections/status/${selectedUser.value.id}`)
 
 const handleDeleteConnection = async (id) => {
   await deleteConnection(selectedUser.id)
@@ -43,7 +43,7 @@ const handleDeleteConnection = async (id) => {
 }
 
 const handleSendConnectionRequest = async (id) => {
-  await useFetch('/api/v1/connections/requests/create', {
+  await useFetch('/api/connections/requests/create', {
     method: 'post',
     body: {
       id: id
@@ -53,7 +53,7 @@ const handleSendConnectionRequest = async (id) => {
 }
 
 const handleCancelConnectionRequest = async (id) => {
-  await useFetch('/api/v1/connections/requests/cancel', {
+  await useFetch('/api/connections/requests/cancel', {
     method: 'post',
     body: {
       id: id
@@ -63,7 +63,7 @@ const handleCancelConnectionRequest = async (id) => {
 }
 
 const handleAcceptRequest = async (id) => {
-  await useFetch('/api/v1/connections/requests/accept', {
+  await useFetch('/api/connections/requests/accept', {
     method: 'post',
     body: {
       id: id
@@ -73,7 +73,7 @@ const handleAcceptRequest = async (id) => {
 }
 
 const handleRejectRequest = async (id) => {
-  await useFetch('/api/v1/connections/requests/reject', {
+  await useFetch('/api/connections/requests/reject', {
     method: 'post',
     body: {
       id: id

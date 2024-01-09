@@ -22,7 +22,7 @@ const submitChanges = async () => {
 }
 
 const validateName = async () => {
-  const { data, error } = await useFetch('/api/v1/auth/check-handle', {
+  const { data, error } = await useFetch('/api/auth/check-handle', {
     method: 'post',
     body: {
       handle: me.value.handle

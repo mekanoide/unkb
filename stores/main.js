@@ -45,7 +45,6 @@ export const useMainStore = defineStore('main', () => {
       .select()
       .eq('id', myself.role_id)
       .single()
-    console.log(data)
     return data
   }
 

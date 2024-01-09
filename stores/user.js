@@ -1,37 +1,63 @@
 export const useUserStore = defineStore('user', () => {
-  const client = useSupabaseClient()
-  const user = useSupabaseUser()
+  const loadingUser = ref(false)
+  const handle = ref(null)
+  const bio = ref(null)
+  const colorMode = ref(null)
+  const defaultScope = ref(null)
 
-  const me = ref(null)
-
-  const getUser = async () => {
-    if (user.value === null) return
-    const { data, error } = await useFetch('/api/v1/user/me')
-
-    return data
+  const fetchUser = async () => {
+    loadingUser.value = true
+    const { data } = await useFetch('/api/user/me')
+    const user = data.value
+    handle.value = user.handle
+    bio.value = user.bio
+    colorMode.value = user.color_mode
+    defaultScope.value = user.default_scope
+    loadingUser.value = false
   }
 
   const updateUser = async (payload) => {
-    const { data, error } = await useFetch('/api/v1/user/update', {
+    const { data, error } = await useFetch('/api/user/update', {
       method: 'post',
       body: payload
     })
-    return { data, error }
+    if (error) {
+      return
+    }
+    handle.value = data.handle
+    bio.value = data.bio
+    colorMode.value = data.color_mode
+    defaultScope.value = data.default_scope
   }
 
-  const checkHandle = async (handle) => {
-    const response = await useFetch('/api/v1/auth/check-handle', {
+  const deleteAccount = async () => {
+    const shouldDelete = confirm('Seguro que quieres eliminar tu cuenta?')
+    if (!shouldDelete) {
+      return
+    }
+    const { error } = await auth.delete()
+    if (error) {
+      return
+    }
+  }
+
+  const checkIfHandleExists = async (handle) => {
+    const response = await useFetch('/api/auth/check-handle', {
       method: 'post',
       body: { handle }
     })
-    console.log('response', response)
     return response
   }
 
   return {
-    me,
-    getUser,
+    loadingUser,
+    handle,
+    bio,
+    colorMode,
+    defaultScope,
+    fetchUser,
     updateUser,
-    checkHandle
+    deleteAccount,
+    checkIfHandleExists
   }
 })

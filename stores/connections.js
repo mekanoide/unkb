@@ -35,7 +35,6 @@ export const useConnectionsStore = defineStore('connections', () => {
       .eq('user_id', userId)
       .eq('target_id', targetId)
     if (error) {
-      console.log('Error!!!', error)
     }
   }
 
@@ -58,7 +57,7 @@ export const useConnectionsStore = defineStore('connections', () => {
     if (!shouldDelete) {
       return
     }
-    await useFetch('/api/v1/connections/delete', {
+    await useFetch('/api/connections/delete', {
       method: 'post',
       body: {
         id: id
@@ -96,7 +95,6 @@ export const useConnectionsStore = defineStore('connections', () => {
       }
     })
     if (error) {
-      console.log('Error!!!', error)
     }
   }
 

@@ -1,40 +1,31 @@
 <template>
-  <section>
-    <h2>Cargando!!!</h2>
-  </section>
+  <Transition name="slide">
+    <section>
+    </section>
+  </Transition>
 </template>
 
 <style scoped>
 section {
   position: fixed;
-  inset: 0;
+  inset: 0 0 auto 0;
   z-index: 5000;
   display: grid;
+  grid-auto-flow: column;
   justify-content: center;
   align-items: start;
   pointer-events: none;
-  padding: var(--spaceL) 0;
+  background-color: var(--colorAccent);
+  padding: var(--spaceXS);
 }
 
-h2 {
-  display: grid;
-  place-content: center;
-  background-color: var(--colorText);
-  color: var(--colorBackground);
-  padding: var(--spaceS) var(--spaceM);
-  border-radius: 12rem;
-  text-transform: uppercase;
-  outline: var(--spaceXS) solid var(--colorBackground);
+.slide-enter-active,
+.slide-leave-active {
+  transition: all 0.125s ease-out;
 }
 
-
-
-@keyframes pulse {
-  from {
-    border: 0 solid var(--colorText);
-  }
-  to {
-    border: 1rem solid var(--colorText);
-  }
+.slide-enter-from,
+.slide-leave-to {
+  translate:  0 -100%;
 }
 </style>

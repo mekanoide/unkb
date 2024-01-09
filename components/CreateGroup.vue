@@ -4,7 +4,7 @@ const description = ref('')
 const open = ref(true)
 
 const createGroup = async () => {
-  const { data, error } = await useFetch('/api/v1/groups/create', {
+  const { data, error } = await useFetch('/api/groups/create', {
     method: 'post',
     body: {
       name: name.value,
@@ -13,7 +13,6 @@ const createGroup = async () => {
     }
   })
   if (error) {
-    console.log('Error!!!: ', error)
   }
   emit('close')
 }

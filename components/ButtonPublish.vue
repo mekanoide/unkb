@@ -1,32 +1,28 @@
 <script setup>
-import { useMainStore } from '@/stores/main'
-const mainStore = useMainStore()
 const props = defineProps({
+  scope: {
+    type: String
+  },
   pending: {
     type: Boolean
-  },
-  modelValue: {
-    type: String,
-    required: true
   }
 })
 
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['post'])
 
-const model = toRef(props, 'modelValue')
 const showScopeMenu = ref(false)
 
 const handleOpenScope = () => {
   showScopeMenu.value = true
 }
 
-const selectScope = (scope) => {
-  emit('update:modelValue', scope)
+const selectScope = (s) => {
+  emit('update:scope', s)
   showScopeMenu.value = false
 }
 
 const scopeIcon = computed(() => {
-  switch (props.modelValue) {
+  switch (props.scope) {
     case 'public':
       return 'ph:globe-hemisphere-east-bold'
     case 'connections':
@@ -36,10 +32,6 @@ const scopeIcon = computed(() => {
     case 'fire':
       return 'ph:fire-bold'
   }
-})
-
-watch(model, (newValue) => {
-  console.log('New value', newValue)
 })
 </script>
 
@@ -83,7 +75,7 @@ watch(model, (newValue) => {
             size="1.5rem" />
           Conexiones
         </MenuItem>
-<!--         <MenuItem
+        <!--         <MenuItem
           :active="modelValue === 'trust'"
           @click="selectScope('trust')">
           <Icon

@@ -1,5 +1,5 @@
 <script setup>
-const { data: activity, error, refresh } = await useFetch('/api/v1/activity')
+const { data: activity, error, refresh } = await useFetch('/api/activity')
 
 const textActivity = (type) => {
   switch (type) {

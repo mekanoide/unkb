@@ -30,6 +30,7 @@ const props = defineProps({
   color: var(--colorBackground);
   border-radius: var(--corner);
   display: grid;
+  word-break: break-word;
 }
 
 .metadata {

@@ -1,7 +1,7 @@
 <script setup>
-import { usePostStore } from '@/stores/post'
+import { usePostsStore } from '@/stores/posts'
 import { onClickOutside } from '@vueuse/core'
-const postStore = usePostStore()
+const postsStore = usePostsStore()
 
 const props = defineProps({
   postType: {

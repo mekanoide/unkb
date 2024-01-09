@@ -1,12 +1,12 @@
 <script setup>
 import { storeToRefs } from 'pinia'
 import { useMainStore } from '@/stores/main'
-import { usePostStore } from '@/stores/post'
+import { usePostsStore } from '@/stores/posts'
 import { useEditionStore } from '@/stores/edition'
 
 const user = useSupabaseUser()
 const store = useMainStore()
-const postStore = usePostStore()
+const postsStore = usePostsStore()
 const editionStore = useEditionStore()
 
 const props = defineProps({
@@ -26,7 +26,7 @@ const expanded = ref(false)
 const showReply = ref(false)
 
 const { showPopover } = storeToRefs(store)
-const { deleteReply, fetchReplyCount, createReply } = postStore
+const { deleteReply, fetchReplyCount, createReply } = postsStore
 const { openEdition } = editionStore
 
 const isOwner = computed(() => {

@@ -32,7 +32,7 @@ a {
   align-items: center;
   justify-content: start;
   transition: var(--transition);
-  padding: var(--spaceS) var(--spaceM);
+  padding: var(--spaceM);
   border-radius: var(--cornerButton);
   text-transform: uppercase;
   font-weight: bold;

@@ -3,8 +3,8 @@ const config = useRuntimeConfig()
 
 const copied = ref(false)
 
-const { data: role, pending: pendingRole } = await useFetch('/api/v1/user/role')
-const { data: userData, refresh } = await useFetch('/api/v1/user/me')
+const { data: role, pending: pendingRole } = await useFetch('/api/user/role')
+const { data: userData, refresh } = await useFetch('/api/user/me')
 
 const numInvitations = computed(() => {
   return userData.value.invitations_used

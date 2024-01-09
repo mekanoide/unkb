@@ -22,7 +22,7 @@ const password = ref('')
 const validHandle = ref(false)
 
 const { data: invitation, error: errorInvitation } = await useFetch(
-  `/api/v1/invitations/${token}`
+  `/api/invitations/${token}`
 )
 
 const validateName = async () => {
@@ -35,7 +35,6 @@ const validateName = async () => {
 }
 
 const handleRegistry = async () => {
-  console.log('handleRegistry', email.value, password.value, handle.value)
   const { error } = await client.auth.signUp({
     email: email.value,
     password: password.value,
@@ -58,7 +57,6 @@ watch(
   user,
   (newValue) => {
     if (newValue) {
-      console.log(newValue)
       /* return navigateTo('/') */
     }
   },

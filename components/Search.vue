@@ -11,7 +11,7 @@ const searchResults = ref([])
 const { showPopover } = storeToRefs(store)
 
 const search = async (query) => {
-  const { data, error } = await useFetch(`/api/v1/users/search/${query}`)
+  const { data, error } = await useFetch(`/api/users/search/${query}`)
   searchResults.value = data.value
   showPopover.value = 'search-results'
 }

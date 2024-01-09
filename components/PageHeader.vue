@@ -1,11 +1,18 @@
 <script setup>
 import { storeToRefs } from 'pinia'
 import { useMainStore } from '@/stores/main'
+import { usePostsStore } from '@/stores/posts'
 const store = useMainStore()
+const postsStore = usePostsStore()
 
 const { fetchOwnUser } = store
 
 const { showMenu } = storeToRefs(store)
+const { showCreatePost } = storeToRefs(postsStore)
+
+const openCreatePost = () => {
+  showCreatePost.value = true
+}
 
 const { data: me, error } = await useAsyncData(() => fetchOwnUser())
 </script>
@@ -14,6 +21,7 @@ const { data: me, error } = await useAsyncData(() => fetchOwnUser())
   <header>
     <Logo class="logo" />
     <nav class="nav-desktop">
+      <NavigationButton @click="openCreatePost"> Escribir </NavigationButton>
       <NavigationItem
         label="Comunidad"
         icon="ph:globe-hemisphere-east-bold"
@@ -24,8 +32,8 @@ const { data: me, error } = await useAsyncData(() => fetchOwnUser())
         to="/groups" /> -->
       <NavigationItem
         label="Ideas"
-        icon="ph:brain-bold"
-        to="/notes" />
+        icon="ph:lightbulb-bold"
+        to="/ideas" />
       <NavigationItem
         label="Actividad"
         icon="ph:activity-bold"
@@ -57,8 +65,8 @@ const { data: me, error } = await useAsyncData(() => fetchOwnUser())
         to="/groups" /> -->
       <NavigationItemMobile
         label="Ideas"
-        icon="ph:brain-bold"
-        to="/notes" />
+        icon="ph:lightbulb-bold"
+        to="/ideas" />
       <NavigationItemMobile
         label="Actividad"
         icon="ph:activity-bold"
@@ -174,11 +182,12 @@ header {
   header {
     position: fixed;
     inset: auto 0 0 0;
-    background-color: var(--colorBackground);
+    background-color: var(--colorText);
+    color: var(--colorBackground);
+    border-top: 2px solid currentColor;
     grid-auto-flow: column;
     justify-content: center;
     z-index: 100;
-    border-top: 2px solid currentColor;
     padding: var(--spaceS);
     gap: 0;
   }

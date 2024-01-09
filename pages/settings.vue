@@ -1,25 +1,17 @@
 <script setup>
+import { storeToRefs } from 'pinia'
 import { useUserStore } from '@/stores/user'
+import { useThemeStore } from '@/stores/theme'
 
 const { auth } = useSupabaseClient()
-const router = useRouter()
-const user = useSupabaseUser()
 const userStore = useUserStore()
 
-const { updateUser, checkHandle } = userStore
-
-const handle = ref(null)
-const bio = ref(null)
+const { fetchUser, updateUser, checkIfHandleExists } = userStore
+const { loadingUser, handle, bio, defaultScope } = storeToRefs(userStore)
 
 const editHandle = ref(false)
-/* const editEmail = ref(false) */
-const loading = ref(true)
-
-loading.value = false
-
-const { data: userData, refresh } = await useFetch('/api/v1/user/me')
-handle.value = userData.value.handle
-bio.value = userData.value.bio
+const handleEdition = ref(null)
+const bioEdition = ref(null)
 
 const validHandle = ref(true)
 
@@ -33,8 +25,7 @@ const startResetPassword = () => {
 
 const validateName = async () => {
   validHandle.value = false
-  const { data, error } = await checkHandle(handle.value)
-  console.log(data)
+  const { data, error } = await checkIfHandleExists(handle.value)
   if (!data) {
     validHandle.value = false
     return
@@ -42,19 +33,18 @@ const validateName = async () => {
   validHandle.value = true
 }
 
-const handleUpdateProfile = async () => {
-  const { data, error } = await updateUser({
-    handle: handle.value,
-    bio: bio.value
+const handleUpdateProfile = () => {
+  const { data, error } = updateUser({
+    handle: handleEdition.value,
+    bio: bioEdition.value
   })
   editHandle.value = false
-  refresh()
 }
 
 const handleCancelProfileEdition = () => {
   editHandle.value = false
-  handle.value = userData.value.handle
-  bio.value = userData.value.bio
+  handleEdition.value = handle.value
+  bioEdition.value = bio.value
 }
 
 const handleSignOut = async () => {
@@ -64,7 +54,6 @@ const handleSignOut = async () => {
   }
   const { error } = await auth.signOut()
   if (error) {
-    console.log(error)
     return
   }
   router.push('/signin')
@@ -77,51 +66,72 @@ const handleDeleteAccount = async () => {
   }
   const { error } = await auth.delete()
   if (error) {
-    console.log(error)
     return
   }
   router.push('/signin')
 }
+
+/* watch(
+  [colorMode, defaultScope],
+  ([newColorMode, newDefaultScope], [oldColorMode, oldDefaultScope]) => {
+    updateUser({
+      color_mode: newColorMode,
+      default_scope: newDefaultScope
+    })
+    if (newColorMode !== oldColorMode) {
+      setMode(newColorMode)
+    }
+  }
+)
+ */
+
+onMounted(async () => {
+  await fetchUser()
+  handleEdition.value = toRaw(handle.value)
+  bioEdition.value = toRaw(bio.value)
+})
 </script>
 
 <template>
   <h1>Configuración</h1>
-  <section>
-    <h2>Perfil</h2>
-    <form @submit.prevent="handleUpdateProfile">
-      <TextField
-        label="Nombre"
-        :disabled="!editHandle"
-        v-model="handle"
-        @blur="validateName" />
-      <TextField
-        label="Bio"
-        placeholder="Cuenta algo sobre ti"
-        textarea
-        :disabled="!editHandle"
-        v-model="bio" />
-      <footer v-if="!editHandle">
-        <Button
-          type="button"
-          @click.stop="editHandle = true"
-          >Editar perfil</Button
-        >
-      </footer>
-      <footer v-else>
-        <Button
-          :disabled="!validHandle"
-          type="submit"
-          >Guardar</Button
-        ><Button
-          variant="secondary"
-          @click.stop="handleCancelProfileEdition"
-          >Cancelar</Button
-        >
-      </footer>
-    </form>
-  </section>
-  <!-- TODO: Implement change of email functionality -->
-  <!--   <section>
+  <LoadingContent v-if="loadingUser" />
+  <article v-else>
+    <section>
+      <h2>Perfil</h2>
+      <form @submit.prevent="handleUpdateProfile">
+        <TextField
+          label="Nombre"
+          :disabled="!editHandle"
+          v-model="handleEdition"
+          @blur="validateName" />
+        <TextField
+          label="Bio"
+          placeholder="Cuenta algo sobre ti"
+          textarea
+          :disabled="!editHandle"
+          v-model="bioEdition" />
+        <footer v-if="!editHandle">
+          <Button
+            type="button"
+            @click.stop="editHandle = true"
+            >Editar perfil</Button
+          >
+        </footer>
+        <footer v-else>
+          <Button
+            :disabled="!validHandle"
+            type="submit"
+            >Guardar</Button
+          ><Button
+            variant="secondary"
+            @click.stop="handleCancelProfileEdition"
+            >Cancelar</Button
+          >
+        </footer>
+      </form>
+    </section>
+    <!-- TODO: Implement change of email functionality -->
+    <!--   <section>
     <h2>Correo electrónico</h2>
     <form @submit.prevent="">
       <TextField
@@ -146,32 +156,41 @@ const handleDeleteAccount = async () => {
       </footer>
     </form>
   </section> -->
-  <section>
-    <h2>Cambiar contraseña</h2>
-    <footer>
-      <Button @click="startResetPassword">Regenerar contraseña</Button>
-    </footer>
-  </section>
-  <section>
-    <h2>Modo de color</h2>
-    <ToggleColorMode />
-  </section>
-  <section>
-    <h2>Invitaciones</h2>
-    <Invitations />
-  </section>
-  <section>
-    <h2>Cuenta</h2>
-    <footer>
-      <Button @click="handleSignOut"> Cerrar sesión </Button>
-    </footer>
-    <!--     <Button @click="handleDeleteAccount">
+    <section>
+      <h2>Cambiar contraseña</h2>
+      <footer>
+        <Button @click="startResetPassword">Regenerar contraseña</Button>
+      </footer>
+    </section>
+    <section>
+      <h2>Visibilidad predeterminada</h2>
+      <p>
+        Cada nuevo post que escribas tendrá esta visibilidad por defecto, aunque
+        siempre podrás cambiarla.
+      </p>
+      <ScopeSelector v-model="defaultScope" />
+    </section>
+    <section>
+      <h2>Modo de color</h2>
+      <ToggleColorMode />
+    </section>
+    <section>
+      <h2>Invitaciones</h2>
+      <Invitations />
+    </section>
+    <section>
+      <h2>Cuenta</h2>
+      <footer>
+        <Button @click="handleSignOut"> Cerrar sesión </Button>
+      </footer>
+      <!--     <Button @click="handleDeleteAccount">
       <Icon
         name="ph:skull-bold"
         size="1.5rem" />
       Eliminar cuenta
     </Button> -->
-  </section>
+    </section>
+  </article>
 </template>
 
 <style scoped>

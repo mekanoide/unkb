@@ -32,7 +32,6 @@ button {
   justify-content: center;
   align-items: center;
   gap: var(--spaceS);
-  border: 2px double currentColor;
   font-weight: 600;
   border-radius: var(--cornerButton);
   transition: var(--transition);
@@ -63,16 +62,14 @@ button.small {
   padding: 0 var(--spaceS);
 }
 
+button.secondary {
+  border: 2px double currentColor;
+}
+
 button.large {
   height: 4rem;
   padding: 0 var(--spaceL);
 }
-button.ghost,
-button.text,
-button.square {
-  border: none;
-}
-
 button.square {
   aspect-ratio: 1;
   height: 2.5rem;

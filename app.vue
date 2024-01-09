@@ -1,12 +1,14 @@
 <script setup>
 import { storeToRefs } from 'pinia'
 import { useEditionStore } from '@/stores/edition'
+import { usePostsStore } from '@/stores/posts'
 import { useNotificationStore } from '@/stores/notification'
 import { useTooltipStore } from '@/stores/tooltip'
 import { useThemeStore } from '@/stores/theme'
 
 const tooltipStore = useTooltipStore()
 const editionStore = useEditionStore()
+const postsStore = usePostsStore()
 const notificationStore = useNotificationStore()
 const themeStore = useThemeStore()
 
@@ -14,6 +16,7 @@ const { initialise } = themeStore
 
 const { notifications } = storeToRefs(notificationStore)
 const { edit } = storeToRefs(editionStore)
+const { showCreatePost } = storeToRefs(postsStore)
 const { tooltip } = storeToRefs(tooltipStore)
 
 const nuxtApp = useNuxtApp()
@@ -30,8 +33,8 @@ nuxtApp.hook('page:finish', () => {
   loading.value = false
 })
 
-onMounted(() => {
-  initialise()
+onMounted(async () => {
+  await initialise()
 })
 </script>
 
@@ -39,6 +42,7 @@ onMounted(() => {
   <NuxtLayout>
     <Loading v-if="loading" />
     <NuxtPage />
+    <CreatePost v-if="showCreatePost" />
     <EditPost
       v-if="edit"
       :data="edit" />

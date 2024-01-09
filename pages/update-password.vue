@@ -33,7 +33,6 @@ const handleSubmit = async () => {
     password: password.value
   })
   if (error) {
-    console.log(error)
     return error
   }
   changed.value = true

@@ -225,6 +225,8 @@ article blockquote {
 }
 article a {
   text-decoration: underline;
+  word-break: break-all;
+  display: none;
 }
 
 article a:hover {

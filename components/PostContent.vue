@@ -1,8 +1,8 @@
 <script setup>
-import { usePostStore } from '@/stores/post'
-const postStore = usePostStore()
+import { usePostsStore } from '@/stores/posts'
+const postsStore = usePostsStore()
 
-const { getMentionsFromPost } = postStore
+const { getMentionsFromPost } = postsStore
 
 const props = defineProps({
   content: {

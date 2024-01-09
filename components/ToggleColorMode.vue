@@ -1,27 +1,38 @@
 <script setup>
 import { storeToRefs } from 'pinia'
+import { useUserStore } from '@/stores/user'
 import { useThemeStore } from '@/stores/theme'
+
+const userStore = useUserStore()
 const themeStore = useThemeStore()
 
-const { preference } = storeToRefs(themeStore)
+const { updateUser } = userStore
 const { setMode } = themeStore
+const { preference } = storeToRefs(themeStore)
+
+const setColorMode = (mode) => {
+  updateUser({
+    color_mode: mode
+  })
+  setMode(mode)
+}
 </script>
 
 <template>
   <div class="ToggleColorMode">
     <button
       :class="{ active: preference === 'system' }"
-      @click="setMode('system')">
+      @click.stop="setColorMode('system')">
       Sistema
     </button>
     <button
       :class="{ active: preference === 'light' }"
-      @click="setMode('light')">
+      @click.stop="setColorMode('light')">
       Claro
     </button>
     <button
       :class="{ active: preference === 'dark' }"
-      @click="setMode('dark')">
+      @click.stop="setColorMode('dark')">
       Oscuro
     </button>
   </div>

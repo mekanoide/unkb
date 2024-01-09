@@ -12,12 +12,12 @@ const user = useSupabaseUser()
 
 /* Fetch user connections */
 const { data: connections, refresh: refreshConnections } = await useFetch(
-  `/api/v1/connections/${props.id}`
+  `/api/connections/${props.id}`
 )
 
 /* Fetch user connection requests */
 const { data: requests, refresh: refreshRequests } = await useFetch(
-  `/api/v1/connections/requests/own`
+  `/api/connections/requests/own`
 )
 
 /* TODO: add requested connections */

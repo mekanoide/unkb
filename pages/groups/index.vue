@@ -2,7 +2,7 @@
 const showCreateGroup = ref(false)
 
 const { data: groups, refresh: refreshGroups } = await useFetch(
-  '/api/v1/groups'
+  '/api/groups'
 )
 </script>
 

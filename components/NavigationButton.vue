@@ -21,15 +21,11 @@ button {
   gap: var(--spaceS);
   align-items: center;
   justify-content: start;
-  font-size: var(--fontL);
   transition: var(--transition);
-  padding: var(--spaceS);
+  padding: var(--spaceS) var(--spaceM);
   border-radius: var(--corner);
   text-transform: uppercase;
   font-weight: bold;
-}
-
-button.primary {
   background-color: var(--colorText);
   color: var(--colorBackground);
 }

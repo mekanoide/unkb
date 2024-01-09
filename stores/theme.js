@@ -1,6 +1,7 @@
 export const useThemeStore = defineStore('theme', () => {
   const colorMode = useColorMode()
-  const preference = ref(null)
+
+  const preference = ref('system')
 
   const setMode = (mode) => {
     colorMode.preference = mode

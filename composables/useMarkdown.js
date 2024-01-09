@@ -13,6 +13,7 @@ const md = new MarkdownIt({
   highlights: true,
   typographer: true
 })
+
 md.use(markdownItSub)
 md.use(markdownItSuper)
 md.use(markdownItMark)
@@ -23,6 +24,7 @@ md.use(mditHljs, {
   auto: true,
   code: true
 })
+
 md.renderer.rules.link_open = (tokens, idx, options, env, self) => {
   const token = tokens[idx]
   const linkRegex = /https?:/g

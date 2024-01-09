@@ -3,7 +3,7 @@ import { useConnectionsStore } from '@/stores/connections'
 const store = useConnectionsStore()
 
 const handleAcceptConnection = async (id) => {
-  await useFetch('/api/v1/connections/requests/accept', {
+  await useFetch('/api/connections/requests/accept', {
     method: 'post',
     body: {
       id: id
@@ -12,7 +12,7 @@ const handleAcceptConnection = async (id) => {
   refresh()
 }
 
-const { data: requests, refresh } = await useFetch('/api/v1/connections/requests')
+const { data: requests, refresh } = await useFetch('/api/connections/requests')
 </script>
 
 <template>

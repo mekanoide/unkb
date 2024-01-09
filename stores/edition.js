@@ -1,6 +1,10 @@
+import { usePostsStore } from '@/stores/posts'
+
 export const useEditionStore = defineStore('edition', () => {
   const client = useSupabaseClient()
   const user = useSupabaseUser()
+
+  const postsStore = usePostsStore()
 
   const edit = ref(null)
   const editionOK = ref(false)
@@ -13,7 +17,6 @@ export const useEditionStore = defineStore('edition', () => {
       type: type,
       scope: scope
     }
-    console.log('Edit', edit.value)
   }
   /* Cancel post edition */
   const cancelEdition = () => {
@@ -21,13 +24,12 @@ export const useEditionStore = defineStore('edition', () => {
   }
 
   /* Finish post edition and update post */
-  const submitEdition = async (content, scope) => {
+  const submitEdition = async (content, type, scope) => {
     const id = edit.value.id
-    const type = edit.value.type
     edit.value = null
 
     if (type === 'post') {
-      const { data, error } = await useFetch('/api/v1/posts/edit', {
+      const { data, error } = await useFetch('/api/posts/edit', {
         method: 'put',
         body: {
           id: id,
@@ -35,20 +37,10 @@ export const useEditionStore = defineStore('edition', () => {
           content: content
         }
       })
+      scope === 'private' ? postsStore.fetchNewIdeas() : postsStore.fetchNewPostsFromConnections()
       editionOK.value = true
-      return data
-    } else if (type === 'note') {
-      const { data, error } = await useFetch('/api/v1/notes/edit', {
-        method: 'put',
-        body: {
-          id: id,
-          content: content
-        }
-      })
-      editionOK.value = true
-      return data
     } else if (type === 'reply') {
-      const { data, error } = await useFetch('/api/v1/replies/edit', {
+      const { data, error } = await useFetch('/api/replies/edit', {
         method: 'put',
         body: {
           id: id,
@@ -56,7 +48,6 @@ export const useEditionStore = defineStore('edition', () => {
         }
       })
       editionOK.value = true
-      return data
     }
   }
 

@@ -4,6 +4,13 @@ import { useEditionStore } from '@/stores/edition'
 
 const editionStore = useEditionStore()
 
+const props = defineProps({
+  type: {
+    type: String,
+    default: 'post'
+  }
+})
+
 const { submitEdition, cancelEdition } = editionStore
 const { edit } = storeToRefs(editionStore)
 
@@ -11,30 +18,28 @@ const content = ref(edit.value?.content ?? null)
 const scope = ref(edit.value?.scope)
 const pending = ref(false)
 
-const handlePost = async () => {
-  await submitEdition(content.value, scope.value)
+const handlePost = () => {
+  submitEdition(content.value, props.type, scope.value)
 }
 </script>
 
 <template>
   <Modal class="EditPost">
     <form @submit.prevent="handlePost">
+      <header>
+        Visibilidad:
+        <ScopeSelector v-model="scope" />
+      </header>
       <textarea
         cols="50"
         rows="16"
         v-model="content"></textarea>
       <Footer>
         <Actions>
-          <ButtonPublish
-            v-if="edit.type === 'post'"
-            type="submit"
-            :disabled="!content || pending"
-            v-model="scope" />
           <Button
-            v-else
-            type="submit"
-            :disabled="!content || pending">
-            Publicar
+            variant="primary"
+            @click="handlePost">
+            Terminar
           </Button>
           <Button
             variant="secondary"
@@ -53,5 +58,17 @@ const handlePost = async () => {
   display: grid;
   align-items: center;
   padding: var(--spaceM);
+}
+
+header {
+  display: flex;
+  gap: var(--spaceS);
+  align-items: center;
+}
+form {
+  height: 80svh;
+  display: grid;
+  gap: var(--spaceM);
+  grid-template-rows: auto 1fr auto;
 }
 </style>
