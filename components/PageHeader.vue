@@ -31,7 +31,7 @@ const { data: me, error } = await useAsyncData(() => fetchOwnUser())
         icon="ph:users-three-bold"
         to="/groups" /> -->
       <NavigationItem
-        label="Ideas"
+        label="Mis ideas"
         icon="ph:lightbulb-bold"
         to="/ideas" />
       <NavigationItem
@@ -64,9 +64,13 @@ const { data: me, error } = await useAsyncData(() => fetchOwnUser())
         icon="ph:users-three-bold"
         to="/groups" /> -->
       <NavigationItemMobile
-        label="Ideas"
+        label="Mis ideas"
         icon="ph:lightbulb-bold"
         to="/ideas" />
+      <ButtonMobile
+        label="Escribir"
+        icon="ph:plus-bold"
+        @click="openCreatePost" />
       <NavigationItemMobile
         label="Actividad"
         icon="ph:activity-bold"

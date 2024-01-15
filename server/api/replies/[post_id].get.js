@@ -1,12 +1,15 @@
 import { serverSupabaseUser, serverSupabaseClient } from '#supabase/server'
 
 export default defineEventHandler(async (event) => {
+  const user = await serverSupabaseUser(event)
   const client = await serverSupabaseClient(event)
 
   const { post_id } = event.context.params
 
+  console.log('post id', post_id)
+
   const { data } = await client
-    .from('posts')
+    .from('replies')
     .select(
       `
         *,
@@ -16,7 +19,8 @@ export default defineEventHandler(async (event) => {
         )
       `
     )
-    .eq('id', post_id)
-    .single()
+    .eq('post_id', post_id)
+    .order('created_at', { ascending: true })
+
   return data
 })

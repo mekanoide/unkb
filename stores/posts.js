@@ -18,24 +18,35 @@ export const usePostsStore = defineStore('posts', () => {
   const offsetIdeas = ref(0)
   const hasMoreIdeas = ref(true)
 
-  const activePost = ref(null)
-  const activeReplies = ref([])
+  const currentPost = ref(null)
+  const currentReplies = ref([])
   const replyCount = ref(0)
 
   const repliesTree = computed(() => {
-    if (!activeReplies.value) return null
-    return buildTree(activeReplies.value)
+    if (!currentReplies.value) return null
+    return buildTree(currentReplies.value)
   })
+
+  /* Fetch post */
+  const fetchPost = async (id) => {
+    pendingPosts.value = true
+    const { data } = await useFetch(`/api/post/${id}`)
+    currentPost.value = data.value
+    pendingPosts.value = false
+  }
+
+  /* Fetch post */
+  const fetchReplies = async (id) => {
+    pendingPosts.value = true
+    const { data } = await useFetch(`/api/replies/${id}`)
+    currentReplies.value = data.value
+    pendingPosts.value = false
+  }
 
   /* Fetch active post with replies */
   const fetchPostWithReplies = async (id) => {
-    if (activePost.value && activePost.value.id === id) {
-      return activePost.value
-    }
-    const { data: post } = await useFetch(`/api/posts/${id}`)
-    const { data: replies } = await useFetch(`/api/replies/${id}`)
-    activePost.value = post.value
-    activeReplies.value = replies.value
+    await fetchPost(id)
+    await fetchReplies(id)
   }
 
   const buildTree = (responses, parentId = null) => {
@@ -107,7 +118,7 @@ export const usePostsStore = defineStore('posts', () => {
 
   /* fetch replies */
   const fetchReplyCount = async (id) => {
-    const { data } = await useFetch(`/api/replies/count/${id}`)
+    const { data } = await useFetch(`/api/replies/count?id=${id}`)
     return data.value
   }
 
@@ -158,7 +169,12 @@ export const usePostsStore = defineStore('posts', () => {
       }
     })
     showCreatePost.value = false
-    fetchNewPostsFromConnections()
+    if (scope === 'private') {
+      await fetchNewIdeas()
+    } else {
+      await fetchNewPostsFromConnections()
+    }
+    return data
   }
 
   /* Create new reply to post */
@@ -244,8 +260,8 @@ export const usePostsStore = defineStore('posts', () => {
     offsetIdeas,
     postsFromConnections,
     ideas,
-    activePost,
-    activeReplies,
+    currentPost,
+    currentReplies,
     replyCount,
     repliesTree,
     hasMorePostsFromConnections,
@@ -256,6 +272,8 @@ export const usePostsStore = defineStore('posts', () => {
     fetchNewIdeas,
     fetchNewPostsFromConnections,
     fetchMorePostsFromConnections,
+    fetchPost,
+    fetchReplies,
     fetchPostsFromUser,
     fetchPostWithReplies,
     fetchPostAuthor,

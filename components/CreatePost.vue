@@ -16,8 +16,14 @@ const scope = ref('connections')
 
 const pendingPost = ref(false)
 
-const handlePost = () => {
-  submitPost(content.value, scope.value)
+const handlePost = async () => {
+  await submitPost(content.value, scope.value)
+  showCreatePost.value = false
+  if (scope.value === 'private') {
+    navigateTo('/ideas')
+  } else {
+    navigateTo('/')
+  }
 }
 
 const cancelCreation = () => {
@@ -36,7 +42,7 @@ const cancelCreation = () => {
         cols="50"
         rows="16"
         v-model="content"
-        placeholder="Tu contenido se guardará como nota automáticamente"></textarea>
+        placeholder="Escribe tu movida. Puedes usar Markdown!!!"></textarea>
       <Footer>
         <Actions>
           <Button

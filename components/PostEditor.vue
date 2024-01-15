@@ -96,9 +96,7 @@ const insertSpaces = (e) => {
       columns="50"
       :rows="computedRows"
       maxlength="1024"
-      :placeholder="
-        $attrs.placeholder || 'Escribe tu movida (puedes usar Markdown!!!)'
-      "
+      placeholder="Escribe tu movida (puedes usar Markdown!!!)"
       :class="{ focus: focused }"
       @keydown.tab.prevent="insertSpaces"
       @click="focused = true">

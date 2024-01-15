@@ -4,47 +4,44 @@ import { usePostsStore } from '@/stores/posts'
 import { useEditionStore } from '@/stores/edition'
 
 const user = useSupabaseUser()
+const client = useSupabaseClient()
 const postsStore = usePostsStore()
 const editionStore = useEditionStore()
 const route = useRoute()
 const postId = route.params.id
 
-const { editionOK } = storeToRefs(editionStore)
-const { fetchPostWithReplies, createReply } = postsStore
-const { activePost, activeReplies, repliesTree } = storeToRefs(postsStore)
+const { fetchPostWithReplies, fetchPost, createReply } = postsStore
+const { currentPost, currentReplies, repliesTree, pendingPosts } =
+  storeToRefs(postsStore)
 
 const handleReply = async (content) => {
   await createReply(postId, content, null)
   refreshReplies()
 }
 
-watch(editionOK, async (newValue) => {
-  if (newValue) {
-    fetchPostWithReplies(postId)
-    editionOK.value = false
-  }
-})
-
 useHead({
   meta: [
     {
       property: 'og:description',
-      content: activePost.value?.content
+      content: currentPost.value?.content
     },
     {
       name: 'description',
-      content: activePost.value?.content
+      content: currentPost.value?.content
     }
   ]
 })
 
-await fetchPostWithReplies(postId)
+onMounted(() => {
+  fetchPostWithReplies(postId)
+})
 </script>
 
 <template>
   <Post
-    :data="activePost"
-    :key="activePost.id"
+    v-if="currentPost"
+    :data="currentPost"
+    :key="currentPost.id"
     single />
   <PostEditor
     v-if="user"
@@ -53,7 +50,7 @@ await fetchPostWithReplies(postId)
     postType="reply"
     @post="handleReply"
     placeholder="Escribe una respuesta" />
-  <ul v-if="activeReplies && activeReplies.length > 0">
+  <ul v-if="currentReplies && currentReplies.length > 0">
     <li v-for="reply in repliesTree">
       <Reply
         :data="reply"
@@ -61,8 +58,9 @@ await fetchPostWithReplies(postId)
     </li>
   </ul>
   <EmptyState
-    v-else
+    v-if="!pendingPosts && currentReplies.length === 0"
     message="No hay respuestas" />
+  <LoadingContent v-if="pendingPosts" />
 </template>
 
 <style scoped></style>

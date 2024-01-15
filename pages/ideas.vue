@@ -17,7 +17,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <h1>Notas</h1>
+  <h1>Mis ideas</h1>
   <section>
     <ul v-if="ideas && ideas.length > 0">
       <li

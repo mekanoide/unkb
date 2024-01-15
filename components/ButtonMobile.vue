@@ -1,19 +1,13 @@
 <template>
-  <NuxtLink
-    :to="to"
-    :aria-label="label">
+  <button :aria-label="label">
     <Icon
       :name="icon"
       size="1.5rem" />
-  </NuxtLink>
+  </button>
 </template>
 
 <script setup>
 const props = defineProps({
-  to: {
-    type: String,
-    required: true
-  },
   label: {
     type: String,
     required: true
@@ -25,27 +19,22 @@ const props = defineProps({
 </script>
 
 <style scoped>
-a {
+button {
   display: grid;
   grid-auto-flow: column;
   gap: var(--spaceS);
   align-items: center;
   justify-content: start;
   transition: var(--transition);
-  padding: var(--spaceM) var(--spaceS);
+  padding: var(--spaceM);
   border-radius: var(--cornerButton);
   text-transform: uppercase;
   font-weight: bold;
   position: relative;
 }
 
-a:active {
+button:active {
   color: var(--colorDark);
   background-color: var(--colorAccent);
-}
-
-a.router-link-active {
-  background-color: var(--colorAccent);
-  color: var(--colorDark);
 }
 </style>
